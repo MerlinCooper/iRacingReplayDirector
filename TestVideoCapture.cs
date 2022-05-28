@@ -104,7 +104,7 @@ namespace iRacingReplayDirector
                 TraceInfo.WriteLine("Begining Test....");
                 var videoCapture = new VideoCapture();
 
-                TraceInfo.WriteLine("Broadcasting keypress ALT+F9 to activate your video capture software");
+                TraceInfo.WriteLine("Broadcasting keypress {0} to activate your video capture software", Settings.Default.strHotKeyStopStart);
                 videoCapture.Activate(workingFolder);
 
                 TraceInfo.WriteLine("Expecting video file to be written in folder: {0}", workingFolder);
@@ -117,7 +117,7 @@ namespace iRacingReplayDirector
                     TraceInfo.WriteLine("{0} Seconds...", i);
                 }
 
-                TraceInfo.WriteLine("Broadcasting keypress ALT+F9 to deactivate your video capture software");
+                TraceInfo.WriteLine("Broadcasting keypress {0} to deactivate your video capture software", Settings.Default.strHotKeyStopStart);
                 var filenames = videoCapture.Deactivate();
 
 
@@ -165,13 +165,14 @@ namespace iRacingReplayDirector
 
         private static void AltTabBackToApp()
         {
-            Keyboard.keybd_event(Keyboard.VK_MENU, 0, 0, UIntPtr.Zero);
-            Thread.Sleep(200);
-            Keyboard.keybd_event(Keyboard.VK_TAB, 0, 0, UIntPtr.Zero);
-            Thread.Sleep(200);
-            Keyboard.keybd_event(Keyboard.VK_TAB, 0, Keyboard.KEYEVENTF_KEYUP, UIntPtr.Zero);
-            Thread.Sleep(200);
-            Keyboard.keybd_event(Keyboard.VK_MENU, 0, Keyboard.KEYEVENTF_KEYUP, UIntPtr.Zero);
+            KeyboardEmulator.SendHotkey(KeyboardEmulator.Win32VirtualKeyCodes.VK_TAB, KeyboardEmulator.Win32VirtualKeyCodes.VK_MENU);
+            //Keyboard.keybd_event(Keyboard.VK_MENU, 0, 0, UIntPtr.Zero);
+            //Thread.Sleep(200);
+            //Keyboard.keybd_event(Keyboard.VK_TAB, 0, 0, UIntPtr.Zero);
+            //Thread.Sleep(200);
+            //Keyboard.keybd_event(Keyboard.VK_TAB, 0, Keyboard.KEYEVENTF_KEYUP, UIntPtr.Zero);
+            //Thread.Sleep(200);
+            //Keyboard.keybd_event(Keyboard.VK_MENU, 0, Keyboard.KEYEVENTF_KEYUP, UIntPtr.Zero);
         }
 
 

@@ -81,7 +81,7 @@ namespace iRacingReplayDirector
 
         private void AdvanceGeneralSettingsDlg_Load(object sender, EventArgs e)
         {
-            hotKeySelectorStopStart.Enable(tbHotKeyStopStart, Settings.Default.hotKeyStopStart);
+            hotKeySelectorStopStart.Enable(tbHotKeyStopStart, new Hotkey(Settings.Default.strHotKeyStopStart));
             hotKeySelectorPauseResume.Enable(tbHotKeyPauseResume, new Hotkey(Settings.Default.strHotKeyPauseResume));
 
         }
@@ -149,6 +149,12 @@ namespace iRacingReplayDirector
             dataFollowLeaderBeforeRaceEndPeriod.WriteValue();
             dataFollowLeaderAtRaceStartPeriod.WriteValue();*/
 
+            //Store hotkeys to control recording software 
+            Settings.Default.strHotKeyStopStart = tbHotKeyStopStart.Text;
+            Settings.Default.strHotKeyPauseResume = tbHotKeyPauseResume.Text;
+            Settings.Default.Save();
+            
+
             //set Dialog Status to close form
             this.DialogResult = DialogResult.OK;
         }
@@ -160,29 +166,26 @@ namespace iRacingReplayDirector
 
         private void btTestStopStartHotKey_Click(object sender, EventArgs e)
         {
-
+            //send hotkey to test "Stop/Start" hotkey with your recording software 
             Hotkey newHotKey = HotkeyListener.Convert(tbHotKeyStopStart.Text);
-            Settings.Default.hotKeyStopStart = newHotKey;
-
-            /*hotkeyListener.Update
-            (
-                // Reference the current clipping hotkey for directly updating 
-                // the hotkey without a need for restarting your application.
-                ref MainForm.clippingHotkey,
-
-                // Convert the selected hotkey's text representation 
-                // to a Hotkey object and update it.
-                HotkeyListener.Convert(txtClippingHotkey.Text)
-            );*/
-            KeyboardEmulator.SendKeyStrokes(Settings.Default.hotKeyStopStart);
+            KeyboardEmulator.SendHotkey(newHotKey);
         }
 
         private void btTestPauseResumeHotKey_Click(object sender, EventArgs e)
         {
+            //send hotkey to test "Pause/Resume" hotkey with your recording software 
             Hotkey newHotKey = HotkeyListener.Convert(tbHotKeyPauseResume.Text);
-            Settings.Default.strHotKeyPauseResume = tbHotKeyPauseResume.Text;
+            KeyboardEmulator.SendHotkey(newHotKey);
+        }
 
-            KeyboardEmulator.SendKeyStrokes(newHotKey);
+        private void tbHotKeyStopStart_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
