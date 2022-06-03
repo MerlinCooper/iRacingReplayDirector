@@ -36,8 +36,10 @@ namespace iRacingReplayDirector
             }
         }
 
-        public Hotkey hotKeyStopStart = new Hotkey(Keys.Menu, Keys.F9);      //default HotKey to Stop/Start recording
+        //public Hotkey hotKeyStopStart = new Hotkey(Keys.Alt, Keys.F9);      //default HotKey to Stop/Start recording
+        //public Hotkey hotKeyStopStart = new Hotkey(Settings.Default.strhotKeyStopStart);      //default HotKey to Stop/Start recording
 
-        public Hotkey hotKeyPauseResume = new Hotkey(Keys.Menu, Keys.F12);   //default HotKey to Pause/Resume recording
+        //public Hotkey hotKeyPauseResume = new Hotkey(Keys.Alt, Keys.F12);   //default HotKey to Pause/Resume recording
+        //public Hotkey hotKeyPauseResume = new Hotkey(Settings.Default.strHotKeyPauseResume);   //default HotKey to Pause/Resume recording
     }
 }

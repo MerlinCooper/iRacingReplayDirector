@@ -74,14 +74,16 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.checkBox_PerferedDriversOnly = new System.Windows.Forms.CheckBox();
             this.tabPageShortKeys = new System.Windows.Forms.TabPage();
+            this.btTestPauseResumeHotKey = new System.Windows.Forms.Button();
             this.btTestStopStartHotKey = new System.Windows.Forms.Button();
+            this.tbHotKeyPauseResume = new System.Windows.Forms.TextBox();
             this.tbHotKeyStopStart = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.ok_button = new System.Windows.Forms.Button();
             this.cancel_button = new System.Windows.Forms.Button();
-            this.tbHotKeyPauseResume = new System.Windows.Forms.TextBox();
-            this.btTestPauseResumeHotKey = new System.Windows.Forms.Button();
+            this.tbHotKeysTab = new System.Windows.Forms.TextBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.incidents_settings_tab.SuspendLayout();
             this.tabPageTiming.SuspendLayout();
             this.grpBox_Timing_Settings.SuspendLayout();
@@ -95,6 +97,7 @@
             this.groupBox_Drivers.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tabPageShortKeys.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // incidents_settings_tab
@@ -370,7 +373,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.textBoxSettingDescription);
-            this.groupBox2.Location = new System.Drawing.Point(21, 329);
+            this.groupBox2.Location = new System.Drawing.Point(21, 369);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
@@ -465,7 +468,7 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.tbDescriptionIncidentsTab);
-            this.groupBox4.Location = new System.Drawing.Point(15, 301);
+            this.groupBox4.Location = new System.Drawing.Point(15, 369);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
@@ -546,7 +549,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.tbDescriptionDriversTab);
-            this.groupBox1.Location = new System.Drawing.Point(8, 368);
+            this.groupBox1.Location = new System.Drawing.Point(8, 369);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
@@ -616,6 +619,7 @@
             // 
             // tabPageShortKeys
             // 
+            this.tabPageShortKeys.Controls.Add(this.groupBox7);
             this.tabPageShortKeys.Controls.Add(this.btTestPauseResumeHotKey);
             this.tabPageShortKeys.Controls.Add(this.btTestStopStartHotKey);
             this.tabPageShortKeys.Controls.Add(this.tbHotKeyPauseResume);
@@ -627,8 +631,18 @@
             this.tabPageShortKeys.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageShortKeys.Size = new System.Drawing.Size(578, 541);
             this.tabPageShortKeys.TabIndex = 3;
-            this.tabPageShortKeys.Text = "Short Keys";
+            this.tabPageShortKeys.Text = "Hot Keys";
             this.tabPageShortKeys.UseVisualStyleBackColor = true;
+            // 
+            // btTestPauseResumeHotKey
+            // 
+            this.btTestPauseResumeHotKey.Location = new System.Drawing.Point(481, 87);
+            this.btTestPauseResumeHotKey.Name = "btTestPauseResumeHotKey";
+            this.btTestPauseResumeHotKey.Size = new System.Drawing.Size(75, 27);
+            this.btTestPauseResumeHotKey.TabIndex = 3;
+            this.btTestPauseResumeHotKey.Text = "Send";
+            this.btTestPauseResumeHotKey.UseVisualStyleBackColor = true;
+            this.btTestPauseResumeHotKey.Click += new System.EventHandler(this.btTestPauseResumeHotKey_Click);
             // 
             // btTestStopStartHotKey
             // 
@@ -640,17 +654,25 @@
             this.btTestStopStartHotKey.UseVisualStyleBackColor = true;
             this.btTestStopStartHotKey.Click += new System.EventHandler(this.btTestStopStartHotKey_Click);
             // 
+            // tbHotKeyPauseResume
+            // 
+            this.tbHotKeyPauseResume.Location = new System.Drawing.Point(327, 87);
+            this.tbHotKeyPauseResume.Name = "tbHotKeyPauseResume";
+            this.tbHotKeyPauseResume.Size = new System.Drawing.Size(136, 27);
+            this.tbHotKeyPauseResume.TabIndex = 2;
+            // 
             // tbHotKeyStopStart
             // 
             this.tbHotKeyStopStart.Location = new System.Drawing.Point(327, 44);
             this.tbHotKeyStopStart.Name = "tbHotKeyStopStart";
             this.tbHotKeyStopStart.Size = new System.Drawing.Size(136, 27);
             this.tbHotKeyStopStart.TabIndex = 2;
+            this.tbHotKeyStopStart.TextChanged += new System.EventHandler(this.tbHotKeyStopStart_TextChanged);
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(34, 90);
+            this.label18.Location = new System.Drawing.Point(32, 90);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(270, 19);
             this.label18.TabIndex = 1;
@@ -659,7 +681,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(34, 47);
+            this.label17.Location = new System.Drawing.Point(32, 47);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(237, 19);
             this.label17.TabIndex = 1;
@@ -688,22 +710,27 @@
             this.cancel_button.UseVisualStyleBackColor = true;
             this.cancel_button.Click += new System.EventHandler(this.cancel_button_Click);
             // 
-            // tbHotKeyPauseResume
+            // tbHotKeysTab
             // 
-            this.tbHotKeyPauseResume.Location = new System.Drawing.Point(327, 87);
-            this.tbHotKeyPauseResume.Name = "tbHotKeyPauseResume";
-            this.tbHotKeyPauseResume.Size = new System.Drawing.Size(136, 27);
-            this.tbHotKeyPauseResume.TabIndex = 2;
+            this.tbHotKeysTab.Location = new System.Drawing.Point(12, 29);
+            this.tbHotKeysTab.Margin = new System.Windows.Forms.Padding(4);
+            this.tbHotKeysTab.Multiline = true;
+            this.tbHotKeysTab.Name = "tbHotKeysTab";
+            this.tbHotKeysTab.Size = new System.Drawing.Size(509, 124);
+            this.tbHotKeysTab.TabIndex = 0;
+            this.tbHotKeysTab.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
             // 
-            // btTestPauseResumeHotKey
+            // groupBox7
             // 
-            this.btTestPauseResumeHotKey.Location = new System.Drawing.Point(481, 87);
-            this.btTestPauseResumeHotKey.Name = "btTestPauseResumeHotKey";
-            this.btTestPauseResumeHotKey.Size = new System.Drawing.Size(75, 27);
-            this.btTestPauseResumeHotKey.TabIndex = 3;
-            this.btTestPauseResumeHotKey.Text = "Send";
-            this.btTestPauseResumeHotKey.UseVisualStyleBackColor = true;
-            this.btTestPauseResumeHotKey.Click += new System.EventHandler(this.btTestPauseResumeHotKey_Click);
+            this.groupBox7.Controls.Add(this.tbHotKeysTab);
+            this.groupBox7.Location = new System.Drawing.Point(24, 370);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Size = new System.Drawing.Size(532, 164);
+            this.groupBox7.TabIndex = 7;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Description of Setting";
             // 
             // AdvancedGeneralSettingsDlg
             // 
@@ -742,6 +769,8 @@
             this.groupBox6.PerformLayout();
             this.tabPageShortKeys.ResumeLayout(false);
             this.tabPageShortKeys.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -802,5 +831,7 @@
         private System.Windows.Forms.Button btTestStopStartHotKey;
         private System.Windows.Forms.TextBox tbHotKeyPauseResume;
         private System.Windows.Forms.Button btTestPauseResumeHotKey;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.TextBox tbHotKeysTab;
     }
 }

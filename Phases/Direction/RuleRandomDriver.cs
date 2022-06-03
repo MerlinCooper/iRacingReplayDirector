@@ -77,8 +77,16 @@ namespace iRacingReplayDirector.Phases.Direction
 
             finishWatchingRandomDriverAt = data.Telemetry.SessionTimeSpan + stickyTime;
 
-            camera = cameraControl.FindACamera(new[] { CameraAngle.LookingInfrontOfCar, CameraAngle.LookingAtCar, CameraAngle.LookingAtTrack });
+            //code to be added that pit-lane camera is only choosen if car is in the pit-lane / not on track
             car = FindADriver(data);
+            do
+            {
+                camera = cameraControl.FindACamera(new[] { CameraAngle.LookingInfrontOfCar, CameraAngle.LookingAtCar, CameraAngle.LookingAtTrack });
+                if((camera.CameraName == "Pit Lane") && !car.IsOnPitRoad) 
+                    TraceInfo.WriteLine("Changing camera again because driver {0} would not be captured by camera: {1} | On-PitRoad: {2}", car.UserName, camera.CameraName, car.IsOnPitRoad);
+            } while ((camera.CameraName == "Pit Lane") && !car.IsOnPitRoad);
+            
+            
 
             TraceInfo.WriteLine("{0} Changing camera to random driver: {1}; camera: {2}", data.Telemetry.SessionTimeSpan, car.UserName, camera.CameraName);
             cameraControl.CameraOnDriver((short)car.CarNumberRaw, camera.CameraNumber);

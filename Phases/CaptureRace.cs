@@ -203,13 +203,14 @@ namespace iRacingReplayDirector.Phases
 
         static void AltTabBackToApp()
         {
-            Keyboard.keybd_event(Keyboard.VK_MENU, 0, 0, UIntPtr.Zero);
+            KeyboardEmulator.SendHotkey(KeyboardEmulator.Win32VirtualKeyCodes.VK_TAB, KeyboardEmulator.Win32VirtualKeyCodes.VK_MENU);
+            /*Keyboard.keybd_event(Keyboard.VK_MENU, 0, 0, UIntPtr.Zero);
             Thread.Sleep(200);
             Keyboard.keybd_event(Keyboard.VK_TAB, 0, 0, UIntPtr.Zero);
             Thread.Sleep(200);
             Keyboard.keybd_event(Keyboard.VK_TAB, 0, Keyboard.KEYEVENTF_KEYUP, UIntPtr.Zero);
             Thread.Sleep(200);
-            Keyboard.keybd_event(Keyboard.VK_MENU, 0, Keyboard.KEYEVENTF_KEYUP, UIntPtr.Zero);
+            Keyboard.keybd_event(Keyboard.VK_MENU, 0, Keyboard.KEYEVENTF_KEYUP, UIntPtr.Zero);*/
         }
 
         void ApplyFirstLapCameraDirection(IEnumerable<DataSample> samples, ReplayControl replayControl)

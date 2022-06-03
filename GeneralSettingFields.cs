@@ -82,10 +82,10 @@ namespace iRacingReplayDirector
         {
             if(caption.Contains("start"))
             {
-                var textBox = AddField(caption, description, "ALT+F9", tb => { });
+                var textBox = AddField(caption, description, /*"ALT+F9"*/Settings.Default.strHotKeyStopStart, tb => { });
                 textBox.ReadOnly = true;
             }else{
-                var textBox = AddField(caption, description, "ALT+F10", tb => { });
+                var textBox = AddField(caption, description, /*"ALT+F10"*/Settings.Default.strHotKeyPauseResume, tb => { });
                 textBox.ReadOnly = true;
             }
         }

@@ -278,6 +278,7 @@
   <ItemGroup>
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AdvancedGeneralSettingsDlg.resx">
       <DependentUpon>AdvancedGeneralSettingsDlg.cs</DependentUpon>
@@ -332,6 +333,9 @@
     </PackageReference>
     <PackageReference Include="AWSSDK.Core">
       <Version>3.1.4</Version>
+    </PackageReference>
+    <PackageReference Include="H.InputSimulator">
+      <Version>1.2.6</Version>
     </PackageReference>
     <PackageReference Include="HotkeyListener">
       <Version>1.9.0</Version>
