@@ -39,6 +39,7 @@ namespace iRacingReplayDirector.Phases
     public partial class IRacingReplay
     {
         int raceStartFrameNumber = 0;
+        double raceStartSessionTime = 0.0;
         internal Incidents incidents;
 
         enum replaySpeeds : int
@@ -79,8 +80,9 @@ namespace iRacingReplayDirector.Phases
                 .First(d => d.Telemetry.SessionState == SessionState.Racing);
 
             raceStartFrameNumber = data.Telemetry.ReplayFrameNum - (60 * 20);
+            raceStartSessionTime = raceStartSessionTime < 20 ? (data.Telemetry.SessionTime - 20) : 0.0;
 
-            if (raceStartFrameNumber < 0)
+            if (raceStartFrameNumber < 0 )
             {
                 TraceInfo.WriteLine("Unable to start capturing at 20 seconds prior to race start.  Starting at start of replay file.");
                 raceStartFrameNumber = 0;
@@ -112,6 +114,7 @@ namespace iRacingReplayDirector.Phases
         //Analyse race situations at maximum replay speed w/o recording.  
         void AnalyseRaceSituations(IEnumerable<DataSample> samples)
         {
+            TraceDebug.WriteLine("ADV_RECORDING: AnalyseRaceSituations started");
             int iReplaySpeedForAnalysis = (int)replaySpeeds.FF16x;                                              //set speed for analysis phase to FF16x
 
             //Start iRacing Replay from the beginning with maximum speed (16x)
@@ -161,18 +164,21 @@ namespace iRacingReplayDirector.Phases
             ulong numberOfDataProcessed = 0;
             var startTime = DateTime.Now;
 
+            TraceDebug.WriteLine("ADV_RECORDING: Starting foreach sample analysis at {0}", startTime);
             foreach (var data in samples)
             {
                 var relativeTime = (DateTime.Now - startTime).Multiply(iReplaySpeedForAnalysis);        //calculate relative time in Replay taking into account replay speed (FF)
-                
-                replayControl.Process(data);
-                sessionDataCapture.Process(data);
-                captureLeaderBoardEveryHalfSecond.Process(data, relativeTime);
-                captureCamDriverEveryQuaterSecond.Process(data, relativeTime);
-                recordPitStop.Process(data, relativeTime);
-                fastestLaps.Process(data, relativeTime);
-                removalEdits.Process(data, relativeTime);
-                captureCamDriverEvery4Seconds.Process(data, relativeTime);
+
+                TraceDebug.WriteLine("ADV_RECORDING: Processing data sample {0} | relativeTime: {1} | sessionTime: {2} ".F(numberOfDataProcessed, relativeTime, data.Telemetry.SessionTime));
+
+                replayControl.Process(data);                                            
+                sessionDataCapture.Process(data);                                       
+                captureLeaderBoardEveryHalfSecond.Process(data, relativeTime);          
+                captureCamDriverEveryQuaterSecond.Process(data, relativeTime);          
+                recordPitStop.Process(data, relativeTime);                              
+                fastestLaps.Process(data, relativeTime);                                
+                removalEdits.Process(data, relativeTime);                               
+                captureCamDriverEvery4Seconds.Process(data, relativeTime);              
 
                 numberOfDataProcessed += 1;
             }
@@ -186,6 +192,8 @@ namespace iRacingReplayDirector.Phases
             TraceDebug.WriteLine("Replay Script saved to disk");
 
             iRacing.Replay.SetSpeed(0);
+
+            TraceDebug.WriteLine("ADV_RECORDING: AnalyseRaceSituations completed");
         }
     }
 }

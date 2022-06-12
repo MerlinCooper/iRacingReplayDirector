@@ -63,38 +63,84 @@ namespace iRacingReplayDirector.Phases
             if (bRecordUsingPauseResume)
             {
                 //Retrieve list of raceEvents selected depending on the duration of the highlight video
-                var totalRaceEvents = RaceEventExtension.GetInterestingRaceEvents(overlayData.RaceEvents.ToList());
+                var totalRaceEvents = RaceEventExtension.GetInterestingRaceEvents(overlayData.RaceEvents.ToList(), bRecordUsingPauseResume);
+                int nextframePositionInRace = raceStartFrameNumber;
+                //double prevEndTime = 0;
+                OverlayData.RaceEvent lastRaceEvent=null;
+                
+
+                //calulate total time of race-events
+                double totalTimeRaceEvents = 0.0;
+                foreach (var raceEvent in totalRaceEvents)
+                    totalTimeRaceEvents += raceEvent.Duration;
+
+                TraceDebug.WriteLine("ADV_RECORDING: Total time of all race events: {0} | Target duration of highlight video: {1} | ".F(totalTimeRaceEvents, Settings.Default.HighlightVideoTargetDuration));
 
                 ApplyFirstLapCameraDirection(samples, replayControl);
 
-                
                 //Record the selected race events into a highlight video
-                raceVideo.Activate(workingFolder);                                      //Active video-capturing and send start command to recording software. 
+                
+                raceVideo.Activate(workingFolder);                                  //Active video-capturing and send start command to recording software. 
 
                 OverlayData.CamDriver curCamDriver = overlayData.CamDrivers.First();
 
                 //start thread to control / switch cameras while recording
                 ReplayControl.cameraControl.ReplayCameraControlTask(overlayData);
 
-                //ReplayControl.cameraControl.CameraOnDriver(short.Parse(curCamDriver.CurrentDriver.CarNumber), (short)curCamDriver.camGroupNumber);
+                iRacing.Replay.SetSpeed((int)replaySpeeds.normal);                  //start iRacing Replay at selected position                     
 
+                //ReplayControl.cameraControl.CameraOnDriver(short.Parse(curCamDriver.CurrentDriver.CarNumber), (short)curCamDriver.camGroupNumber);
+                int eventCount = 1;
                 //cycle through all raceEvents selected for the highlight video and record them  (REMARK: Camera switching not implemented yet)
+                var enumRaceEvents = totalRaceEvents.GetEnumerator();
+
+                TraceDebug.WriteLine("ADV_RECORDING: Total number of race-events to record: {0}".F(totalRaceEvents.Count()));
+
+                //while(enumRaceEvents.)
+
                 foreach (var raceEvent in totalRaceEvents)
                 {
-                    TraceInfo.WriteLine("ADV_RECORDING: Type: {0} | Durations-Span: {1} | ".F(raceEvent.GetType(), raceEvent.Duration));
+                    TraceDebug.WriteLine("ADV_RECORDING: Start processing Race-Event: Type: {0} | Number {1} | Start: {2} | End: {3} | Durations-Span: {4} | ".F(raceEvent.GetType(), eventCount, raceEvent.StartTime, raceEvent.EndTime, 1000 * raceEvent.Duration));
 
-                    //jump to selected RaceEvent in iRacing Replay
-                    int framePositionInRace = raceStartFrameNumber + (int)Math.Round(raceEvent.StartTime * 60.0);
-                    iRacing.Replay.MoveToFrame(raceStartFrameNumber + (int)Math.Round(raceEvent.StartTime * 60.0));
+                    if (lastRaceEvent != null)
+                        TraceDebug.WriteLine("ADV_RECORDING: Prevous Race-Event: Type: {0} | Number {1} | Start: {2} | End: {3} | Durations-Span: {4} | ".F(lastRaceEvent.GetType(), eventCount - 1, lastRaceEvent.StartTime, lastRaceEvent.EndTime, 1000 * lastRaceEvent.Duration));
 
-                    iRacing.Replay.SetSpeed((int)replaySpeeds.normal);           //start iRacing Replay at selected position                     
+                    //calculate time-gap between this and the previous raceEvent
+                    double timeGap = lastRaceEvent != null ? raceEvent.StartTime - lastRaceEvent.EndTime : 0.0;
 
-                    raceVideo.Resume();                                         //resume recording
+                    //if gap between start of this race event and the end of the previous move iRacing to the correct starting-position in the replay. 
+                    if (timeGap > 1.0)  
+                    {
+                        nextframePositionInRace = raceStartFrameNumber + (int)Math.Round(raceEvent.StartTime * 60.0);
+                        TraceDebug.WriteLine("ADV_RECORDING: Gap to prev. Race-Event identified. TimeDifference: {0} | Prev. End-Time: {1} | Cur.Start-Time: {2} | target-Frame: {3} ".F(timeGap, lastRaceEvent.EndTime,raceEvent.StartTime, nextframePositionInRace));
 
-                    TraceDebug.WriteLine("Recording Race-Event. Frame-Position: {0}  | Duration: {1} ms".F(framePositionInRace, 1000 * raceEvent.Duration));
+                        //pause video recording
+                        raceVideo.Pause();                                                  //Pause recording by sending keystroke
+                        Thread.Sleep(1000);
+                        iRacing.Replay.SetSpeed((int)replaySpeeds.pause);                   //Pause iRacing Replay
+                        Thread.Sleep(1000);
+                        //jump to selected RaceEvent in iRacing Replay
+                        iRacing.Replay.MoveToFrame(nextframePositionInRace);
+
+                        //change camera to visualy indicate the change in the race time 
+                        //var camera = cameraControl.FindACamera(new[] { CameraAngle.LookingInfrontOfCar, CameraAngle.LookingAtCar, CameraAngle.LookingAtTrack });
+                        //iRacing.Replay.
+                        //overlayData.CamDrivers.
+
+                        //resume video recording
+                        iRacing.Replay.SetSpeed((int)replaySpeeds.normal);                  //resume iRacing Replay
+                        Thread.Sleep(1000);                                                 //REMARK: Shortening raceEvent duration by 1000 ms might be requrired to "cover" time lost waiting for iRacing
+                        raceVideo.Resume();                                                 //resume recording by sending keystroke
+                    }
+
+                    TraceDebug.WriteLine("ADV_Recording: Race-Event recording for {0} ms".F(1000 * raceEvent.Duration));
 
                     Thread.Sleep((int)(1000 * raceEvent.Duration));                       //pause thread until scene is fully recorded.
-                    raceVideo.Pause();                                         //pause recording software before jumping to new position in iRacing Replay   
+
+                    TraceDebug.WriteLine("ADV_RECORDING: Ende processing Race-Event: Type: {0} | Number {1} | Start: {2} | End: {3} | Durations-Span: {4} | ".F(raceEvent.GetType(), eventCount, raceEvent.StartTime, raceEvent.EndTime, 1000 * raceEvent.Duration));
+                    //remember the raceEvent processed last
+                    lastRaceEvent = raceEvent;
+                    eventCount += 1;
                 }
 
 
