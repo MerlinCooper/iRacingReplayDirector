@@ -192,6 +192,11 @@
     <Compile Include="Phases\Capturing\CommentaryMessages.cs" />
     <Compile Include="Phases\Capturing\RecordFastestLaps.cs" />
     <Compile Include="Phases\Direction\VideoCapture.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -264,6 +269,10 @@
     <None Include="iRacingReplayDirector_TemporaryKey.pfx" />
     <None Include="LICENSE.txt" />
     <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="README.md" />
     <None Include="tools\decrypt.cmd" />
     <None Include="tools\package.cmd" />

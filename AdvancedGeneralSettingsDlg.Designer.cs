@@ -74,6 +74,8 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.checkBox_PerferedDriversOnly = new System.Windows.Forms.CheckBox();
             this.tabPageShortKeys = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.tbHotKeysTab = new System.Windows.Forms.TextBox();
             this.btTestPauseResumeHotKey = new System.Windows.Forms.Button();
             this.btTestStopStartHotKey = new System.Windows.Forms.Button();
             this.tbHotKeyPauseResume = new System.Windows.Forms.TextBox();
@@ -82,8 +84,9 @@
             this.label17 = new System.Windows.Forms.Label();
             this.ok_button = new System.Windows.Forms.Button();
             this.cancel_button = new System.Windows.Forms.Button();
-            this.tbHotKeysTab = new System.Windows.Forms.TextBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.cbCaptureOpeningScenes = new System.Windows.Forms.CheckBox();
             this.incidents_settings_tab.SuspendLayout();
             this.tabPageTiming.SuspendLayout();
             this.grpBox_Timing_Settings.SuspendLayout();
@@ -98,6 +101,7 @@
             this.groupBox6.SuspendLayout();
             this.tabPageShortKeys.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // incidents_settings_tab
@@ -106,6 +110,7 @@
             this.incidents_settings_tab.Controls.Add(this.tabPageIncidents);
             this.incidents_settings_tab.Controls.Add(this.tabPageDrivers);
             this.incidents_settings_tab.Controls.Add(this.tabPageShortKeys);
+            this.incidents_settings_tab.Controls.Add(this.tabPage1);
             this.incidents_settings_tab.Location = new System.Drawing.Point(16, 18);
             this.incidents_settings_tab.Margin = new System.Windows.Forms.Padding(4);
             this.incidents_settings_tab.Name = "incidents_settings_tab";
@@ -634,6 +639,28 @@
             this.tabPageShortKeys.Text = "Hot Keys";
             this.tabPageShortKeys.UseVisualStyleBackColor = true;
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.tbHotKeysTab);
+            this.groupBox7.Location = new System.Drawing.Point(24, 370);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Size = new System.Drawing.Size(532, 164);
+            this.groupBox7.TabIndex = 7;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Description of Setting";
+            // 
+            // tbHotKeysTab
+            // 
+            this.tbHotKeysTab.Location = new System.Drawing.Point(12, 29);
+            this.tbHotKeysTab.Margin = new System.Windows.Forms.Padding(4);
+            this.tbHotKeysTab.Multiline = true;
+            this.tbHotKeysTab.Name = "tbHotKeysTab";
+            this.tbHotKeysTab.Size = new System.Drawing.Size(509, 124);
+            this.tbHotKeysTab.TabIndex = 0;
+            this.tbHotKeysTab.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
+            // 
             // btTestPauseResumeHotKey
             // 
             this.btTestPauseResumeHotKey.Location = new System.Drawing.Point(481, 87);
@@ -710,27 +737,39 @@
             this.cancel_button.UseVisualStyleBackColor = true;
             this.cancel_button.Click += new System.EventHandler(this.cancel_button_Click);
             // 
-            // tbHotKeysTab
+            // tabPage1
             // 
-            this.tbHotKeysTab.Location = new System.Drawing.Point(12, 29);
-            this.tbHotKeysTab.Margin = new System.Windows.Forms.Padding(4);
-            this.tbHotKeysTab.Multiline = true;
-            this.tbHotKeysTab.Name = "tbHotKeysTab";
-            this.tbHotKeysTab.Size = new System.Drawing.Size(509, 124);
-            this.tbHotKeysTab.TabIndex = 0;
-            this.tbHotKeysTab.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
+            this.tabPage1.Controls.Add(this.checkBox3);
+            this.tabPage1.Controls.Add(this.cbCaptureOpeningScenes);
+            this.tabPage1.Location = new System.Drawing.Point(4, 28);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(578, 541);
+            this.tabPage1.TabIndex = 4;
+            this.tabPage1.Text = "Capture Control";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // groupBox7
+            // checkBox3
             // 
-            this.groupBox7.Controls.Add(this.tbHotKeysTab);
-            this.groupBox7.Location = new System.Drawing.Point(24, 370);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(532, 164);
-            this.groupBox7.TabIndex = 7;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Description of Setting";
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(20, 51);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(409, 23);
+            this.checkBox3.TabIndex = 1;
+            this.checkBox3.Text = "User to confirm start of next phaase (not implemented yet)";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // cbCaptureOpeningScenes
+            // 
+            this.cbCaptureOpeningScenes.AutoSize = true;
+            this.cbCaptureOpeningScenes.Checked = global::iRacingReplayDirector.Properties.Settings.Default.bCaptureOpeningScene;
+            this.cbCaptureOpeningScenes.Location = new System.Drawing.Point(20, 22);
+            this.cbCaptureOpeningScenes.Name = "cbCaptureOpeningScenes";
+            this.cbCaptureOpeningScenes.Size = new System.Drawing.Size(187, 23);
+            this.cbCaptureOpeningScenes.TabIndex = 1;
+            this.cbCaptureOpeningScenes.Text = "Capture Opening Scenes";
+            this.cbCaptureOpeningScenes.UseVisualStyleBackColor = true;
+            this.cbCaptureOpeningScenes.CheckedChanged += new System.EventHandler(this.cbCaptureOpeningScenes_CheckedChanged);
             // 
             // AdvancedGeneralSettingsDlg
             // 
@@ -771,6 +810,8 @@
             this.tabPageShortKeys.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -833,5 +874,8 @@
         private System.Windows.Forms.Button btTestPauseResumeHotKey;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.TextBox tbHotKeysTab;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox cbCaptureOpeningScenes;
     }
 }
