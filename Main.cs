@@ -188,6 +188,17 @@ namespace iRacingReplayDirector
 
             workingFolderTextBox.Text = Settings.Default.WorkingFolder;
 
+            //Assign applications stored in Project-Settings
+            cb_ShutdownAfterEncode.Checked = Properties.Settings.Default.bShutdownPCAfterEncoding;
+            cb_CloseiRacingAfterRecording.Checked = Properties.Settings.Default.bCloseiRacingAfterRecording;
+            cb_EncodeVideoAfterCapture.Checked = Properties.Settings.Default.bEncodeVideoAfterCapture;
+            cb_FastVideoRecording.Checked = Properties.Settings.Default.bFastVideoRecording;
+            cb_ShortTestOnly.Checked = Properties.Settings.Default.bShortTestOnly;
+            cb_HighLightVideoOnly.Checked = Properties.Settings.Default.bHighLightVideoOnly;
+            cb_UseNewSettingsDlg.Checked = Properties.Settings.Default.bUseNewSettingsDialog;
+            
+            
+
             logMessagges = new LogMessages();
             Trace.Listeners.Add(new MyListener(logMessagges.TraceMessage));
 
@@ -215,32 +226,19 @@ namespace iRacingReplayDirector
                     WaitingForIRacingLabel.Visible = false;
                 })
                 .InTheBackground(errorMessage => { });
+        }
 
-            //try
-            //{
-            //    var items = await GitHubAccess.GetVersions("vipoo", "iRacingReplayDirector.net");
-
-            //    var currentVersionItem = items.FirstOrDefault(r => r.VersionStamp == AboutBox1.AssemblyVersion);
-            //    var isNewVersionAvailable = false;
-
-            //    if (currentVersionItem.VersionStamp == null)
-            //        isNewVersionAvailable = true;
-            //    else
-            //    {
-            //        var isPreRelease = currentVersionItem.Prerelease;
-
-            //        var latestVersion = items.OrderByDescending(r => new Version(r.VersionStamp)).Where(r => r.Prerelease == isPreRelease).First();
-            //        isNewVersionAvailable = new Version(latestVersion.VersionStamp) > AboutBox1.AssemblyVersionStamp;
-            //    }
-
-            //    if (isNewVersionAvailable)
-            //        newVersionMessage.Visible = true;
-            //}
-            //catch (Exception ee)
-            //{
-            //    TraceError.WriteLine(ee.Message);
-            //    TraceError.WriteLine(ee.StackTrace);
-            //}
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.bShutdownPCAfterEncoding = cb_ShutdownAfterEncode.Checked;
+            Properties.Settings.Default.bCloseiRacingAfterRecording = cb_CloseiRacingAfterRecording.Checked;
+            Properties.Settings.Default.bEncodeVideoAfterCapture = cb_EncodeVideoAfterCapture.Checked;
+            Properties.Settings.Default.bFastVideoRecording = cb_FastVideoRecording.Checked;
+            Properties.Settings.Default.bShortTestOnly = cb_ShortTestOnly.Checked;
+            Properties.Settings.Default.bHighLightVideoOnly = cb_HighLightVideoOnly.Checked;
+            //enable change of standard setting to use NewSettingsDialog only after intensive testings that all values can be reliably set using the advanced settings dialog
+            //Properties.Settings.Default.bUseNewSettingsDialog = cb_UseNewSettingsDlg.Checked;
+            Properties.Settings.Default.Save();
         }
 
         void LogSystemInformation()
@@ -359,7 +357,7 @@ namespace iRacingReplayDirector
             iRacingProcess = new IRacingReplay()
                 .WithEncodingOf(videoBitRate: videoBitRateNumber * 1000000)
                 .WithOverlayFile(overlayFile: sourceVideoTextBox.Text)
-                .OverlayRaceDataOntoVideo(OnTranscoderProgress, OnTranscoderCompleted, highlightVideoOnly.Checked, checkBoxShutdownAfterEncode.Checked)
+                .OverlayRaceDataOntoVideo(OnTranscoderProgress, OnTranscoderCompleted, cb_HighLightVideoOnly.Checked, cb_ShutdownAfterEncode.Checked)
                 .InTheBackground(errorMessage => {
                     OnTranscoderCompleted();
                     SetTanscodeMessage(trancodingErrorMessage: errorMessage);
@@ -489,7 +487,7 @@ namespace iRacingReplayDirector
 
             NativeMethods.SetThreadExecutionState(NativeMethods.ES_CONTINUOUS | NativeMethods.ES_SYSTEM_REQUIRED | NativeMethods.ES_DISPLAY_REQUIRED);
 
-            iRacingProcess = new IRacingReplay(shortTestOnly: TestOnlyCheckBox.Checked, bRecordUsingPauseResume:cb_FastVideoRecording.Checked, bCloseiRacingAfterRecording: cb_CloseiRacingAfterRecording.Checked)
+            iRacingProcess = new IRacingReplay(shortTestOnly: cb_ShortTestOnly.Checked, bRecordUsingPauseResume:cb_FastVideoRecording.Checked, bCloseiRacingAfterRecording: cb_CloseiRacingAfterRecording.Checked)
                 .WithWorkingFolder(workingFolderTextBox.Text)
                 .AnalyseRace(() => { AnalysingRaceLabel.Visible = false; CapturingRaceLabel.Visible = true; })
                 .CaptureOpeningScenes()
@@ -622,5 +620,12 @@ namespace iRacingReplayDirector
         {
 
         }
+
+        private void cb_ShutdownPCAfterEncoding_Changed(object sender, EventArgs e)
+        {
+            //Properties.Settings.Default.Save();
+        }
+
+      
     }
 }

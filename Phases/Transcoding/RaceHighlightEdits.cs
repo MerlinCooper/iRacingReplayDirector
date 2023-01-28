@@ -66,11 +66,11 @@ namespace iRacingReplayDirector.Phases.Transcoding
             }
         }
 
-        public static IOrderedEnumerable<OverlayData.RaceEvent> GetInterestingRaceEvents(IEnumerable<OverlayData.RaceEvent> raceEvents)
+        public static IOrderedEnumerable<OverlayData.RaceEvent> GetInterestingRaceEvents(IEnumerable<OverlayData.RaceEvent> raceEvents, Boolean bFastRecording = false)
         {
             TraceInfo.WriteLine("Highlight Edits: Total Duration Target: {0}", HighlightVideoDuration);
 
-            double totalTime, incidentsRatio, restartsRatio, battlesRatio;
+            double totalTime, incidentsRatio, restartsRatio, battlesRatio, timeForRaceEvents;
             var firstAndLastLapRaceEvents = GetAllFirstAndLastLapEvents(raceEvents, out totalTime);
             
             var incidentRaceEvents = GetAllRaceEvents(raceEvents, InterestState.Incident, 1.8, 0, out incidentsRatio);
@@ -78,6 +78,16 @@ namespace iRacingReplayDirector.Phases.Transcoding
             var battleRaceEvents = GetAllRaceEvents(raceEvents, InterestState.Battle, 1.4, 15, out battlesRatio);
 
             battleRaceEvents = NormaliseBattleEvents(battleRaceEvents, Settings.Default.BattleStickyPeriod.TotalSeconds);
+
+            //Calculate time for incidents, battles, restarts when fastrecording is active 
+            if(bFastRecording)
+            {
+                //calculate time of race w/o start and finish
+                double timeStartFinish = firstAndLastLapRaceEvents.Sum(re => re.Duration).Seconds().TotalSeconds;
+                timeForRaceEvents = (HighlightVideoDuration - firstAndLastLapRaceEvents.Sum(re => re.Duration).Seconds()).TotalSeconds;
+                //totalRaceTime = totalTime - (incidentsRatio + restartsRatio + battlesRatio);
+            }
+
 
             var totalRatio = incidentsRatio + restartsRatio + battlesRatio;
 
