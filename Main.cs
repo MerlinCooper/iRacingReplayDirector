@@ -59,7 +59,7 @@ namespace iRacingReplayDirector
         System.Windows.Forms.Timer lookForAudioBitRates;
         LogMessages logMessagges;
         const string DefaultLogFileName = "general.log";
-        SessionData lastSession;
+        SessionData curSession;
         bool isConnected;
 
         States State
@@ -79,16 +79,16 @@ namespace iRacingReplayDirector
         {
             var trackCamerasDefined =
                 Settings.Default.trackCameras != null &&
-                lastSession != null &&
-                Settings.Default.trackCameras.Any(tc => tc.TrackName == lastSession.WeekendInfo.TrackDisplayName) &&
-                Settings.Default.trackCameras.RaceStart[lastSession.WeekendInfo.TrackDisplayName] != null &&
-                Settings.Default.trackCameras.Incident[lastSession.WeekendInfo.TrackDisplayName] != null &&
-                Settings.Default.trackCameras.LastLap[lastSession.WeekendInfo.TrackDisplayName] != null;
+                curSession != null &&
+                Settings.Default.trackCameras.Any(tc => tc.TrackName == curSession.WeekendInfo.TrackDisplayName) &&
+                Settings.Default.trackCameras.RaceStart[curSession.WeekendInfo.TrackDisplayName] != null &&
+                Settings.Default.trackCameras.Incident[curSession.WeekendInfo.TrackDisplayName] != null &&
+                Settings.Default.trackCameras.LastLap[curSession.WeekendInfo.TrackDisplayName] != null;
 
             switch (_states)
             {
                 case States.Idle:
-                    BeginProcessButton.Enabled = Directory.Exists(workingFolderTextBox.Text) && isConnected && trackCamerasDefined;
+                    BeginProcessButton.Enabled = Directory.Exists(workingFolderTextBox.Text) && isConnected && trackCamerasDefined && ReplaySessionTypeSupported();
                     configureTrackCamerasLabel.Visible = isConnected && !trackCamerasDefined;
                     transcodeVideoButton.Enabled = IsReadyForTranscoding();
                     transcodeCancelButton.Visible = false;
@@ -220,12 +220,32 @@ namespace iRacingReplayDirector
             iRacingProcess = new IRacingReplay()
                 .WhenIRacingStarts(() => 
                 {
-                    BeginProcessButton.Enabled = true;
+                    BeginProcessButton.Enabled = false;                 //Keep "Start Capture" Button disabled until supported session is verified using weekendinfo
                     workingFolderTextBox_TextChanged(null, null); 
-                    ProcessErrorMessageLabel.Visible = false; 
+                    ProcessErrorMessageLabel.Visible = false;
                     WaitingForIRacingLabel.Visible = false;
+
+                    
+                    
                 })
                 .InTheBackground(errorMessage => { });
+
+            
+        }
+
+        private bool ReplaySessionTypeSupported()
+        {
+            //add here code to review whether replay does contain a supported session type
+            if (curSession != null && (curSession.WeekendInfo.Category == "Road" || curSession.WeekendInfo.Category == "Oval"))
+            {   
+                label_SupportedSession.Visible = false;     //ensure that message with regard to wrong session type isn't shown
+            } else {
+                TraceInfo.WriteLineIf(!label_SupportedSession.Visible, "WARNING: ReplayDirector just tested with replays from Road and Oval Race sessions. You are able to use it with other replays as well - in case of issues report on GitHub ");
+                label_SupportedSession.Visible = true;      //otherwise make message box visible
+
+            }
+            //return !label_SupportedSession.Visible;       //and return the inverse result
+            return true;                                   //always return true to allow people testing of all Session types. Some which do not work for sure will be excluded in the future    
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
@@ -309,19 +329,23 @@ namespace iRacingReplayDirector
 
         void iracingEvents_Disconnected()
         {
-            isConnected = false;
+            TraceInfo.WriteLineIf(isConnected, "Disconnected from iRacing application");
+            isConnected = false;                        //disconnected from iRacing
+            curSession = null;                          //therefore Session data no longer valid
+            label_SupportedSession.Visible = false;     //and replay no hint about replay Session necessary
             StateUpdated();
         }
 
         void iracingEvents_Connected()
         {
+            TraceInfo.WriteLineIf(!isConnected, "Connected to iRacing application");
             isConnected = true;
             StateUpdated();
         }
 
         void iracingEvents_NewSessionData(DataSample data)
         {
-            lastSession = data.SessionData;
+            curSession = data.SessionData;
             StateUpdated();
         }
 
