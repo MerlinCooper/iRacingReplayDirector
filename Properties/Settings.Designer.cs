@@ -12,7 +12,7 @@ namespace iRacingReplayDirector.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -20,6 +20,102 @@ namespace iRacingReplayDirector.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bCaptureOpeningScene {
+            get {
+                return ((bool)(this["bCaptureOpeningScene"]));
+            }
+            set {
+                this["bCaptureOpeningScene"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bShutdownPCAfterEncoding {
+            get {
+                return ((bool)(this["bShutdownPCAfterEncoding"]));
+            }
+            set {
+                this["bShutdownPCAfterEncoding"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bCloseiRacingAfterRecording {
+            get {
+                return ((bool)(this["bCloseiRacingAfterRecording"]));
+            }
+            set {
+                this["bCloseiRacingAfterRecording"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bEncodeVideoAfterCapture {
+            get {
+                return ((bool)(this["bEncodeVideoAfterCapture"]));
+            }
+            set {
+                this["bEncodeVideoAfterCapture"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool bFastVideoRecording {
+            get {
+                return ((bool)(this["bFastVideoRecording"]));
+            }
+            set {
+                this["bFastVideoRecording"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bShortTestOnly {
+            get {
+                return ((bool)(this["bShortTestOnly"]));
+            }
+            set {
+                this["bShortTestOnly"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bUseNewSettingsDialog {
+            get {
+                return ((bool)(this["bUseNewSettingsDialog"]));
+            }
+            set {
+                this["bUseNewSettingsDialog"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool bHighLightVideoOnly {
+            get {
+                return ((bool)(this["bHighLightVideoOnly"]));
+            }
+            set {
+                this["bHighLightVideoOnly"] = value;
             }
         }
     }

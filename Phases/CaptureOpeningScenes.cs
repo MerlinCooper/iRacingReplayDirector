@@ -21,6 +21,7 @@ using iRacingReplayDirector.Phases.Direction;
 using iRacingSDK;
 using iRacingSDK.Support;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
 
@@ -32,9 +33,10 @@ namespace iRacingReplayDirector.Phases
 
         void _CaptureOpeningScenes(Action onComplete)
         {
-            if (bRecordUsingPauseResume)
+            //Only record opening scenes if selected in AdvancedSettingsDialog
+            if (!iRacingReplayDirector.Properties.Settings.Default.bCaptureOpeningScene)
             {
-
+                //return;
             }
             var data = iRacing.GetDataFeed().First();
             var session = data.SessionData.SessionInfo.Sessions.Qualifying();

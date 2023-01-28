@@ -187,5 +187,10 @@ namespace iRacingReplayDirector
         {
 
         }
+
+        private void cbCaptureOpeningScenes_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
