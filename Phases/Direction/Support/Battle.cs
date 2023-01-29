@@ -146,7 +146,7 @@ namespace iRacingReplayDirector.Phases.Direction.Support
         static bool IsAPerferredDriver(GapMetric d)
         {
             TraceDebug.WriteLine("IsAPreferred Driver called for carIdx {0} Preferred: {1}, Leader: {2} : return: {3}", d.CarIdx, preferredCarIdxs.Contains(d.CarIdx), preferredCarIdxs.Contains(d.LeaderCarIdx), preferredCarIdxs.Contains(d.CarIdx) || preferredCarIdxs.Contains(d.LeaderCarIdx));
-            return preferredCarIdxs.Contains(d.CarIdx); /* || preferredCarIdxs.Contains(d.LeaderCarIdx);*/
+            return preferredCarIdxs.Contains(d.CarIdx); 
         }
 
         internal static Car SelectABattle(DataSample data, IEnumerable<GapMetric> all, double dice)
