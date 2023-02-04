@@ -255,9 +255,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="DeploymentSite\.gitignore" />
-    <None Include="DeploymentSite\main.jsx" />
-    <None Include="DeploymentSite\package.json" />
     <None Include="iRacingReplayDirector_TemporaryKey.pfx" />
     <None Include="LICENSE.txt" />
     <None Include="Properties\app.manifest" />
@@ -266,9 +263,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="README.md" />
-    <None Include="tools\decrypt.cmd" />
-    <None Include="tools\package.cmd" />
-    <None Include="tools\test.cmd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -313,10 +307,6 @@
     <EmbeddedResource Include="TestVideoCapture.resx">
       <DependentUpon>TestVideoCapture.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DeploymentSite\index.html" />
-    <Content Include="DeploymentSite\xmltojson.js" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="H.InputSimulator">
