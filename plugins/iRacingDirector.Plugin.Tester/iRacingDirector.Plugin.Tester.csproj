@@ -98,17 +98,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="iRacingSDK">
-      <Version>1.0.0.43</Version>
+      <Version>1.0.1.23</Version>
     </PackageReference>
     <PackageReference Include="YamlDotNet">
-      <Version>11.2.1</Version>
+      <Version>12.3.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\iRacingSDK.Net\iRacingSDK.csproj">
-      <Project>{5422ae20-f220-4be1-9e61-5296981abb5c}</Project>
-      <Name>iRacingSDK</Name>
-    </ProjectReference>
+    
     <ProjectReference Include="..\..\iRacingReplayDirector.csproj">
       <Project>{ff13a533-25a3-4238-a412-45b39e7844f6}</Project>
       <Name>iRacingReplayDirector</Name>
