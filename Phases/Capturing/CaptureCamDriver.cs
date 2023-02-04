@@ -16,12 +16,11 @@
 // You should have received a copy of the GNU General Public License333
 // along with iRacingReplayDirector.  If not, see <http://www.gnu.org/licenses/>.
 
+using iRacingReplayDirector.Support;
 using iRacingSDK;
 using iRacingSDK.Support;
 using System;
-using System.Diagnostics;
 using System.Linq;
-using iRacingReplayDirector.Support;
 
 namespace iRacingReplayDirector.Phases.Capturing
 {
@@ -35,13 +34,13 @@ namespace iRacingReplayDirector.Phases.Capturing
         }
 
         OverlayData.Driver lastCamDriver = null;
-        
+
         public void Process(DataSample data, TimeSpan relativeTime)
         {
             var camDriver = CreateCamDriver(data, relativeTime);
             if (camDriver != null)
             {
-                if (lastCamDriver == null || 
+                if (lastCamDriver == null ||
                     lastCamDriver.UserName != camDriver.CurrentDriver.UserName ||
                     lastCamDriver.Position != camDriver.CurrentDriver.Position)
                 {
@@ -53,7 +52,7 @@ namespace iRacingReplayDirector.Phases.Capturing
                         camDriver.CurrentDriver.UserName,
                         camDriver.CurrentDriver.CarNumber,
                         position, indicator);
-                    
+
                     lastCamDriver = camDriver.CurrentDriver;
                     //add camDriver to list only if either drivername or position has changed
                     overlayData.CamDrivers.Add(camDriver);
@@ -82,7 +81,7 @@ namespace iRacingReplayDirector.Phases.Capturing
                 return null;
 
             var car = data.Telemetry.CamCar;
-            
+
             var position = GetPositionFor(data, car.Details);
 
             var driver = new OverlayData.Driver

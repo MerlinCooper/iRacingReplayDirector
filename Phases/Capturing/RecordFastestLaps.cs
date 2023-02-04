@@ -17,11 +17,9 @@
 // along with iRacingReplayDirector.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using iRacingReplayDirector.Support;
 using iRacingSDK;
 using iRacingSDK.Support;
 using System;
-using System.Diagnostics;
 
 namespace iRacingReplayDirector.Phases.Capturing
 {

@@ -40,5 +40,5 @@ namespace iRacingDirector.Plugin
 
             return Color.FromArgb(adjust(self.R), adjust(self.G), adjust(self.B));
         }
-    }    
+    }
 }

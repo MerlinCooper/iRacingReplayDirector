@@ -68,7 +68,7 @@ namespace iRacingReplayDirector.Support
         protected override void Dispose(bool disposing)
         {
             isCancelled = true;
-            
+
             base.Dispose(disposing);
         }
 
@@ -128,11 +128,15 @@ namespace iRacingReplayDirector.Support
             logFile.Dispose();
 
             var retryCount = 2;
-            while( retryCount > 0 ) {
-                try {
+            while (retryCount > 0)
+            {
+                try
+                {
                     File.Move(logFile.FileName, filename);
                     retryCount = 0;
-                } catch(IOException) {
+                }
+                catch (IOException)
+                {
                     retryCount--;
                     Thread.Sleep(1000);
                 }

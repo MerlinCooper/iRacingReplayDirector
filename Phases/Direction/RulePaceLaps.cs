@@ -20,8 +20,6 @@ using iRacingReplayDirector.Phases.Capturing;
 using iRacingSDK;
 using iRacingSDK.Support;
 using System;
-using System.Diagnostics;
-using System.Linq;
 
 namespace iRacingReplayDirector.Phases.Direction
 {
@@ -60,7 +58,7 @@ namespace iRacingReplayDirector.Phases.Direction
 
             if (wasUnderPaceCar)
             {
-                if( data.Telemetry.UnderPaceCar)
+                if (data.Telemetry.UnderPaceCar)
                     return true;
 
                 restartEndTime = data.Telemetry.SessionTimeSpan + RestartStickyTime;

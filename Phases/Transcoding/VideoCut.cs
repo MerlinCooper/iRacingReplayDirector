@@ -25,7 +25,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
     {
         public double StartTime;
         public double EndTime;
-        
+
         public double Duration { get { return EndTime - StartTime; } }
         public TimeSpan StartTimeSpan { get { return StartTime.Seconds(); } }
         public TimeSpan EndTimeSpan { get { return EndTime.Seconds(); } }

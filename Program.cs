@@ -35,7 +35,7 @@ namespace iRacingReplayDirector
                 CopyFromOldSettings(Settings.Default);
             else
                 MakePortable(Settings.Default);
-            
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -81,7 +81,7 @@ namespace iRacingReplayDirector
             }
             settings.Reload();
 
-            foreach( var kv in currentValues)
+            foreach (var kv in currentValues)
             {
                 settings[kv.Key] = kv.Value;
             }

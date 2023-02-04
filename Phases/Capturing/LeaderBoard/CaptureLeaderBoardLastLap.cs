@@ -20,7 +20,6 @@ using iRacingReplayDirector.Support;
 using iRacingSDK;
 using iRacingSDK.Support;
 using System;
-using System.Diagnostics;
 using System.Linq;
 
 namespace iRacingReplayDirector.Phases.Capturing.LeaderBoard
@@ -59,7 +58,7 @@ namespace iRacingReplayDirector.Phases.Capturing.LeaderBoard
         {
             if (!data.LastSample.Telemetry.Cars[i].HasSeenCheckeredFlag || overlayData.TimeForOutroOverlay != null)
                 return;
-            
+
             var position = (int)session.ResultsPositions.First(r => r.CarIdx == i).Position;
 
             if (position == Settings.Default.ResultsFlashCardPosition)

@@ -11,7 +11,7 @@ namespace iRacingDirector.Plugin.StandardOverlays
         {
             if (MessageSet == null)
                 return;
-            
+
             var shiftFactor = Math.Min(timeInSeconds - MessageSet.Time, 1d);
             var offset = (int)(34 * shiftFactor);
 

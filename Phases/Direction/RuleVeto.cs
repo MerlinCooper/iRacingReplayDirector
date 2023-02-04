@@ -19,7 +19,6 @@
 using iRacingSDK;
 using iRacingSDK.Support;
 using System.Diagnostics;
-using System;
 
 namespace iRacingReplayDirector.Phases.Direction
 {

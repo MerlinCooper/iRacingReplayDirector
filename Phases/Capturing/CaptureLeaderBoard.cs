@@ -75,7 +75,7 @@ namespace iRacingReplayDirector.Phases.Capturing
             var session = data.SessionData.SessionInfo.Sessions[data.Telemetry.SessionNum];
 
 
-            var timespan = raceStartTimeOffset == 0 ? TimeSpan.FromSeconds(session._SessionTime/1E4) : TimeSpan.FromSeconds(data.Telemetry.SessionTimeRemain + raceStartTimeOffset);
+            var timespan = raceStartTimeOffset == 0 ? TimeSpan.FromSeconds(session._SessionTime / 1E4) : TimeSpan.FromSeconds(data.Telemetry.SessionTimeRemain + raceStartTimeOffset);
             var raceLapsPosition = string.Format("Lap {0}/{1}", data.Telemetry.RaceLaps, session.ResultsLapsComplete);
             var raceTimePosition = (timespan.TotalSeconds <= 0 ? TimeSpan.FromSeconds(0) : timespan).ToString(@"hh\:mm\:ss");
             var raceLapCounter = string.Format("Lap {0}", data.Telemetry.RaceLaps);
@@ -99,7 +99,7 @@ namespace iRacingReplayDirector.Phases.Capturing
                 raceLapsPosition = "";
                 return;
             }
-            
+
             if (data.Telemetry.RaceLaps < session.ResultsLapsComplete)
                 return;
 
@@ -108,7 +108,7 @@ namespace iRacingReplayDirector.Phases.Capturing
                 raceLapsPosition = raceLapCounter = "Final Lap";
                 return;
             }
-         
+
             raceLapsPosition = raceLapCounter = "Results";
         }
     }

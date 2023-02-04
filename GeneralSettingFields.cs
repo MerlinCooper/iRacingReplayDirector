@@ -19,8 +19,8 @@
 using iRacingSDK.Support;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Globalization;
+using System.Windows.Forms;
 
 namespace iRacingReplayDirector
 {
@@ -38,7 +38,7 @@ namespace iRacingReplayDirector
             this.activeControl = activeControl;
             this.settings = settings;
         }
-        
+
         int nextTabIndex = 1;
         int nextRowPosition = 14;
         List<Action> onSave = new List<Action>();
@@ -80,11 +80,13 @@ namespace iRacingReplayDirector
 
         internal void AddKeyPressField(string caption, string description)
         {
-            if(caption.Contains("start"))
+            if (caption.Contains("start"))
             {
                 var textBox = AddField(caption, description, /*"ALT+F9"*/Settings.Default.strHotKeyStopStart, tb => { });
                 textBox.ReadOnly = true;
-            }else{
+            }
+            else
+            {
                 var textBox = AddField(caption, description, /*"ALT+F10"*/Settings.Default.strHotKeyPauseResume, tb => { });
                 textBox.ReadOnly = true;
             }

@@ -105,7 +105,7 @@ namespace iRacingReplayDirector.Phases.Direction.Support
                 r = r
                 .OrderBy(d => IsAPerferredDriver(d) ? 1 : 2)
                 .ThenBy(d => d.Position);
-            
+
             double[] floor = { 0.0 };
             var factors = Enumerable.Range(1, r.Count()).Select(index => Math.Pow(factor, index)).ToArray();
             var totalFactors = factors.Sum();
@@ -114,7 +114,7 @@ namespace iRacingReplayDirector.Phases.Direction.Support
 
             TraceInfo.WriteLine("total: {0}, ratio: {1}", totalFactors, ratio);
 
-            for(var i = 0; i < factors.Length; i++)
+            for (var i = 0; i < factors.Length; i++)
                 TraceInfo.WriteLine("Factor: {0}, ratio: {1}", factors[i], factorsTo100[i]);
 
             var currentFactor = 0.0;
@@ -133,7 +133,7 @@ namespace iRacingReplayDirector.Phases.Direction.Support
             }).ToArray();
 
             TraceInfo.WriteLine("Battles:");
-            foreach( var d in r )
+            foreach (var d in r)
                 TraceInfo.WriteLine("{0}: {1} -> {2}, Time: {3}, Pos: {4}",
                     d.Factor,
                     data.Telemetry.Cars[d.LeaderCarIdx].Details.Driver.UserName,
@@ -146,7 +146,7 @@ namespace iRacingReplayDirector.Phases.Direction.Support
         static bool IsAPerferredDriver(GapMetric d)
         {
             TraceDebug.WriteLine("IsAPreferred Driver called for carIdx {0} Preferred: {1}, Leader: {2} : return: {3}", d.CarIdx, preferredCarIdxs.Contains(d.CarIdx), preferredCarIdxs.Contains(d.LeaderCarIdx), preferredCarIdxs.Contains(d.CarIdx) || preferredCarIdxs.Contains(d.LeaderCarIdx));
-            return preferredCarIdxs.Contains(d.CarIdx); 
+            return preferredCarIdxs.Contains(d.CarIdx);
         }
 
         internal static Car SelectABattle(DataSample data, IEnumerable<GapMetric> all, double dice)

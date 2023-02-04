@@ -1,8 +1,7 @@
-﻿using iRacingReplayDirector; 
+﻿using iRacingReplayDirector;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace iRacingDirector.Plugin.Tester
@@ -68,7 +67,7 @@ namespace iRacingDirector.Plugin.Tester
 
         internal void SetDrawAction(DrawAction drawAction)
         {
-            switch(drawAction)
+            switch (drawAction)
             {
                 case DrawAction.Intro:
                     this.drawAction = this.DrawActionIntro;
@@ -123,7 +122,7 @@ namespace iRacingDirector.Plugin.Tester
                 lastTimerTick = timestamp;
             }
 
-            if( timestamp - lastTimerTick > (OneNanoSecond / 8))
+            if (timestamp - lastTimerTick > (OneNanoSecond / 8))
             {
                 onAnimationTick(Duration / OneNanoSecond, Math.Round((float)timestamp / OneNanoSecond, 1));
                 lastTimerTick = timestamp;
@@ -176,7 +175,7 @@ namespace iRacingDirector.Plugin.Tester
                 return;
 
             PluginProxy.SetGraphics(g);
-            PluginProxy.InjectFields(timestamp, new string [0]);
+            PluginProxy.InjectFields(timestamp, new string[0]);
             PluginProxy.RaceOverlay();
         }
 

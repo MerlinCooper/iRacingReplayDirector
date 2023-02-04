@@ -66,7 +66,7 @@ namespace iRacingReplayDirector.Phases.Direction
                     return true;
 
                 case IncidentPosition.Inside:
-                    directionAction = () => {};
+                    directionAction = () => { };
                     return true;
 
                 case IncidentPosition.Finished:
@@ -161,7 +161,7 @@ namespace iRacingReplayDirector.Phases.Direction
                 incident = nextIncident.Current;
             }
 
-            while(incident != null && incident.IsInside(data.Telemetry.SessionTimeSpan) && incident.Car.Car(data).Position > this.limitDownTo)
+            while (incident != null && incident.IsInside(data.Telemetry.SessionTimeSpan) && incident.Car.Car(data).Position > this.limitDownTo)
             {
                 TraceInfo.WriteLine("{0} Skipping incident with {1} due to position of {2} below {3}", data.Telemetry.SessionTimeSpan, incident.Car.Driver.UserName, incident.Car.Car(data).Position, this.limitDownTo);
                 nextIncident.MoveNext();

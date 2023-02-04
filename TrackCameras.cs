@@ -50,7 +50,7 @@ namespace iRacingReplayDirector
             {
                 get
                 {
-                    var c = trackCameras.FirstOrDefault(tc => tc.TrackName == trackName &&  readAttr(tc));
+                    var c = trackCameras.FirstOrDefault(tc => tc.TrackName == trackName && readAttr(tc));
 
                     return c == null ? null : c.CameraName;
                 }
@@ -145,9 +145,9 @@ namespace iRacingReplayDirector
 
                 CameraAngle _cameraAngle;
 
-                if(cameraAngles.TryGetValue(CameraName, out _cameraAngle))
+                if (cameraAngles.TryGetValue(CameraName, out _cameraAngle))
                     return _cameraAngle;
-                else 
+                else
                     return CameraAngle.LookingAtCar;
             }
             set

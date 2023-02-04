@@ -20,7 +20,6 @@
 using iRacingSDK;
 using System;
 using System.Linq;
-using System.Threading;
 
 namespace iRacingReplayDirector.Phases
 {
@@ -41,7 +40,7 @@ namespace iRacingReplayDirector.Phases
 
             return this;
         }
-        
+
         public void _WhenIRacingStarts(Action onComplete)
         {
             foreach (var data in iRacing.GetDataFeed().TakeWhile(d => !d.IsConnected))

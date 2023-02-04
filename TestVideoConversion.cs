@@ -16,9 +16,6 @@
 // You should have received a copy of the GNU General Public License
 // along with iRacingReplayDirector.  If not, see <http://www.gnu.org/licenses/>.
 
-using iRacingReplayDirector.Phases.Capturing;
-using iRacingReplayDirector.Phases.Direction;
-using iRacingReplayDirector.Phases.Transcoding;
 using iRacingReplayDirector.Support;
 using iRacingReplayDirector.Video;
 using iRacingSDK.Support;
@@ -31,7 +28,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Win32;
 
 namespace iRacingReplayDirector
 {
@@ -62,10 +58,10 @@ namespace iRacingReplayDirector
 
         void workingFolderButton_Click(object sender, EventArgs e)
         {
-             var dlg = new OpenFileDialog();
+            var dlg = new OpenFileDialog();
 
             dlg.InitialDirectory = sourceFilenameTextBox.Text;
-            dlg.Filter = "AVI files (*.avi)|*.avi|MPEG 4 (*.mp4)|*.mp4|All files (*.*)|*.*" ;
+            dlg.Filter = "AVI files (*.avi)|*.avi|MPEG 4 (*.mp4)|*.mp4|All files (*.*)|*.*";
 
             if (dlg.ShowDialog() == DialogResult.OK)
                 sourceFilenameTextBox.Text = dlg.FileName;
@@ -98,7 +94,7 @@ namespace iRacingReplayDirector
             {
                 TranscodeVideoTest(filename);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 TraceError.WriteLine(e.Message);
                 TraceError.WriteLine(e.StackTrace);
@@ -134,7 +130,8 @@ namespace iRacingReplayDirector
                     int lastSecond = 0;
                     var fn = AVOperations.FadeIn(saveToSink);
 
-                    readers.First().SourceReader.Samples(sample => {
+                    readers.First().SourceReader.Samples(sample =>
+                    {
                         if (sample.Stream.CurrentMediaType.IsVideo && sample.Sample != null)
                         {
                             var s = (int)sample.Sample.SampleTime.FromNanoToSeconds();

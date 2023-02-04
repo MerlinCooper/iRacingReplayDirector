@@ -16,9 +16,6 @@
 // You should have received a copy of the GNU General Public License333
 // along with iRacingReplayDirector.  If not, see <http://www.gnu.org/licenses/>.
 
-using iRacingSDK.Support;
-using System;
-
 namespace iRacingReplayDirector.Phases.Capturing
 {
     public class EditMarker

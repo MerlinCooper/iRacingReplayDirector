@@ -40,14 +40,14 @@ namespace iRacingReplayDirector.Phases.Capturing
         {
             OverlayData.MessageState m;
 
-            if( messageStates.Count == 0)
+            if (messageStates.Count == 0)
                 m = new OverlayData.MessageState { Messages = new[] { message }, Time = time };
-         
+
             else
             {
                 var lastMsgs = messageStates.Last().Messages.ToList();
                 lastMsgs.Add(message);
-                if( lastMsgs.Count == 5)
+                if (lastMsgs.Count == 5)
                     lastMsgs.RemoveAt(0);
 
                 time = Math.Max(messageStates.Last().Time + 1, time);

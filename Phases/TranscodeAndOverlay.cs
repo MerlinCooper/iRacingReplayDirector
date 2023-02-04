@@ -19,13 +19,13 @@
 
 using iRacingReplayDirector.Phases.Capturing;
 using iRacingReplayDirector.Phases.Transcoding;
+using iRacingSDK.Support;
 using MediaFoundation.Net;
 using System;
+using System.Diagnostics;
 using System.Linq;
-using iRacingSDK.Support;
 using System.Reflection;
 using System.Threading;
-using System.Diagnostics;
 
 namespace iRacingReplayDirector.Phases
 {
@@ -142,7 +142,7 @@ namespace iRacingReplayDirector.Phases
 
         public void ProgressReporter(long a, long b)
         {
-            if(_progressReporter != null)
+            if (_progressReporter != null)
                 _progressReporter(a, b);
         }
 
@@ -154,7 +154,7 @@ namespace iRacingReplayDirector.Phases
         }
     }
 
-    public class TranscodeAndOverlay 
+    public class TranscodeAndOverlay
     {
         public static void Apply(string gameDataFile, int videoBitRate, string destFile, bool highlights, Action<long, long> progressReporter, Func<bool> isAborted, string pluginName)
         {
@@ -212,7 +212,7 @@ namespace iRacingReplayDirector.Phases
                         var mainReaders = AVOperations.Combine(readers.Skip(1).Select(r => r.SourceReader).ToArray(), Settings.Default.VideoSplitGap);
 
                         totalDuration += introSourceReader.Duration + mainReaders.Duration;
-                        
+
                         AVOperations.StartConcat(introSourceReader, introOverlay,
                             AVOperations.Concat(mainReaders, mainBodyOverlays, isAborted), isAborted);
                     }
@@ -225,7 +225,7 @@ namespace iRacingReplayDirector.Phases
                         AVOperations.Concat(mainReaders, mainBodyOverlays, isAborted)(0, 0);
                     }
                 });
-                
+
                 TraceInfo.WriteLineIf(highlights, "Done Transcoding highlights to {0}", transcoder.DestinationFile);
                 TraceInfo.WriteLineIf(!highlights, "Done Transcoding full replay to {0}", transcoder.DestinationFile);
             }
@@ -259,7 +259,7 @@ namespace iRacingReplayDirector.Phases
         {
             leaderBoard.Intro(sample.Graphic, sample.Duration, sample.Timestamp);
         }
-        
+
         ProcessSample ApplyEdits(ProcessSample next)
         {
             var cut = next;
@@ -278,8 +278,8 @@ namespace iRacingReplayDirector.Phases
 
             return cut;
         }
-       
-        bool showClosingFlashCard( SourceReaderSample sample)
+
+        bool showClosingFlashCard(SourceReaderSample sample)
         {
             if (!leaderBoard.OverlayData.TimeForOutroOverlay.HasValue)
                 return false;
