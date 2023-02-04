@@ -21,8 +21,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using WK.Libraries.HotkeyListenerNS;
-using System.Windows.Forms;
 
 namespace iRacingReplayDirector
 {
@@ -32,7 +30,7 @@ namespace iRacingReplayDirector
         {
             get
             {
-                return PreferredDriverNames.Split(new [] { ',', ';' }).Select(name => name.Trim().ToLower()).ToList();
+                return PreferredDriverNames.Split(new[] { ',', ';' }).Select(name => name.Trim().ToLower()).ToList();
             }
         }
 

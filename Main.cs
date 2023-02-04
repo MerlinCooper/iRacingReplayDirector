@@ -33,7 +33,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
- 
+
 
 namespace iRacingReplayDirector
 {
@@ -53,7 +53,7 @@ namespace iRacingReplayDirector
         int videoBitRateNumber = 15;
         IRacingReplay iRacingProcess;
 
-        enum States {Idle, CapturingGameData, Transcoding};
+        enum States { Idle, CapturingGameData, Transcoding };
         States _states = States.Idle;
 
         System.Windows.Forms.Timer lookForAudioBitRates;
@@ -149,7 +149,7 @@ namespace iRacingReplayDirector
                 transcodeMessageErrorDetails = sourceVideoFileErrorMessage;
 
             var message = transcodeMessageFormatDetails;
-            if(!isEmpty(transcodeMessageWarningDetails))
+            if (!isEmpty(transcodeMessageWarningDetails))
                 message = isEmpty(message) ? transcodeMessageWarningDetails : "{0}\n{1}".F(message, transcodeMessageWarningDetails);
 
             if (!isEmpty(transcodeMessageErrorDetails))
@@ -196,14 +196,14 @@ namespace iRacingReplayDirector
             cb_ShortTestOnly.Checked = Properties.Settings.Default.bShortTestOnly;
             cb_HighLightVideoOnly.Checked = Properties.Settings.Default.bHighLightVideoOnly;
             cb_UseNewSettingsDlg.Checked = Properties.Settings.Default.bUseNewSettingsDialog;
-            
-            
+
+
 
             logMessagges = new LogMessages();
             Trace.Listeners.Add(new MyListener(logMessagges.TraceMessage));
 
             LogListener.ToFile(GetDefaultLogFileName());
-            AwsLogListener.SetPhaseGeneral();
+//            AwsLogListener.SetPhaseGeneral();
 
             new Task(LogSystemInformation).Start();
 
@@ -218,28 +218,30 @@ namespace iRacingReplayDirector
             BeginProcessButton.Enabled = false;
 
             iRacingProcess = new IRacingReplay()
-                .WhenIRacingStarts(() => 
+                .WhenIRacingStarts(() =>
                 {
                     BeginProcessButton.Enabled = false;                 //Keep "Start Capture" Button disabled until supported session is verified using weekendinfo
-                    workingFolderTextBox_TextChanged(null, null); 
+                    workingFolderTextBox_TextChanged(null, null);
                     ProcessErrorMessageLabel.Visible = false;
                     WaitingForIRacingLabel.Visible = false;
 
-                    
-                    
+
+
                 })
                 .InTheBackground(errorMessage => { });
 
-            
+
         }
 
         private bool ReplaySessionTypeSupported()
         {
             //add here code to review whether replay does contain a supported session type
             if (curSession != null && (curSession.WeekendInfo.Category == "Road" || curSession.WeekendInfo.Category == "Oval"))
-            {   
+            {
                 label_SupportedSession.Visible = false;     //ensure that message with regard to wrong session type isn't shown
-            } else {
+            }
+            else
+            {
                 TraceInfo.WriteLineIf(!label_SupportedSession.Visible, "WARNING: ReplayDirector just tested with replays from Road and Oval Race sessions. You are able to use it with other replays as well - in case of issues report on GitHub ");
                 label_SupportedSession.Visible = true;      //otherwise make message box visible
 
@@ -278,7 +280,7 @@ namespace iRacingReplayDirector
                         GetValue(() => DriveInfo1.Name),
                         GetValue(() => DriveInfo1.DriveType.ToString()),
                         GetValue(() => DriveInfo1.DriveFormat),
-                        GetValue(() => DriveInfo1.TotalSize.ToString()), 
+                        GetValue(() => DriveInfo1.TotalSize.ToString()),
                         GetValue(() => DriveInfo1.AvailableFreeSpace.ToString())));
 
                 TraceDebug.WriteLine("SystemPageSize:  {0}".F(Environment.SystemPageSize));
@@ -320,7 +322,7 @@ namespace iRacingReplayDirector
             {
                 TraceDebug.WriteLine("Setting Changed: key: {0}, name: {1}, value: {2}".F(e.SettingKey, e.SettingName, e.NewValue));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TraceDebug.WriteLine("Unable to log setting change");
                 TraceDebug.WriteLine(ex.Message);
@@ -374,7 +376,7 @@ namespace iRacingReplayDirector
             SetTanscodeMessage(trancodingErrorMessage: null);
 
             LogListener.ToFile(Path.ChangeExtension(sourceVideoTextBox.Text, "log"));
-            AwsLogListener.SetPhaseTranscode();
+            //AwsLogListener.SetPhaseTranscode();
 
             NativeMethods.SetThreadExecutionState(NativeMethods.ES_CONTINUOUS | NativeMethods.ES_SYSTEM_REQUIRED);
 
@@ -382,11 +384,12 @@ namespace iRacingReplayDirector
                 .WithEncodingOf(videoBitRate: videoBitRateNumber * 1000000)
                 .WithOverlayFile(overlayFile: sourceVideoTextBox.Text)
                 .OverlayRaceDataOntoVideo(OnTranscoderProgress, OnTranscoderCompleted, cb_HighLightVideoOnly.Checked, cb_ShutdownAfterEncode.Checked)
-                .InTheBackground(errorMessage => {
+                .InTheBackground(errorMessage =>
+                {
                     OnTranscoderCompleted();
                     SetTanscodeMessage(trancodingErrorMessage: errorMessage);
                     LogListener.ToFile(GetDefaultLogFileName());
-                    AwsLogListener.SetPhaseGeneral();
+                    //AwsLogListener.SetPhaseGeneral();
                     NativeMethods.SetThreadExecutionState(NativeMethods.ES_CONTINUOUS);
                 });
         }
@@ -400,7 +403,7 @@ namespace iRacingReplayDirector
         {
             State = States.Idle;
         }
-        
+
         void transcodeCancel_Click(object sender, EventArgs e)
         {
             iRacingProcess.RequestAbort();
@@ -412,7 +415,7 @@ namespace iRacingReplayDirector
             Settings.Default.lastVideoFile = sourceVideoTextBox.Text;
             Settings.Default.Save();
 
-            if (lookForAudioBitRates != null )
+            if (lookForAudioBitRates != null)
             {
                 lookForAudioBitRates.Stop();
                 lookForAudioBitRates.Dispose();
@@ -426,12 +429,12 @@ namespace iRacingReplayDirector
             if (sourceVideoTextBox.Text.Trim() == "")
                 return;
 
-            if (!File.Exists(sourceVideoTextBox.Text) ) 
+            if (!File.Exists(sourceVideoTextBox.Text))
             {
                 SetTanscodeMessage(sourceVideoFileErrorMessage: "*File does not exist");
                 return;
             }
-            
+
             try
             {
                 var data = OverlayData.FromFile(sourceVideoTextBox.Text);
@@ -442,7 +445,7 @@ namespace iRacingReplayDirector
                     SetTanscodeMessage(sourceVideoFileErrorMessage: "*Captured video does not exist: " + fileName);
                     return;
                 }
-                
+
                 var currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
                 if (data.CapturedVersion != null && data.CapturedVersion != currentVersion)
@@ -451,7 +454,7 @@ namespace iRacingReplayDirector
                 }
 
                 var details = VideoAttributes.TestFor(data);
-                
+
                 SetTanscodeMessage(formatDetails: "Frame Rate: {0}, Frame Size: {1}x{2}, Video: {3} @ {4}Mbs, Audio: {5}, {6}Khz @ {7}Kbs, ".F
                         (details.FrameRate,
                         details.FrameSize.Width,
@@ -460,10 +463,10 @@ namespace iRacingReplayDirector
                         details.BitRate == 0 ? "-- " : details.BitRate.ToString(),
                         details.AudioEncoding,
                         details.AudioSamplesPerSecond / 1000,
-                        details.AudioAverageBytesPerSecond / 1000), 
+                        details.AudioAverageBytesPerSecond / 1000),
                     sourceVideoFileErrorMessage: details.ErrorMessage);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SetTanscodeMessage(sourceVideoFileErrorMessage: "*Error reading the video file. {0}".F(ex.Message));
 
@@ -481,7 +484,7 @@ namespace iRacingReplayDirector
 
             if (sourceVideoTextBox.Text == null || sourceVideoTextBox.Text.Length == 0)
                 return false;
-            
+
             return File.Exists(sourceVideoTextBox.Text);
         }
 
@@ -493,7 +496,7 @@ namespace iRacingReplayDirector
 
         void videoBitRate_TextChanged(object sender, EventArgs e)
         {
-            if(int.TryParse(videoBitRate.Text, out videoBitRateNumber))
+            if (int.TryParse(videoBitRate.Text, out videoBitRateNumber))
             {
                 Settings.Default.videoBitRate = videoBitRateNumber;
                 Settings.Default.Save();
@@ -507,11 +510,11 @@ namespace iRacingReplayDirector
             State = States.CapturingGameData;
 
             LogListener.ToFile(workingFolderTextBox.Text + "\\capture.log");
-            AwsLogListener.SetPhaseCapture();
+            //AwsLogListener.SetPhaseCapture();
 
             NativeMethods.SetThreadExecutionState(NativeMethods.ES_CONTINUOUS | NativeMethods.ES_SYSTEM_REQUIRED | NativeMethods.ES_DISPLAY_REQUIRED);
 
-            iRacingProcess = new IRacingReplay(shortTestOnly: cb_ShortTestOnly.Checked, bRecordUsingPauseResume:cb_FastVideoRecording.Checked, bCloseiRacingAfterRecording: cb_CloseiRacingAfterRecording.Checked)
+            iRacingProcess = new IRacingReplay(shortTestOnly: cb_ShortTestOnly.Checked, bRecordUsingPauseResume: cb_FastVideoRecording.Checked, bCloseiRacingAfterRecording: cb_CloseiRacingAfterRecording.Checked)
                 .WithWorkingFolder(workingFolderTextBox.Text)
                 .AnalyseRace(() => { AnalysingRaceLabel.Visible = false; CapturingRaceLabel.Visible = true; })
                 .CaptureOpeningScenes()
@@ -534,7 +537,7 @@ namespace iRacingReplayDirector
                     StateUpdated();
 
                     LogListener.ToFile(GetDefaultLogFileName());
-                    AwsLogListener.SetPhaseGeneral();
+                    //AwsLogListener.SetPhaseGeneral();
 
                     WindowState = FormWindowState.Minimized;
                     Show();
@@ -591,7 +594,7 @@ namespace iRacingReplayDirector
 
         private void button1_Click(object sender, EventArgs e)
         {
-            (new AboutBox1()).ShowDialog(); 
+            (new AboutBox1()).ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -600,20 +603,7 @@ namespace iRacingReplayDirector
             f.ShowDialog();
         }
 
-        private void Main_Activated(object sender, EventArgs e)
-        {
-            if(!AwsKeys.HaveKeys)
-                return;
-
-            if(!Settings.Default.HaveAskedAboutUsage)
-            {
-                Settings.Default.HaveAskedAboutUsage = true;
-                Settings.Default.Save();
-                (new UsageDataRequest()).ShowDialog();
-            }
-        }
-
-        private void changeVersionButton_Click(object sender, EventArgs e)
+       private void changeVersionButton_Click(object sender, EventArgs e)
         {
             Process.Start(Settings.Default.MainExecPath, "-update");
             this.Close();
@@ -650,6 +640,6 @@ namespace iRacingReplayDirector
             //Properties.Settings.Default.Save();
         }
 
-      
+
     }
 }

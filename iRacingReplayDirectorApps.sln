@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33318.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{7D205FCC-6CE6-49B3-8012-DC14ED9924D1}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E9EB76FC-CB86-47EA-A1F3-01570C1BBC18} = {E9EB76FC-CB86-47EA-A1F3-01570C1BBC18}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BCCAE92-016E-41D6-9CB5-4FC83AC190BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRacingDirector.Plugin.StandardOverlays", "plugins\iRacingDirector.Plugin.StandardOverlays\iRacingDirector.Plugin.StandardOverlays.csproj", "{5916B84C-0264-4102-9CCC-28006D84E4FA}"
@@ -19,8 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRacingDirector.Plugin.Supp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRacingDirector.Plugin.Tester", "plugins\iRacingDirector.Plugin.Tester\iRacingDirector.Plugin.Tester.csproj", "{96FA1C80-396C-4792-9E8B-C7CBFC25833D}"
 	ProjectSection(ProjectDependencies) = postProject
+		{C4ABC83D-1801-4407-B7C2-BDF9396D28AD} = {C4ABC83D-1801-4407-B7C2-BDF9396D28AD}
 		{CEC2BB31-324D-41E3-83C8-A5C35C63129B} = {CEC2BB31-324D-41E3-83C8-A5C35C63129B}
 		{E9EB76FC-CB86-47EA-A1F3-01570C1BBC18} = {E9EB76FC-CB86-47EA-A1F3-01570C1BBC18}
+		{F49DAE6F-321E-45A8-B9B4-23475A3F6080} = {F49DAE6F-321E-45A8-B9B4-23475A3F6080}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JockeOverlays", "plugins\JockeOverlays\JockeOverlays.csproj", "{F49DAE6F-321E-45A8-B9B4-23475A3F6080}"
@@ -29,12 +26,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JockeOverlays", "plugins\Jo
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRacingReplayDirector", "iRacingReplayDirector.csproj", "{E9EB76FC-CB86-47EA-A1F3-01570C1BBC18}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5916B84C-0264-4102-9CCC-28006D84E4FA} = {5916B84C-0264-4102-9CCC-28006D84E4FA}
-		{C4ABC83D-1801-4407-B7C2-BDF9396D28AD} = {C4ABC83D-1801-4407-B7C2-BDF9396D28AD}
-		{CEC2BB31-324D-41E3-83C8-A5C35C63129B} = {CEC2BB31-324D-41E3-83C8-A5C35C63129B}
-		{F49DAE6F-321E-45A8-B9B4-23475A3F6080} = {F49DAE6F-321E-45A8-B9B4-23475A3F6080}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOverlay", "plugins\NoOverlay\NoOverlay.csproj", "{C4ABC83D-1801-4407-B7C2-BDF9396D28AD}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -49,12 +40,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7D205FCC-6CE6-49B3-8012-DC14ED9924D1}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{7D205FCC-6CE6-49B3-8012-DC14ED9924D1}.Debug|Any CPU.Build.0 = Debug|x64
-		{7D205FCC-6CE6-49B3-8012-DC14ED9924D1}.Debug|x64.ActiveCfg = Debug|x64
-		{7D205FCC-6CE6-49B3-8012-DC14ED9924D1}.Debug|x64.Build.0 = Debug|x64
-		{7D205FCC-6CE6-49B3-8012-DC14ED9924D1}.Release|Any CPU.ActiveCfg = Release|x64
-		{7D205FCC-6CE6-49B3-8012-DC14ED9924D1}.Release|x64.ActiveCfg = Release|x64
 		{5916B84C-0264-4102-9CCC-28006D84E4FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5916B84C-0264-4102-9CCC-28006D84E4FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5916B84C-0264-4102-9CCC-28006D84E4FA}.Debug|x64.ActiveCfg = Debug|Any CPU

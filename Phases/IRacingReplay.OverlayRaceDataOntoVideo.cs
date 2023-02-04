@@ -20,11 +20,10 @@
 using MediaFoundation.Net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Management;
-using System.Diagnostics;
 
 namespace iRacingReplayDirector.Phases
 {
@@ -74,7 +73,7 @@ namespace iRacingReplayDirector.Phases
                 Task.WaitAll(waits.ToArray());
             }
             completed();
-            
+
             //Shutdown PC after Transcoding is completed (MCooper)
             if (bShutdownAfterCompleted)
             {

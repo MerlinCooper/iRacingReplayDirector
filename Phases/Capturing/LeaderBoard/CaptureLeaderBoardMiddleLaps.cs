@@ -20,7 +20,6 @@ using iRacingReplayDirector.Support;
 using iRacingSDK;
 using iRacingSDK.Support;
 using System;
-using System.Diagnostics;
 using System.Linq;
 
 namespace iRacingReplayDirector.Phases.Capturing.LeaderBoard

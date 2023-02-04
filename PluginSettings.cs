@@ -42,14 +42,14 @@ namespace iRacingReplayDirector
             var f = new GeneralSettingFields(panel, helpText, () => this.ActiveControl, Settings.Default);
 
             var storedSettings = Settings.Default.PluginStoredSettings == null ? new List<PluginProxySettings>() : Settings.Default.PluginStoredSettings.ToList();
-            
-            foreach(var s in this.pluginSettings)
+
+            foreach (var s in this.pluginSettings)
             {
                 var storedValue = storedSettings.FirstOrDefault(ss => ss.Name == s.Name);
-                if(storedValue == null)
+                if (storedValue == null)
                     storedSettings.Add(storedValue = new PluginProxySettings { Name = s.Name });
 
-                if( s.Type == typeof(bool))
+                if (s.Type == typeof(bool))
                     f.AddCheckboxField(s.Name, s.Description, i => (bool)(storedValue.Value ?? s.Value), (i, v) => storedValue.Value = v);
                 else
                     f.AddStringField(s.Name, s.Description, i => (string)(storedValue.Value ?? s.Value), (i, v) => storedValue.Value = v);

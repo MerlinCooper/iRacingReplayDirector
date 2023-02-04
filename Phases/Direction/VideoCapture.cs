@@ -16,14 +16,14 @@
 // You should have received a copy of the GNU General Public License
 // along with iRacingReplayDirector.  If not, see <http://www.gnu.org/licenses/>.
 
+using iRacingReplayDirector.Phases.Capturing;
+using iRacingReplayDirector.Support;
 using iRacingSDK.Support;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Timers;
-using System.Collections.Generic;
-using iRacingReplayDirector.Phases.Capturing;
-using iRacingReplayDirector.Support;
 using WK.Libraries.HotkeyListenerNS;
 
 namespace iRacingReplayDirector.Phases.Direction
@@ -40,25 +40,27 @@ namespace iRacingReplayDirector.Phases.Direction
 
         ~VideoCapture()
         {
-            if(curVideoStatus != videoStatus.stopped)
+            if (curVideoStatus != videoStatus.stopped)
                 SendKeyStroke_StartStopp();
         }
-        
+
         public void Activate(string workingFolder, bool bStartRecording = true)
         {
             this.workingFolder = workingFolder;
             this.started = DateTime.Now;
 
             timer = new Timer(500);
-            timer.Elapsed += CaptureNewFileNames; 
+            timer.Elapsed += CaptureNewFileNames;
             timer.AutoReset = false;
             timer.Enabled = true;
-            
+
             if (bStartRecording && (curVideoStatus == videoStatus.stopped))
             {
                 SendKeyStroke_StartStopp();     //Send hot-key to start recording
                 curVideoStatus = videoStatus.running;
-            }else if( curVideoStatus == videoStatus.paused){
+            }
+            else if (curVideoStatus == videoStatus.paused)
+            {
                 Resume();
             }
         }
@@ -92,7 +94,7 @@ namespace iRacingReplayDirector.Phases.Direction
             }
         }
 
-        public List<CapturedVideoFile> Deactivate(bool bRecordUsingPauseResume=false)
+        public List<CapturedVideoFile> Deactivate(bool bRecordUsingPauseResume = false)
         {
             if (timer != null)
             {
@@ -100,14 +102,15 @@ namespace iRacingReplayDirector.Phases.Direction
                 timer = null;
                 t.Stop();
                 t.Dispose();
-                
+
             }
 
             if (bRecordUsingPauseResume && curVideoStatus != videoStatus.paused)
             {
                 Pause();
                 curVideoStatus = videoStatus.paused;
-            } else
+            }
+            else
             {
                 SendKeyStroke_StartStopp();
                 curVideoStatus = videoStatus.stopped;
@@ -125,7 +128,7 @@ namespace iRacingReplayDirector.Phases.Direction
         //methode sending key-stroke command to pause recording software
         public void Pause()
         {
-            if(curVideoStatus == videoStatus.running && curVideoStatus != videoStatus.paused)
+            if (curVideoStatus == videoStatus.running && curVideoStatus != videoStatus.paused)
             {
                 SendKeyStroke_PauseResume();
                 curVideoStatus = videoStatus.paused;
@@ -144,7 +147,7 @@ namespace iRacingReplayDirector.Phases.Direction
 
         public void Stop()
         {
-            if(curVideoStatus == videoStatus.running || curVideoStatus == videoStatus.paused)
+            if (curVideoStatus == videoStatus.running || curVideoStatus == videoStatus.paused)
             {
                 SendKeyStroke_StartStopp();
                 curVideoStatus = videoStatus.stopped;

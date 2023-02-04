@@ -71,7 +71,7 @@ namespace iRacingReplayDirector.Phases.Direction
         {
             var state = GetBattlePosition(data);
 
-            switch(state.State)
+            switch (state.State)
             {
                 case BattlePosition.Started:
                     directionAction = () =>
@@ -111,7 +111,7 @@ namespace iRacingReplayDirector.Phases.Direction
 
             var otherCar = ChangeCarForCamera(data, battleFollower);
 
-            var cameraSet = otherCar == null ? new [] {CameraAngle.LookingInfrontOfCar, CameraAngle.LookingAtCar} : new [] { CameraAngle.LookingInfrontOfCar, CameraAngle.LookingBehindCar, CameraAngle.LookingAtCar };
+            var cameraSet = otherCar == null ? new[] { CameraAngle.LookingInfrontOfCar, CameraAngle.LookingAtCar } : new[] { CameraAngle.LookingInfrontOfCar, CameraAngle.LookingBehindCar, CameraAngle.LookingAtCar };
             camera = cameraControl.FindACamera(cameraSet, adjustedCamera, 2);
             adjustedCamera = null;
 
@@ -167,11 +167,11 @@ namespace iRacingReplayDirector.Phases.Direction
             }
 
             TraceInfo.WriteLine("{0} Changing camera to driver: {1}; camera: {2}; within {3}",
-                data.Telemetry.SessionTimeSpan, 
-                car.UserName, 
-                camera.CameraName, 
+                data.Telemetry.SessionTimeSpan,
+                car.UserName,
+                camera.CameraName,
                 battleGap);
-            
+
             cameraControl.CameraOnDriver(car.CarNumberRaw, camera.CameraNumber);
         }
 
@@ -202,7 +202,7 @@ namespace iRacingReplayDirector.Phases.Direction
             var car = driver.Car(data);
 
             var otherCar = data.Telemetry.Cars.FirstOrDefault(c => c.Position == car.Position - 1);
-            if( otherCar == null)
+            if (otherCar == null)
                 return null;
 
             return otherCar.Details;
@@ -218,7 +218,7 @@ namespace iRacingReplayDirector.Phases.Direction
                 if (!HasBattleTimeout(data))
                     return new BattleState(BattlePosition.Inside);
 
-                return SearchForNextBattle(data, notFound: () => new BattleState(BattlePosition.Finished) );
+                return SearchForNextBattle(data, notFound: () => new BattleState(BattlePosition.Finished));
             }
 
             if (data.Telemetry.UnderPaceCar)

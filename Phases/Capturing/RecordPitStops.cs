@@ -21,7 +21,6 @@ using iRacingSDK;
 using iRacingSDK.Support;
 using System;
 using System.Linq;
-using System.Diagnostics;
 
 namespace iRacingReplayDirector.Phases.Capturing
 {

@@ -1,11 +1,9 @@
 ﻿using iRacingSDK.Support;
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace iRacingReplayDirector
@@ -123,7 +121,7 @@ namespace iRacingReplayDirector
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            if(pluginNames.SelectedItem == null)
+            if (pluginNames.SelectedItem == null)
             {
                 Settings.Default.OverlayPluginId = null;
                 return;
@@ -137,10 +135,10 @@ namespace iRacingReplayDirector
 
         private async void pluginNames_SelectedIndexChanged(object sender, EventArgs e)
         {
-        //    var versions = await GitHubAccess.GetVersions("vipoo", "iRacingDirector.Plugin.StandardOverlays");
+            //    var versions = await GitHubAccess.GetVersions("vipoo", "iRacingDirector.Plugin.StandardOverlays");
 
-        //    foreach(var v in versions)
-        //        this.pluginVersions.Items.Add(v);
+            //    foreach(var v in versions)
+            //        this.pluginVersions.Items.Add(v);
 
         }
 

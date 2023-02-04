@@ -26,13 +26,10 @@ using iRacingSDK.Support;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Win32;
 
 namespace iRacingReplayDirector.Phases
 {
@@ -66,8 +63,8 @@ namespace iRacingReplayDirector.Phases
                 var totalRaceEvents = RaceEventExtension.GetInterestingRaceEvents(overlayData.RaceEvents.ToList(), bRecordUsingPauseResume);
                 int nextframePositionInRace = raceStartFrameNumber;
                 //double prevEndTime = 0;
-                OverlayData.RaceEvent lastRaceEvent=null;
-                
+                OverlayData.RaceEvent lastRaceEvent = null;
+
 
                 //calulate total time of race-events
                 double totalTimeRaceEvents = 0.0;
@@ -79,7 +76,7 @@ namespace iRacingReplayDirector.Phases
                 ApplyFirstLapCameraDirection(samples, replayControl);
 
                 //Record the selected race events into a highlight video
-                
+
                 raceVideo.Activate(workingFolder);                                  //Active video-capturing and send start command to recording software. 
 
                 OverlayData.CamDriver curCamDriver = overlayData.CamDrivers.First();
@@ -109,10 +106,10 @@ namespace iRacingReplayDirector.Phases
                     double timeGap = lastRaceEvent != null ? raceEvent.StartTime - lastRaceEvent.EndTime : 0.0;
 
                     //if gap between start of this race event and the end of the previous move iRacing to the correct starting-position in the replay. 
-                    if (timeGap > 1.0)  
+                    if (timeGap > 1.0)
                     {
                         nextframePositionInRace = raceStartFrameNumber + (int)Math.Round(raceEvent.StartTime * 60.0);
-                        TraceDebug.WriteLine("ADV_RECORDING: Gap to prev. Race-Event identified. TimeDifference: {0} | Prev. End-Time: {1} | Cur.Start-Time: {2} | target-Frame: {3} ".F(timeGap, lastRaceEvent.EndTime,raceEvent.StartTime, nextframePositionInRace));
+                        TraceDebug.WriteLine("ADV_RECORDING: Gap to prev. Race-Event identified. TimeDifference: {0} | Prev. End-Time: {1} | Cur.Start-Time: {2} | target-Frame: {3} ".F(timeGap, lastRaceEvent.EndTime, raceEvent.StartTime, nextframePositionInRace));
 
                         //pause video recording
                         raceVideo.Pause();                                                  //Pause recording by sending keystroke
@@ -146,10 +143,12 @@ namespace iRacingReplayDirector.Phases
 
                 TraceDebug.WriteLine("Video Capture of Race-Events completed");
                 raceVideo.Stop();
-            } else {        //Code to be removed after being able to implment working solution where analysis phase and replay-capture phase are distinct processes. 
-                //use local variables for original code instead of global variables introduced to support full analysis in analysis-phase
-                
-                var overlayData = new OverlayData();                          
+            }
+            else
+            {        //Code to be removed after being able to implment working solution where analysis phase and replay-capture phase are distinct processes. 
+                     //use local variables for original code instead of global variables introduced to support full analysis in analysis-phase
+
+                var overlayData = new OverlayData();
                 var removalEdits = new RemovalEdits(overlayData.RaceEvents);
                 var commentaryMessages = new CommentaryMessages(overlayData);
                 var recordPitStop = new RecordPitStop(commentaryMessages);
@@ -229,7 +228,7 @@ namespace iRacingReplayDirector.Phases
 
                 onComplete(overlayFile);
             }
-            
+
 
             //terminate iRacing after video capture completed to free up CPU resources
             if (bCloseiRacingAfterRecording)
@@ -268,7 +267,7 @@ namespace iRacingReplayDirector.Phases
             Thread.Sleep(1000);
 
             replayControl.Process(samples.First());
-            
+
             iRacing.Replay.Wait();
             Thread.Sleep(1000);
         }
@@ -287,7 +286,7 @@ namespace iRacingReplayDirector.Phases
             Trace.WriteLine("Saving overlay data to {0}".F(overlayFile));
 
             if (this.introVideo != null)
-                files = new [] { new CapturedVideoFile { FileName = this.introVideo, isIntroVideo = true } }
+                files = new[] { new CapturedVideoFile { FileName = this.introVideo, isIntroVideo = true } }
                         .Concat(files).ToList();
 
             overlayData.VideoFiles = files;
@@ -296,7 +295,7 @@ namespace iRacingReplayDirector.Phases
             return overlayFile;
         }
 
-        string SaveReplayScript (OverlayData overlayData)
+        string SaveReplayScript(OverlayData overlayData)
         {
             //string fullNameReplayScript = workingFolder + "/" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "analysis.replayscript";
             string fullNameReplayScript = workingFolder + "/" + overlayData.overlayDateTime.ToString("yyyy-MM-dd HH-mm-ss") + ".analysis.replayscript";

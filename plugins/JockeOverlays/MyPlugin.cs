@@ -12,12 +12,12 @@ namespace JockeOverlays
         const int FlashCardWidth = 900;
         const int FlashCardLeft = (1920 / 2) - FlashCardWidth / 2;
         const int DriversPerPage = 10;
-                
+
         public void IntroFlashCard(long duration, long timestamp)
         {
             var page = FlashCardPagingCalculator.GetPageNumber(EventData, DriversPerPage, duration, timestamp);
 
-           DrawIntroFlashCard(page);
+            DrawIntroFlashCard(page);
         }
 
         public void RaceOverlay(long timestamp)

@@ -66,7 +66,7 @@ Larger values will cause the incident scanning phase to take longer.",
 
             f.AddIntField("Ignore Incident Below", @"Ignore any incidents below the specified position.", "IgnoreIncidentsBelowPosition");
 
-            f.AddCheckboxField("Ignore Incidents during race start", 
+            f.AddCheckboxField("Ignore Incidents during race start",
                 "If this option is select, then the camera will stay on the leader for during the race start, and will not following any incidents that happen in the field",
                 "IgnoreIncidentsDuringRaceStart");
 
@@ -92,28 +92,11 @@ If not selected, then all battles can be selected, but your perferred drivers wi
             f.AddBlankRow();
             f.AddPluginSelectorField();
 
-            if (AwsKeys.HaveKeys)
-            {
-                f.AddBlankRow();
-                f.AddCheckboxField("Allow usage data to be sent to developer",
-                @"Send anonymous usage data to the developer, to assist in fixing bugs and improving the application.
-
-What data is sent? 
-The data sent is the same data that is written to your local log files.
-
-Why should I say yes?
-It will really help me to understand how people use this application, and diagnose common problems people have.
-
-Where does the data go ?
-The data is sent encypted to me - the developer - dean.netherton@gmail.com", "SendUsageData");
-
-            }
-
             this.onSave = f.OnSave;
         }
 
         void okButton_Click(object sender, EventArgs e)
-        {            
+        {
             this.onSave();
         }
 

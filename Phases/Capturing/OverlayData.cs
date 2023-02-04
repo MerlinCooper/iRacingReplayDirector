@@ -20,12 +20,12 @@
 using iRacingReplayDirector.Phases.Transcoding;
 using iRacingSDK;
 using iRacingSDK.Support;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace iRacingReplayDirector.Phases.Capturing
 {
@@ -108,7 +108,7 @@ namespace iRacingReplayDirector.Phases.Capturing
             public double StartTime;
             public Driver[] Drivers;
             public string RacePosition;
-			public string LapCounter;
+            public string LapCounter;
 
             public LeaderBoard Clone()
             {
@@ -140,7 +140,7 @@ namespace iRacingReplayDirector.Phases.Capturing
 
                     var name = firstName.Substring(0, 1).ToUpper()
                         + lastName.Substring(0, 1).ToUpper()
-                        + lastName.Substring(1, Math.Min(3, lastName.Length-1));
+                        + lastName.Substring(1, Math.Min(3, lastName.Length - 1));
 
                     return name;
                 }
@@ -176,7 +176,7 @@ namespace iRacingReplayDirector.Phases.Capturing
 
             using (var file = new StreamWriter(fileName))
                 writer.Serialize(file, this);
-            
+
             //write OverlayData to JSON file 
             string fileNameJSON = fileName + ".json";
             using (StreamWriter fileJSON = File.CreateText(fileNameJSON))
