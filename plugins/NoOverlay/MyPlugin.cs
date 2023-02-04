@@ -1,5 +1,5 @@
 ﻿using iRacingDirector.Plugin;
-using iRacingSDK.Support;
+//using iRacingSDK.Support;
 using System.Drawing;
 
 namespace NoOverlay
