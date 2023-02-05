@@ -18,8 +18,6 @@
 
 using iRacingReplayDirector.Phases.Capturing;
 using System.Drawing;
-using System.IO;
-using System.Reflection;
 
 namespace iRacingReplayDirector.Phases.Transcoding
 {
@@ -47,7 +45,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
             plugin.SetReplayConfig(OverlayData);
             plugin.SetGraphics(graphics);
             plugin.InjectFields(timestamp, Settings.Default.PreferredDriverNames.Split(new char[] { ',', ';' }));
-            plugin.DrawIntroFlashCard( duration );
+            plugin.DrawIntroFlashCard(duration);
         }
 
         public void Overlay(Graphics graphics, long timestamp)

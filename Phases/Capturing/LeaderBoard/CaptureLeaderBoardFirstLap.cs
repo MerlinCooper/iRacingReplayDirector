@@ -53,7 +53,7 @@ namespace iRacingReplayDirector.Phases.Capturing.LeaderBoard
                 .Select((rp, i) => new OverlayData.Driver
                 {
                     CarIdx = (int)rp.CarIdx,
-                    Position = i+1,
+                    Position = i + 1,
                     CarNumber = data.SessionData.DriverInfo.CompetingDrivers[rp.CarIdx].CarNumber,
                     UserName = data.SessionData.DriverInfo.CompetingDrivers[rp.CarIdx].UserName,
                     PitStopCount = data.Telemetry.CarIdxPitStopCount[rp.CarIdx]

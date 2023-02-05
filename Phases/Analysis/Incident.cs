@@ -17,12 +17,12 @@
 // along with iRacingReplayDirector.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using iRacingReplayDirector.Phases.Direction.Support;
 using iRacingSDK;
 using iRacingSDK.Support;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using iRacingReplayDirector.Phases.Direction.Support;
 
 namespace iRacingReplayDirector.Phases.Analysis
 {
@@ -50,7 +50,7 @@ namespace iRacingReplayDirector.Phases.Analysis
 
         public void Process(DataSample data)
         {
-                       //
+            //
 
             if (data.Telemetry.CamCar.TrackSurface == TrackLocation.InPitStall ||
                 data.Telemetry.CamCar.TrackSurface == TrackLocation.NotInWorld ||
@@ -59,18 +59,18 @@ namespace iRacingReplayDirector.Phases.Analysis
                 TraceInfo.WriteLine("{0} Ignoring incident in the pits on lap {1}", data.Telemetry.SessionTimeSpan, data.Telemetry.RaceLaps);
                 return;
             }
-            
+
             //when FocusOnPrefered drivers is selected and current data not belongs to driver listed as prefered driver 
             if (Settings.Default.FocusOnPreferedDriver && !Battle.GetPreferredCarIdxs(data, Settings.Default.PreferredDrivers).Contains(data.Telemetry.CamCar.Details.CarIdx))
             {
                 TraceInfo.WriteLine("{0} Ignoring incident of car {1} because FocusOnPrefered driver active", data.Telemetry.SessionTimeSpan, data.Telemetry.CamCar.Details.Driver.UserName);
                 return;
             }
-                        
-            var i = new Incident 
+
+            var i = new Incident
             {
-                LapNumber = data.Telemetry.RaceLaps, 
-                Car = data.Telemetry.CamCar.Details, 
+                LapNumber = data.Telemetry.RaceLaps,
+                Car = data.Telemetry.CamCar.Details,
                 StartSessionTime = data.Telemetry.SessionTimeSpan - 1.Seconds(),
                 EndSessionTime = data.Telemetry.SessionTimeSpan + 8.Seconds()
             };

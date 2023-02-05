@@ -27,11 +27,10 @@ using iRacingReplayDirector.Support;
 using iRacingSDK;
 using iRacingSDK.Support;
 using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 
 
 namespace iRacingReplayDirector.Phases
@@ -47,7 +46,7 @@ namespace iRacingReplayDirector.Phases
             pause = 0,
             normal = 1,
             FF2x = 2,
-            FF4x = 4, 
+            FF4x = 4,
             FF8x = 8,
             FF12x = 12,
             FF16x = 16
@@ -82,14 +81,14 @@ namespace iRacingReplayDirector.Phases
             raceStartFrameNumber = data.Telemetry.ReplayFrameNum - (60 * 20);
             raceStartSessionTime = raceStartSessionTime < 20 ? (data.Telemetry.SessionTime - 20) : 0.0;
 
-            if (raceStartFrameNumber < 0 )
+            if (raceStartFrameNumber < 0)
             {
                 TraceInfo.WriteLine("Unable to start capturing at 20 seconds prior to race start.  Starting at start of replay file.");
                 raceStartFrameNumber = 0;
             }
 
             TraceDebug.WriteLine(data.Telemetry.ToString());
-            
+
             AnalyseIncidents();                                                         //Analyse incidents
             AnalyseRaceSituations(new iRacingConnection().GetBufferedDataFeed());       //Analyse race situation (all) by playing out replay at 16x speed. 
 
@@ -126,7 +125,7 @@ namespace iRacingReplayDirector.Phases
             //----------------------------
             //var overlayData = new OverlayData();
             removalEdits = new RemovalEdits(overlayData.RaceEvents);
-            commentaryMessages = new CommentaryMessages(overlayData);   
+            commentaryMessages = new CommentaryMessages(overlayData);
             recordPitStop = new RecordPitStop(commentaryMessages);
             fastestLaps = new RecordFastestLaps(overlayData);
             replayControl = new ReplayControl(samples.First().SessionData, incidents, removalEdits, TrackCameras);
@@ -156,7 +155,7 @@ namespace iRacingReplayDirector.Phases
                 .WithPitStopCounts()
                 .TakeUntil(3.Seconds()).Of(d => d.Telemetry.LeaderHasFinished && d.Telemetry.RaceCars.All(c => c.HasSeenCheckeredFlag || c.HasRetired || c.TrackSurface != TrackLocation.OnTrack))
                 .TakeUntil(3.Seconds()).AfterReplayPaused();
-            
+
             samples = samples.AtSpeed(iReplaySpeedForAnalysis);
 
             overlayData.CapturedVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -171,14 +170,14 @@ namespace iRacingReplayDirector.Phases
 
                 TraceDebug.WriteLine("ADV_RECORDING: Processing data sample {0} | relativeTime: {1} | sessionTime: {2} ".F(numberOfDataProcessed, relativeTime, data.Telemetry.SessionTime));
 
-                replayControl.Process(data);                                            
-                sessionDataCapture.Process(data);                                       
-                captureLeaderBoardEveryHalfSecond.Process(data, relativeTime);          
-                captureCamDriverEveryQuaterSecond.Process(data, relativeTime);          
-                recordPitStop.Process(data, relativeTime);                              
-                fastestLaps.Process(data, relativeTime);                                
-                removalEdits.Process(data, relativeTime);                               
-                captureCamDriverEvery4Seconds.Process(data, relativeTime);              
+                replayControl.Process(data);
+                sessionDataCapture.Process(data);
+                captureLeaderBoardEveryHalfSecond.Process(data, relativeTime);
+                captureCamDriverEveryQuaterSecond.Process(data, relativeTime);
+                recordPitStop.Process(data, relativeTime);
+                fastestLaps.Process(data, relativeTime);
+                removalEdits.Process(data, relativeTime);
+                captureCamDriverEvery4Seconds.Process(data, relativeTime);
 
                 numberOfDataProcessed += 1;
             }

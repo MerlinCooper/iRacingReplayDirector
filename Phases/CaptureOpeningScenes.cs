@@ -21,7 +21,6 @@ using iRacingReplayDirector.Phases.Direction;
 using iRacingSDK;
 using iRacingSDK.Support;
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Threading;
 
@@ -45,20 +44,20 @@ namespace iRacingReplayDirector.Phases
 
             if (!iRacing.Replay.AttempToMoveToQualifyingSection())
                 return;
-            
+
             data = iRacing.GetDataFeed().First();
             var f = data.Telemetry.ReplayFrameNum;
             iRacing.Replay.MoveToFrame(f + 60 * 4, ReplayPositionMode.Begin, 100);
             iRacing.Replay.SetSpeed(1);
 
-            var camera = data.SessionData.CameraInfo.Groups.FirstOrDefault( c => c.GroupName == "Scenic");
-            if( camera == null )
-                camera = data.SessionData.CameraInfo.Groups.FirstOrDefault( c => c.GroupName.StartsWith("Pit Lane"));
-            if( camera == null )
-                camera = data.SessionData.CameraInfo.Groups.FirstOrDefault( c => c.GroupName == "Chopper");
-            if( camera == null)
-                camera = data.SessionData.CameraInfo.Groups.FirstOrDefault( c => c.GroupName == "TV3");
-            if( camera == null)
+            var camera = data.SessionData.CameraInfo.Groups.FirstOrDefault(c => c.GroupName == "Scenic");
+            if (camera == null)
+                camera = data.SessionData.CameraInfo.Groups.FirstOrDefault(c => c.GroupName.StartsWith("Pit Lane"));
+            if (camera == null)
+                camera = data.SessionData.CameraInfo.Groups.FirstOrDefault(c => c.GroupName == "Chopper");
+            if (camera == null)
+                camera = data.SessionData.CameraInfo.Groups.FirstOrDefault(c => c.GroupName == "TV3");
+            if (camera == null)
                 camera = data.SessionData.CameraInfo.Groups.First();
 
             var scenicCameras = camera.GroupNum;
@@ -74,7 +73,7 @@ namespace iRacingReplayDirector.Phases
             Thread.Sleep(shortTestOnly ? 5000 : 20000);
 
             var fileNames = raceVideo.Deactivate(bRecordUsingPauseResume);
-            if( fileNames.Count == 0)
+            if (fileNames.Count == 0)
                 return;
 
             TraceInfo.WriteLine("Captured intro video into file {0}", fileNames[0]);

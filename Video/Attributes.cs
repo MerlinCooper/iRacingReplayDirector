@@ -42,13 +42,13 @@ namespace iRacingReplayDirector.Video
             internal readonly Transcoder Transcoder;
             public readonly int AudioAverageBytesPerSecond;
 
-            internal VideoDetails(int[] supportedAudioBitRates, 
-                int frameRate, 
+            internal VideoDetails(int[] supportedAudioBitRates,
+                int frameRate,
                 Size frameSize,
-                int bitRate, 
+                int bitRate,
                 int audioSamplesPerSecond,
                 int audioAverageBytesPerSecond,
-                string videoEncoding, 
+                string videoEncoding,
                 string audioEncoding,
                 Transcoder transcoder,
                 string errorMessage)

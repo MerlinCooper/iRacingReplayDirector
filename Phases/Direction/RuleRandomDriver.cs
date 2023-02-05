@@ -29,7 +29,7 @@ namespace iRacingReplayDirector.Phases.Direction
         readonly CameraControl cameraControl;
         readonly SessionData sessionData;
         readonly TimeSpan stickyTime;
-        readonly long[] allCarIndexes;        
+        readonly long[] allCarIndexes;
         readonly long[] preferredCarIndexes;
         readonly Random randomDriverNumber;
 
@@ -82,11 +82,11 @@ namespace iRacingReplayDirector.Phases.Direction
             do
             {
                 camera = cameraControl.FindACamera(new[] { CameraAngle.LookingInfrontOfCar, CameraAngle.LookingAtCar, CameraAngle.LookingAtTrack });
-                if((camera.CameraName == "Pit Lane") && !car.IsOnPitRoad) 
+                if ((camera.CameraName == "Pit Lane") && !car.IsOnPitRoad)
                     TraceInfo.WriteLine("Changing camera again because driver {0} would not be captured by camera: {1} | On-PitRoad: {2}", car.UserName, camera.CameraName, car.IsOnPitRoad);
             } while ((camera.CameraName == "Pit Lane") && !car.IsOnPitRoad);
-            
-            
+
+
 
             TraceInfo.WriteLine("{0} Changing camera to random driver: {1}; camera: {2}", data.Telemetry.SessionTimeSpan, car.UserName, camera.CameraName);
             cameraControl.CameraOnDriver((short)car.CarNumberRaw, camera.CameraNumber);
@@ -102,7 +102,7 @@ namespace iRacingReplayDirector.Phases.Direction
         {
             var activeDrivers = GetDriversOnTrack(data, preferredCarIndexes);
 
-            if( activeDrivers.Count == 0)
+            if (activeDrivers.Count == 0)
                 activeDrivers = GetDriversOnTrack(data, allCarIndexes);
 
             var next = randomDriverNumber.Next(activeDrivers.Count);

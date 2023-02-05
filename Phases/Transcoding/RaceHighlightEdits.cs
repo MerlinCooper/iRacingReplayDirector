@@ -42,7 +42,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
 
             return edits;
         }
-        
+
         static IEnumerable<VideoEdit> _GetRaceEdits(this IEnumerable<OverlayData.RaceEvent> raceEvents)
         {
             var totalRaceEvents = GetInterestingRaceEvents(raceEvents);
@@ -72,7 +72,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
 
             double totalTime, incidentsRatio, restartsRatio, battlesRatio, timeForRaceEvents;
             var firstAndLastLapRaceEvents = GetAllFirstAndLastLapEvents(raceEvents, out totalTime);
-            
+
             var incidentRaceEvents = GetAllRaceEvents(raceEvents, InterestState.Incident, 1.8, 0, out incidentsRatio);
             var restartRaceEvents = GetAllRaceEvents(raceEvents, InterestState.Restart, 1.0, 0, out restartsRatio);
             var battleRaceEvents = GetAllRaceEvents(raceEvents, InterestState.Battle, 1.4, 15, out battlesRatio);
@@ -80,7 +80,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
             battleRaceEvents = NormaliseBattleEvents(battleRaceEvents, Settings.Default.BattleStickyPeriod.TotalSeconds);
 
             //Calculate time for incidents, battles, restarts when fastrecording is active 
-            if(bFastRecording)
+            if (bFastRecording)
             {
                 //calculate time of race w/o start and finish
                 double timeStartFinish = firstAndLastLapRaceEvents.Sum(re => re.Duration).Seconds().TotalSeconds;
@@ -110,7 +110,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
         {
             var result = new List<OverlayData.RaceEvent>();
 
-            foreach( var re in raceEvents)
+            foreach (var re in raceEvents)
             {
                 if (re.Duration < maxDuration)
                     result.Add(re);
@@ -141,7 +141,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
             totalTime = HighlightVideoDuration.TotalSeconds - firstAndLastLapDuration;
 
             TraceInfo.WriteLine("Highlight Edits: First & last laps.  Duration: {0}. Remaining: {1}", firstAndLastLapDuration.Seconds(), totalTime.Seconds());
-        
+
             return firstAndLastLapRaceEvents;
         }
 
@@ -150,10 +150,10 @@ namespace iRacingReplayDirector.Phases.Transcoding
             var middleTime = (left.EndTime + right.StartTime) / 2;
 
             var middleEvent = raceEvents
-                .Where( r => r.StartTime >= left.StartTime && r.StartTime <= right.EndTime)
+                .Where(r => r.StartTime >= left.StartTime && r.StartTime <= right.EndTime)
                 .OrderBy(r => Math.Abs(middleTime - r.StartTime)).FirstOrDefault();
 
-            if( middleEvent == null )
+            if (middleEvent == null)
                 return;
 
             result.Add(new _RaceEvent { RaceEvent = middleEvent, Level = level });
@@ -164,9 +164,9 @@ namespace iRacingReplayDirector.Phases.Transcoding
         }
 
         static List<OverlayData.RaceEvent> ExtractEditedEvents(
-            double totalTime, 
-            double percentage, 
-            List<OverlayData.RaceEvent> raceEvents, 
+            double totalTime,
+            double percentage,
+            List<OverlayData.RaceEvent> raceEvents,
             InterestState interest,
             bool byPosition = false)
         {
@@ -248,7 +248,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
                 .Where(re => re.Interest == interest)
                 .Where(re => re.Duration > minDuration)
                 .ToList();
-        
+
             var duration = result.Sum(re => re.Duration);
             ratio = duration * factor;
 

@@ -2,7 +2,6 @@
 using iRacingSDK.Support;
 using MediaFoundation.Net;
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -26,7 +25,7 @@ namespace iRacingReplayDirector
 {
     public class PluginProxy
     {
-        static readonly string PluginPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),  "plugins\\");
+        static readonly string PluginPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "plugins\\");
         const string StandardOverlayDirectory = "iRacingDirector.Plugin.StandardOverlays";
         const string StandardOverlaysName = "StandardOverlays";
 
@@ -58,16 +57,17 @@ namespace iRacingReplayDirector
 
         public PluginProxy(string pluginName)
         {
-            if(!pluginName.ToLower().EndsWith(".dll"))
+            if (!pluginName.ToLower().EndsWith(".dll"))
                 pluginName = Path.Combine(PluginPath, pluginName, pluginName + ".dll");
-                /* previous code handling StandardOverlay different than other plugins - likely not necessary - currently in testing
-                if (pluginName == StandardOverlaysName)
-                    pluginName = Path.Combine(PluginPath, StandardOverlayDirectory, StandardOverlayDirectory + ".dll");
-                else
-                    pluginName = Path.Combine(PluginPath, pluginName, pluginName + ".dll");*/
-
+            /* previous code handling StandardOverlay different than other plugins - likely not necessary - currently in testing
+            if (pluginName == StandardOverlaysName)
+                pluginName = Path.Combine(PluginPath, StandardOverlayDirectory, StandardOverlayDirectory + ".dll");
+            else
+                pluginName = Path.Combine(PluginPath, pluginName, pluginName + ".dll");*/
+            TraceInfo.WriteLine("Trying to load overlay plugin:{0}", pluginName);
             var an = AssemblyName.GetAssemblyName(pluginName);
             var assembly = Assembly.Load(an);
+            TraceInfo.WriteLine("Plugin {0} successfully loaded", pluginName);
 
             pluginType = assembly.GetTypes()
                 .Where(t => !t.IsInterface)
@@ -151,7 +151,7 @@ namespace iRacingReplayDirector
                 .Where(d => d != null)
                 .Select(d => new OverlayData.Driver { UserName = d.UserName, CarIdx = (int)d.CarIdx, CarNumber = d.CarNumber })
                 .ToArray();
-            
+
             CreateAndAssignInstance("PreferredDriverNames", false, type =>
             {
                 var instance = Activator.CreateInstance(type, drivers.Length);
@@ -167,7 +167,7 @@ namespace iRacingReplayDirector
                 return instance;
             });
         }
-        
+
 
         void SetEventData()
         {
@@ -177,7 +177,7 @@ namespace iRacingReplayDirector
 
             eventDataField.SetValue(plugin, instance);
         }
-        
+
         object CreateAndAssignInstance(string fieldName, bool setToNull = false, Func<Type, object> createInstance = null)
         {
             var field = pluginType.GetField(fieldName);
@@ -205,7 +205,7 @@ namespace iRacingReplayDirector
                 return instance;
             });
         }
-        
+
         void SetLeaderboard()
         {
             var lb = data.LeaderBoards.LastOrDefault(t => t.StartTime <= timestamp.FromNanoToSeconds());
@@ -297,7 +297,7 @@ namespace iRacingReplayDirector
                 .GetField(name)
                 .SetValue(instance, value);
         }
-        
+
         public void RaceOverlay()
         {
             plugin.RaceOverlay(timestamp);

@@ -19,39 +19,38 @@
 
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace iRacingDirector.Plugin
 {
-	public class CenterGraphicRect : GraphicRect
-	{
-		readonly int left;
-		readonly int right;
+    public class CenterGraphicRect : GraphicRect
+    {
+        readonly int left;
+        readonly int right;
 
-		public CenterGraphicRect(Graphics g, Rectangle r, Brush b, Pen p, Font f, StringFormat sf, int lo, int to)
-			: base( g, r, b, p, f, sf, lo, to)
-		{
-			this.left = int.MaxValue;
-			this.right = int.MinValue;
-		}
+        public CenterGraphicRect(Graphics g, Rectangle r, Brush b, Pen p, Font f, StringFormat sf, int lo, int to)
+            : base(g, r, b, p, f, sf, lo, to)
+        {
+            this.left = int.MaxValue;
+            this.right = int.MinValue;
+        }
 
-		public CenterGraphicRect(Graphics g, Rectangle r, Brush b, Pen p, Font f, StringFormat sf, int lo, int to, int left, int right)
-			: base( g, r, b, p, f, sf, lo, to)
-		{
-			this.left = left;
-			this.right = right;
-		}
+        public CenterGraphicRect(Graphics g, Rectangle r, Brush b, Pen p, Font f, StringFormat sf, int lo, int to, int left, int right)
+            : base(g, r, b, p, f, sf, lo, to)
+        {
+            this.left = left;
+            this.right = right;
+        }
 
-		protected override GraphicRect New(Graphics g, Rectangle r, Brush b, Pen p, Font f, StringFormat sf, int lo, int to)
-		{
-			return new CenterGraphicRect(g, r, b, p, f, sf, lo, to, left, right);
-		}
+        protected override GraphicRect New(Graphics g, Rectangle r, Brush b, Pen p, Font f, StringFormat sf, int lo, int to)
+        {
+            return new CenterGraphicRect(g, r, b, p, f, sf, lo, to, left, right);
+        }
 
-        internal int Width { get { return right-left; } }
-		
-		public override GraphicRect DrawText(string text, int? leftOffset = 0, int? topOffset = 0)
-		{
+        internal int Width { get { return right - left; } }
+
+        public override GraphicRect DrawText(string text, int? leftOffset = 0, int? topOffset = 0)
+        {
             var lo = this.leftOffset;
             var to = this.topOffset;
 
@@ -63,15 +62,15 @@ namespace iRacingDirector.Plugin
 
             var size = TextRenderer.MeasureText(g, text, f, r.Size, TextFormatFlags.NoPadding);
 
-			var newleft = Math.Min(r.Left + lo, left);
-			var newRight = Math.Max(right, r.Left + lo + (int)size.Width);
+            var newleft = Math.Min(r.Left + lo, left);
+            var newRight = Math.Max(right, r.Left + lo + (int)size.Width);
 
-			return new CenterGraphicRect(g, r, b, p, f, sf, lo, to, newleft, newRight);
-		}
+            return new CenterGraphicRect(g, r, b, p, f, sf, lo, to, newleft, newRight);
+        }
 
         public override GraphicRect DrawRectangleWithBorder()
         {
             return this;
         }
-	}
+    }
 }

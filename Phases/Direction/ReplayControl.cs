@@ -61,7 +61,7 @@ namespace iRacingReplayDirector.Phases.Direction
 
             var ruleForFirstSectors = Settings.Default.IgnoreIncidentsDuringRaceStart ? ruleFirstSectors : ruleFirstSectors.WithVeto(ruleUnlimitedIncident);
 
-            directionRules = new IDirectionRule[] { 
+            directionRules = new IDirectionRule[] {
                 ruleLastSectors,
                 ruleForFirstSectors,
                 rulePaceLaps.WithVeto(ruleUnlimitedIncident.WithVeto(ruleLastSectors)),

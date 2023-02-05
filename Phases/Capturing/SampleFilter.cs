@@ -16,16 +16,12 @@
 // You should have received a copy of the GNU General Public License333
 // along with iRacingReplayDirector.  If not, see <http://www.gnu.org/licenses/>.
 
-using iRacingReplayDirector.Support;
 using iRacingSDK;
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 
 namespace iRacingReplayDirector.Phases.Capturing
 {
-    public class SampleFilter 
+    public class SampleFilter
     {
         readonly Action<DataSample, TimeSpan> processor;
         readonly double period;

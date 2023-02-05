@@ -1,10 +1,9 @@
-﻿using System;
+﻿using iRacingReplayDirector.Phases;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using iRacingDirector;
-using iRacingReplayDirector.Phases;
 
 namespace iRacingDirector.Plugin.Tester
 {
@@ -49,7 +48,7 @@ namespace iRacingDirector.Plugin.Tester
 
         void halfSizeButton_Click(object sender, EventArgs e)
         {
-            domainForm.SetClientSize(new Size(1920 / 2 , 1080 / 2));
+            domainForm.SetClientSize(new Size(1920 / 2, 1080 / 2));
         }
 
         void thirdSizeButton_Click(object sender, EventArgs e)
@@ -85,9 +84,10 @@ namespace iRacingDirector.Plugin.Tester
 
             domainForm = DomainForm.CreateRemote(pluginAssemblyFileName.Text);
             domainForm.SetSessionDataFileName(sampleSessionDataFileName.Text);
-   
+
             domainForm.SetOnError((s, m) => errorDetailsTextBox.Text = s + "\r\n" + m);
-            domainForm.SetOnAnimationTick((d, f) => {
+            domainForm.SetOnAnimationTick((d, f) =>
+            {
                 playbackTimeLabel.Text = String.Format("Time: {0} over {1}", f, d);
 
                 double percentage = f / d;
@@ -134,10 +134,10 @@ namespace iRacingDirector.Plugin.Tester
             watcher.Changed += (s, e) => context.Post(Watcher_Changed);
             this.watcher.EnableRaisingEvents = true;
         }
-        
+
         private void Watcher_Changed()
         {
-            if(this.changedTimer != null)
+            if (this.changedTimer != null)
             {
                 this.changedTimer.Stop();
                 this.changedTimer.Dispose();

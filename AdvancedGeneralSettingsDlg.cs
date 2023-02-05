@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using iRacingReplayDirector.Support;
+using System;
 using System.Windows.Forms;
-using iRacingSDK.Support;
 using WK.Libraries.HotkeyListenerNS;
-using iRacingReplayDirector.Support;
 
 namespace iRacingReplayDirector
 {
@@ -37,7 +29,7 @@ namespace iRacingReplayDirector
             InitializeComponent();
 
             //dataBinding.AddNew();
-            
+
             //DataBindings.Add(this.tbCameraStickyPeriod.DataBindings.Add("Text", this.settings, "CameraStickyPeriod", true, DataSourceUpdateMode.OnPropertyChanged));
             //DataBindings.Add(this.tbCameraStickyPeriod.DataBindings.Add("Text", this.settings, "CameraStickyPeriod", true, DataSourceUpdateMode.OnPropertyChanged));
 
@@ -68,7 +60,7 @@ namespace iRacingReplayDirector
         {
 
         }
-      
+
         private void textBoxSettingDescription_TextChanged(object sender, EventArgs e)
         {
 
@@ -153,7 +145,7 @@ namespace iRacingReplayDirector
             Settings.Default.strHotKeyStopStart = tbHotKeyStopStart.Text;
             Settings.Default.strHotKeyPauseResume = tbHotKeyPauseResume.Text;
             Settings.Default.Save();
-            
+
 
             //set Dialog Status to close form
             this.DialogResult = DialogResult.OK;

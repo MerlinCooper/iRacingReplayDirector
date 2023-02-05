@@ -28,7 +28,7 @@ namespace iRacingReplayDirector.Phases.Capturing
         public LogCamDriver()
         {
         }
-        
+
         public void Process(DataSample data, TimeSpan relativeTime)
         {
             try
@@ -54,7 +54,7 @@ namespace iRacingReplayDirector.Phases.Capturing
                     cameraGroupName,
                     cameraName);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 TraceError.WriteLine(e.Message);
                 TraceError.WriteLine(e.StackTrace);
