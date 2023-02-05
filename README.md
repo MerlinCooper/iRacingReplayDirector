@@ -2,7 +2,6 @@
 | -------------------- | -------------------- | -------------------- |
 | ![Build status](https://dev.azure.com/MerlinCooper/iRacingReplayDirector/_apis/build/status/iRacingReplayDirector_Release_Weekly) | ![Build Status](https://dev.azure.com/MerlinCooper/iRacingReplayDirector/_apis/build/status/iRacingReplayDirector_Master?branchName=master) | ![Build Status](https://dev.azure.com/MerlinCooper/iRacingReplayDirector/_apis/build/status/iRacingReplayDirector_OBS%20Fast%20Record%20Branch%20(alpha)?branchName=Fast_Video_Recording_With_OBS) |
 
-
 iRacingReplayDirector
 =====================
 
@@ -29,6 +28,11 @@ Requirements
 * Replays should capture all competitors. Before the session, under the graphics options in iRacing, set the Max Cars box to a number greater than number of competitors.
 * Only tested with the PCM audio codec
 * Only supports MPEG/H.264 video codec for capture/conversion
+
+Known Issues
+============
+
+- Microsoft security features do prevent loading the plugin dll's used for transcoding. [If transcoding doesn start check whether the dlls are blocked.](https://github.com/MerlinCooper/iRacingReplayDirector/issues/91#issuecomment-1417442193). Looking for a permanent corrective action - any advise highly appreciated.  
 
 HOW TO USE
 ==========
