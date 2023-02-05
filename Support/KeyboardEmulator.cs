@@ -1,9 +1,8 @@
-﻿using System;
+﻿using iRacingSDK.Support;
+using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using WK.Libraries.HotkeyListenerNS;
-using iRacingSDK.Support;
-using WindowsInput;
 
 
 
@@ -23,7 +22,7 @@ namespace iRacingReplayDirector.Support
 
         static public void SendHotkey(Hotkey hotkey)
         {
-            Win32VirtualKeyCodes modifier  = GetWin32KeyCode(hotkey.Modifiers);
+            Win32VirtualKeyCodes modifier = GetWin32KeyCode(hotkey.Modifiers);
             Win32VirtualKeyCodes key = GetWin32KeyCode(hotkey.KeyCode);
 
             SendKeyStrokes(key, modifier);
@@ -35,7 +34,7 @@ namespace iRacingReplayDirector.Support
         }
 
 
-        static private void SendKeyStrokes (Win32VirtualKeyCodes key= Win32VirtualKeyCodes.VK_NONAME, Win32VirtualKeyCodes modifier= Win32VirtualKeyCodes.VK_NONAME)
+        static private void SendKeyStrokes(Win32VirtualKeyCodes key = Win32VirtualKeyCodes.VK_NONAME, Win32VirtualKeyCodes modifier = Win32VirtualKeyCodes.VK_NONAME)
         {
             int keyPressDelay = 200;
 
@@ -53,9 +52,9 @@ namespace iRacingReplayDirector.Support
 
             if (modifier != Win32VirtualKeyCodes.VK_NONAME)
             {
-                keybd_event((Byte)modifier, 0, 0x02, UIntPtr.Zero); 
+                keybd_event((Byte)modifier, 0, 0x02, UIntPtr.Zero);
             }
-                
+
             TraceDebug.WriteLine("keybd_event sent: modifier = {0} {1} | key = {2} {3}".F(modifier.ToString(), (Byte)modifier, key.ToString(), (Byte)key));
         }
 
@@ -63,21 +62,21 @@ namespace iRacingReplayDirector.Support
         {
             switch (source.ToString())
             {
-                case "Alt":     return Win32VirtualKeyCodes.VK_MENU;
+                case "Alt": return Win32VirtualKeyCodes.VK_MENU;
                 case "Control": return Win32VirtualKeyCodes.VK_CONTROL;
-                case "Shift":   return Win32VirtualKeyCodes.VK_SHIFT;
-                case "F1":      return Win32VirtualKeyCodes.VK_F1;
-                case "F2":      return Win32VirtualKeyCodes.VK_F2;
-                case "F3":      return Win32VirtualKeyCodes.VK_F3;
-                case "F4":      return Win32VirtualKeyCodes.VK_F4;
-                case "F5":      return Win32VirtualKeyCodes.VK_F5;
-                case "F6":      return Win32VirtualKeyCodes.VK_F6;
-                case "F7":      return Win32VirtualKeyCodes.VK_F7;
-                case "F8":      return Win32VirtualKeyCodes.VK_F8;
-                case "F9":      return Win32VirtualKeyCodes.VK_F9;
-                case "F10":     return Win32VirtualKeyCodes.VK_F10;
-                case "F11":     return Win32VirtualKeyCodes.VK_F11;
-                case "F12":     return Win32VirtualKeyCodes.VK_F12;
+                case "Shift": return Win32VirtualKeyCodes.VK_SHIFT;
+                case "F1": return Win32VirtualKeyCodes.VK_F1;
+                case "F2": return Win32VirtualKeyCodes.VK_F2;
+                case "F3": return Win32VirtualKeyCodes.VK_F3;
+                case "F4": return Win32VirtualKeyCodes.VK_F4;
+                case "F5": return Win32VirtualKeyCodes.VK_F5;
+                case "F6": return Win32VirtualKeyCodes.VK_F6;
+                case "F7": return Win32VirtualKeyCodes.VK_F7;
+                case "F8": return Win32VirtualKeyCodes.VK_F8;
+                case "F9": return Win32VirtualKeyCodes.VK_F9;
+                case "F10": return Win32VirtualKeyCodes.VK_F10;
+                case "F11": return Win32VirtualKeyCodes.VK_F11;
+                case "F12": return Win32VirtualKeyCodes.VK_F12;
             }
             return Win32VirtualKeyCodes.VK_NONAME;
         }
@@ -93,7 +92,7 @@ namespace iRacingReplayDirector.Support
                                     //VK_XBUTTON2 	0x06 	X2-Maustaste
                                     //- 	0x07 	Nicht definiert
                                     //VK_BACK 	0x08 	Rücktaste
-            VK_TAB = 0x09, 	        //TABULATORTASTE
+            VK_TAB = 0x09,          //TABULATORTASTE
                                     //- 	0x0A-0B 	Reserviert
                                     //VK_CLEAR 	0x0C 	ENTF-TASTE
                                     //VK_RETURN 	0x0D 	EINGABETASTE
@@ -215,68 +214,68 @@ namespace iRacingReplayDirector.Support
             VK_F22 = 0x85,      //F22-Taste
             VK_F23 = 0x86,      //F23-Taste
             VK_F24 = 0x87,       //F24-Taste
-                                //- 	0x88-8F 	Nicht zugewiesen
-                                //VK_NUMLOCK 	0x90 	NUM-SPERRtaste
-                                //VK_SCROLL 	0x91 	SCROLL-SPERRtaste
-                                //	0x92-96 	OEM-spezifischer OEM
-                                //- 	0x97-9F 	Nicht zugewiesen
-                                //VK_LSHIFT 	0xA0 	Linke UMSCHALTTASTE
-                                //VK_RSHIFT 	0xA1 	Rechte UMSCHALTTASTE
-                                //VK_LCONTROL 	0xA2 	Linke STRG-Taste
-                                //VK_RCONTROL 	0xA3 	Rechte STRG-Taste
-                                //VK_LMENU 	0xA4 	Linke Menütaste
-                                //VK_RMENU 	0xA5 	Rechte Menütaste
-                                //VK_BROWSER_BACK 	0xA6 	Browserrücktaste
-                                //VK_BROWSER_FORWARD 	0xA7 	Browser-Vorwärtstaste
-                                //VK_BROWSER_REFRESH 	0xA8 	Browseraktualisierungsschlüssel
-                                //VK_BROWSER_STOP 	0xA9 	Browserstopptaste
-                                //VK_BROWSER_SEARCH 	0xAA 	Browser-Suchtaste
-                                //VK_BROWSER_FAVORITES 	0xAB 	Browserfavoritentaste
-                                //VK_BROWSER_HOME 	0xAC 	Browserstart- und Starttaste
-                                //VK_VOLUME_MUTE 	0xAD 	Lautstärke stummschalten
-                                //VK_VOLUME_DOWN 	0xAE 	LAUTSTÄRKE-NACH-UNTEN-TASTE
-                                //VK_VOLUME_UP 	0xAF 	Lautstärke nach oben
-                                //VK_MEDIA_NEXT_TRACK 	0xB0 	Nächster Nachverfolgungsschlüssel
-                                //VK_MEDIA_PREV_TRACK 	0xB1 	Vorheriger Nachverfolgungsschlüssel
-                                //VK_MEDIA_STOP 	0xB2 	Medientaste beenden
-                                //VK_MEDIA_PLAY_PAUSE 	0xB3 	Medientaste wiedergeben/anhalten
-                                //VK_LAUNCH_MAIL 	0xB4 	E-Mail-Taste starten
-                                //VK_LAUNCH_MEDIA_SELECT 	0xB5 	Medientaste auswählen
-                                //VK_LAUNCH_APP1 	0xB6 	Anwendung 1 starten
-                                //VK_LAUNCH_APP2 	0xB7 	Anwendung 2 starten
-                                //- 	0xB8-B9     Reserviert
-                                //VK_OEM_1 	0xBA 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste ";:"
-                                //VK_OEM_PLUS 	0xBB 	Für jedes Land/jede Region, den Schlüssel "+"
-                                //VK_OEM_COMMA 	0xBC 	Für jedes Land/jede Region, den Schlüssel ","
-                                //VK_OEM_MINUS 	0xBD 	Für jedes Land/jede Region ist der Schlüssel "-"
-                                //VK_OEM_PERIOD 	0xBE 	Für jedes Land/jede Region ist der Schlüssel "."
-                                //VK_OEM_2 	0xBF 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur ist das "/?" Schlüssel
-                                //VK_OEM_3 	0xC0 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "~"
-                                //- 	0xC1-D7     Reserviert
-                                //- 	0xD8-DA     Nicht zugewiesen
-                                //VK_OEM_4 	0xDB 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "[{"
-                                //VK_OEM_5 	0xDC 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "\|"
-                                //VK_OEM_6 	0xDD 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "]}"
-                                //VK_OEM_7 	0xDE 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "single-quote/double-quote"
-                                //VK_OEM_8 	0xDF 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren.
-                                //- 	0xE0 	Reserviert
-                                //	0xE1 	OEM-spezifisch
-                                //VK_OEM_102 	0xE2 	Die <> Tasten auf der US-Standardtastatatur oder die \\| Taste auf der Nicht-US 102-Tastatur
-                                //	0xE3-E4     OEM-spezifisch
-                                //VK_PROCESSKEY 	0xE5 	IME PROCESS-Schlüssel
-                                //	0xE6 	OEM-spezifisch
-                                //VK_PACKET 	0xE7 	Wird verwendet, um Unicode-Zeichen wie Tastaturanschläge zu übergeben. Die VK_PACKET Taste ist das niedrige Wort eines 32-Bit-Werts für virtuelle Tasten, der für Nicht-Tastatureingabemethoden verwendet wird. Weitere Informationen finden Sie unter "Remarkierung" in KEYBDINPUT, SendInputWM_KEYDOWN, undWM_KEYUP
-                                //- 	0xE8 	Nicht zugewiesen
-                                //	0xE9-F5     OEM-spezifisch
-                                //VK_ATTN 	0xF6 	Attn-Taste
-                                //VK_CRSEL 	0xF7 	CrSel-Taste
-                                //VK_EXSEL 	0xF8 	ExSel-Taste
-                                //VK_EREOF 	0xF9 	EOF-Taste löschen
-                                //VK_PLAY 	0xFA 	Wiedergabetaste
-                                //VK_ZOOM 	0xFB 	Zoomtaste
-        VK_NONAME = 0xFC 	    //Reserviert
-                                //VK_PA1 	0xFD 	PA1-Taste
-                                //VK_OEM_CLEAR 	0xFE 	Unverschlüsselter Schlüssel
+                                 //- 	0x88-8F 	Nicht zugewiesen
+                                 //VK_NUMLOCK 	0x90 	NUM-SPERRtaste
+                                 //VK_SCROLL 	0x91 	SCROLL-SPERRtaste
+                                 //	0x92-96 	OEM-spezifischer OEM
+                                 //- 	0x97-9F 	Nicht zugewiesen
+                                 //VK_LSHIFT 	0xA0 	Linke UMSCHALTTASTE
+                                 //VK_RSHIFT 	0xA1 	Rechte UMSCHALTTASTE
+                                 //VK_LCONTROL 	0xA2 	Linke STRG-Taste
+                                 //VK_RCONTROL 	0xA3 	Rechte STRG-Taste
+                                 //VK_LMENU 	0xA4 	Linke Menütaste
+                                 //VK_RMENU 	0xA5 	Rechte Menütaste
+                                 //VK_BROWSER_BACK 	0xA6 	Browserrücktaste
+                                 //VK_BROWSER_FORWARD 	0xA7 	Browser-Vorwärtstaste
+                                 //VK_BROWSER_REFRESH 	0xA8 	Browseraktualisierungsschlüssel
+                                 //VK_BROWSER_STOP 	0xA9 	Browserstopptaste
+                                 //VK_BROWSER_SEARCH 	0xAA 	Browser-Suchtaste
+                                 //VK_BROWSER_FAVORITES 	0xAB 	Browserfavoritentaste
+                                 //VK_BROWSER_HOME 	0xAC 	Browserstart- und Starttaste
+                                 //VK_VOLUME_MUTE 	0xAD 	Lautstärke stummschalten
+                                 //VK_VOLUME_DOWN 	0xAE 	LAUTSTÄRKE-NACH-UNTEN-TASTE
+                                 //VK_VOLUME_UP 	0xAF 	Lautstärke nach oben
+                                 //VK_MEDIA_NEXT_TRACK 	0xB0 	Nächster Nachverfolgungsschlüssel
+                                 //VK_MEDIA_PREV_TRACK 	0xB1 	Vorheriger Nachverfolgungsschlüssel
+                                 //VK_MEDIA_STOP 	0xB2 	Medientaste beenden
+                                 //VK_MEDIA_PLAY_PAUSE 	0xB3 	Medientaste wiedergeben/anhalten
+                                 //VK_LAUNCH_MAIL 	0xB4 	E-Mail-Taste starten
+                                 //VK_LAUNCH_MEDIA_SELECT 	0xB5 	Medientaste auswählen
+                                 //VK_LAUNCH_APP1 	0xB6 	Anwendung 1 starten
+                                 //VK_LAUNCH_APP2 	0xB7 	Anwendung 2 starten
+                                 //- 	0xB8-B9     Reserviert
+                                 //VK_OEM_1 	0xBA 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste ";:"
+                                 //VK_OEM_PLUS 	0xBB 	Für jedes Land/jede Region, den Schlüssel "+"
+                                 //VK_OEM_COMMA 	0xBC 	Für jedes Land/jede Region, den Schlüssel ","
+                                 //VK_OEM_MINUS 	0xBD 	Für jedes Land/jede Region ist der Schlüssel "-"
+                                 //VK_OEM_PERIOD 	0xBE 	Für jedes Land/jede Region ist der Schlüssel "."
+                                 //VK_OEM_2 	0xBF 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur ist das "/?" Schlüssel
+                                 //VK_OEM_3 	0xC0 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "~"
+                                 //- 	0xC1-D7     Reserviert
+                                 //- 	0xD8-DA     Nicht zugewiesen
+                                 //VK_OEM_4 	0xDB 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "[{"
+                                 //VK_OEM_5 	0xDC 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "\|"
+                                 //VK_OEM_6 	0xDD 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "]}"
+                                 //VK_OEM_7 	0xDE 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren. Für die US-Standardtastatur wird die Taste "single-quote/double-quote"
+                                 //VK_OEM_8 	0xDF 	Wird für verschiedene Zeichen verwendet; sie kann je nach Tastatur variieren.
+                                 //- 	0xE0 	Reserviert
+                                 //	0xE1 	OEM-spezifisch
+                                 //VK_OEM_102 	0xE2 	Die <> Tasten auf der US-Standardtastatatur oder die \\| Taste auf der Nicht-US 102-Tastatur
+                                 //	0xE3-E4     OEM-spezifisch
+                                 //VK_PROCESSKEY 	0xE5 	IME PROCESS-Schlüssel
+                                 //	0xE6 	OEM-spezifisch
+                                 //VK_PACKET 	0xE7 	Wird verwendet, um Unicode-Zeichen wie Tastaturanschläge zu übergeben. Die VK_PACKET Taste ist das niedrige Wort eines 32-Bit-Werts für virtuelle Tasten, der für Nicht-Tastatureingabemethoden verwendet wird. Weitere Informationen finden Sie unter "Remarkierung" in KEYBDINPUT, SendInputWM_KEYDOWN, undWM_KEYUP
+                                 //- 	0xE8 	Nicht zugewiesen
+                                 //	0xE9-F5     OEM-spezifisch
+                                 //VK_ATTN 	0xF6 	Attn-Taste
+                                 //VK_CRSEL 	0xF7 	CrSel-Taste
+                                 //VK_EXSEL 	0xF8 	ExSel-Taste
+                                 //VK_EREOF 	0xF9 	EOF-Taste löschen
+                                 //VK_PLAY 	0xFA 	Wiedergabetaste
+                                 //VK_ZOOM 	0xFB 	Zoomtaste
+            VK_NONAME = 0xFC        //Reserviert
+                                    //VK_PA1 	0xFD 	PA1-Taste
+                                    //VK_OEM_CLEAR 	0xFE 	Unverschlüsselter Schlüssel
         }
 
 

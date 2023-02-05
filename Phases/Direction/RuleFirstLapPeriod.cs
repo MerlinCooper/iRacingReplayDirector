@@ -46,13 +46,13 @@ namespace iRacingReplayDirector.Phases.Direction
             var isInFirstPeriod = InFirstLapPeriod(data);
 
             if (isInFirstPeriod)
-                OnlyOnce(ref startedFirstLapPeriod, () => 
+                OnlyOnce(ref startedFirstLapPeriod, () =>
                 {
                     editMarker.Start();
                     TraceInfo.WriteLine("{0} Tracking leader from race start for period of {1}", data.Telemetry.SessionTimeSpan, Settings.Default.FollowLeaderAtRaceStartPeriod);
                 });
             else
-                OnlyOnce(ref completedFirstLapPeriod, () => 
+                OnlyOnce(ref completedFirstLapPeriod, () =>
                 {
                     editMarker.Stop();
                     TraceInfo.WriteLine("{0} Leader has completed first lap period.  Activating normal camera/driver selection rules.", data.Telemetry.SessionTimeSpan);
@@ -74,7 +74,7 @@ namespace iRacingReplayDirector.Phases.Direction
 
         bool InFirstLapPeriod(DataSample data)
         {
-            if( !raceHasStarted)
+            if (!raceHasStarted)
             {
                 raceHasStarted = data.Telemetry.SessionState == SessionState.Racing;
                 raceStartTime = data.Telemetry.SessionTimeSpan;
@@ -94,7 +94,7 @@ namespace iRacingReplayDirector.Phases.Direction
                 //InterestState curState = editMarker.getInterestState();
                 if (editMarker.getInterestState() == InterestState.FirstLap)
                 {
-                    
+
                     ////if in first lap make sure that first car on track is selected as leader
                     while (leader.IsInPits)
                     {
@@ -104,7 +104,7 @@ namespace iRacingReplayDirector.Phases.Direction
                     }
                     ;
                 }
-                
+
 
                 cameraControl.CameraOnDriver(leader.Details.CarNumberRaw, cameraControl.RaceStartCameraNumber);
 

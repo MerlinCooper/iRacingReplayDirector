@@ -43,10 +43,6 @@
       <Project>{0e523573-2972-4dc0-aecb-c4cf746854bb}</Project>
       <Name>iRacingReplayOverlay.net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\iRacingSDK.Net\iRacingSDK.csproj">
-      <Project>{5422ae20-f220-4be1-9e61-5296981abb5c}</Project>
-      <Name>iRacingSDK</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SuperMFLib\mfnet\mflib\src\MediaFoundation.csproj">
       <Project>{b78c0f3b-071a-4fd2-829d-7a67e0f7bd1c}</Project>
       <Name>MediaFoundation</Name>

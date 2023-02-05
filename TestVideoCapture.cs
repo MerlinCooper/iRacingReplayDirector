@@ -27,7 +27,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Win32;
 
 namespace iRacingReplayDirector
 {
@@ -35,7 +34,7 @@ namespace iRacingReplayDirector
     {
         MyListener listener;
         Task task;
-        
+
         public TestVideoCapture()
         {
             InitializeComponent();
@@ -95,7 +94,7 @@ namespace iRacingReplayDirector
             try
             {
                 TraceInfo.WriteLine("Switching to iRacing ....");
-                 
+
                 var hwnd = Win32.Messages.FindWindow(null, "iRacing.com Simulator");
                 Win32.Messages.ShowWindow(hwnd, Win32.Messages.SW_SHOWNORMAL);
                 Win32.Messages.SetForegroundWindow(hwnd);
@@ -152,7 +151,7 @@ namespace iRacingReplayDirector
                     TraceInfo.WriteLine("Failure!");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 TraceError.WriteLine(e.Message);
                 TraceError.WriteLine(e.StackTrace);

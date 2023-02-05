@@ -40,7 +40,7 @@ namespace iRacingReplayDirector.Phases
         bool bRecordUsingPauseResume;
         bool bCloseiRacingAfterRecording;
 
-        public IRacingReplay(bool shortTestOnly = false, bool bRecordUsingPauseResume=false, bool bCloseiRacingAfterRecording=false)
+        public IRacingReplay(bool shortTestOnly = false, bool bRecordUsingPauseResume = false, bool bCloseiRacingAfterRecording = false)
         {
             this.shortTestOnly = shortTestOnly;
             this.bRecordUsingPauseResume = bRecordUsingPauseResume;
@@ -50,7 +50,7 @@ namespace iRacingReplayDirector.Phases
         private void Add(Action<Action> action, Action onComplete)
         {
             var context = SynchronizationContext.Current;
-            if( context != null)
+            if (context != null)
                 actions.Add(() => action(() => context.Post(onComplete)));
             else
                 actions.Add(() => action(onComplete));
@@ -79,8 +79,8 @@ namespace iRacingReplayDirector.Phases
 
         public IRacingReplay AnalyseRace(Action onComplete)
         {
-            Add(_AnalyseRace,  onComplete);
-            
+            Add(_AnalyseRace, onComplete);
+
             return this;
         }
 
@@ -124,7 +124,7 @@ namespace iRacingReplayDirector.Phases
         public IRacingReplay OverlayRaceDataOntoVideo(Action<long, long> progress, Action completed, bool highlightsOnly, bool shutdownAfterCompleted)
         {
             var context = SynchronizationContext.Current;
-            
+
             actions.Add(
                 () => _OverlayRaceDataOntoVideo(
                     (c, d) => context.Post(() => progress(c, d)),
@@ -134,7 +134,7 @@ namespace iRacingReplayDirector.Phases
                     token
                 )
             );
-            
+
             return this;
         }
 
@@ -163,7 +163,8 @@ namespace iRacingReplayDirector.Phases
             cancellationTokenSource = new CancellationTokenSource();
             token = cancellationTokenSource.Token;
 
-            backgrounTask = new Task(() => {
+            backgrounTask = new Task(() =>
+            {
 
                 try
                 {
@@ -176,7 +177,7 @@ namespace iRacingReplayDirector.Phases
 
                     context.Post(() => onComplete(null));
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     TraceError.WriteLine(e.Message);
                     TraceError.WriteLine(e.StackTrace);

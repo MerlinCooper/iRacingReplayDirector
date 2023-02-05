@@ -53,7 +53,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
             var reader = readWriteFactory.CreateSourceReaderFromURL(this.FileName, attributes);
             TraceDebug.WriteLine("Opened file {0}.  Duration: {1}".F(this.FileName, reader.Duration.FromNanoToSeconds()));
 
-            return new SourceReaderExtra(this.FileName,  this.State,  reader);
+            return new SourceReaderExtra(this.FileName, this.State, reader);
         }
 
         public void Dispose()
@@ -61,7 +61,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
             SourceReader.Dispose();
         }
     }
-    
+
     class Transcoder
     {
         public IEnumerable<SourceReaderExtra> VideoFiles;
@@ -91,7 +91,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
                     var writeToSink = ConnectStreams(readers, sinkWriter);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return e.Message;
             }
@@ -131,7 +131,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
             }
             finally
             {
-                if(readers != null)
+                if (readers != null)
                     foreach (var r in readers)
                         r.Dispose();
             }
@@ -139,7 +139,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
 
         private ProcessSample ConnectStreams(IEnumerable<SourceReaderExtra> readers, SinkWriter sinkWriter)
         {
-            foreach( var r in readers)
+            foreach (var r in readers)
             {
                 SetAudioMediaType(r.SourceReader);
                 SetVideoMediaType(r.SourceReader);
@@ -170,7 +170,7 @@ namespace iRacingReplayDirector.Phases.Transcoding
 
                 return sourceStream;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(string.Format("Unable to decode audio stream. {0}", e.Message), e);
             }

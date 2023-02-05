@@ -108,10 +108,10 @@ namespace iRacingReplayDirector.Phases.Capturing
 
         public void Stop()
         {
-            raceEvents.Add(new OverlayData.RaceEvent 
+            raceEvents.Add(new OverlayData.RaceEvent
             {
-                Interest = InterestState.LastLap, 
-                StartTime = lastStartTime.TotalSeconds, 
+                Interest = InterestState.LastLap,
+                StartTime = lastStartTime.TotalSeconds,
                 EndTime = lastRelativeTime.TotalSeconds
             });
         }

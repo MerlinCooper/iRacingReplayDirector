@@ -16,9 +16,9 @@
 // You should have received a copy of the GNU General Public License
 // along with iRacingReplayDirector.  If not, see <http://www.gnu.org/licenses/>.
 
+using iRacingReplayDirector.Phases.Capturing;
 using iRacingSDK;
 using iRacingSDK.Support;
-using iRacingReplayDirector.Phases.Capturing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +67,7 @@ namespace iRacingReplayDirector.Phases.Direction
 
             defaultCamera = cameras.First(tc => tc.IsRaceStart);
         }
-        
+
         public TrackCamera FindACamera(IEnumerable<CameraAngle> cameraAngles, TrackCamera adjustedCamera = null, int adjustRatioBy = 1)
         {
             if (adjustedCamera != null)
@@ -78,7 +78,7 @@ namespace iRacingReplayDirector.Phases.Direction
             var camera = defaultCamera;
 
             var selectableCameras = cameras.Where(x => cameraAngles.Contains(x.CameraAngle));
-            int total = selectableCameras.Sum(x => x == adjustedCamera ? x.Ratio / adjustRatioBy: x.Ratio);
+            int total = selectableCameras.Sum(x => x == adjustedCamera ? x.Ratio / adjustRatioBy : x.Ratio);
 
             // If no camera within specified cameraAngles has non zero ratio select among all
             if (total == 0)
@@ -114,7 +114,7 @@ namespace iRacingReplayDirector.Phases.Direction
         //worker thread to switch cameras.
         private void CameraSwitcherWorkerTask()
         {
-            for(var iCamDriverIndex = 0; iCamDriverIndex < overlayData.CamDrivers.Count; iCamDriverIndex++)
+            for (var iCamDriverIndex = 0; iCamDriverIndex < overlayData.CamDrivers.Count; iCamDriverIndex++)
             {
                 //get object of current CamDriver
                 var curCamDriver = overlayData.CamDrivers[iCamDriverIndex];
@@ -124,7 +124,7 @@ namespace iRacingReplayDirector.Phases.Direction
                 double startTimeCurCamera = curCamDriver.StartTime;
                 try
                 {
-                    double startTimeNextCamera = overlayData.CamDrivers[iCamDriverIndex+1].StartTime;
+                    double startTimeNextCamera = overlayData.CamDrivers[iCamDriverIndex + 1].StartTime;
                     int camDuration = (int)(1000 * (startTimeNextCamera - startTimeCurCamera));
                     TraceDebug.WriteLine("Camera switched to driver {0} using camera-group {1}. Remaining Time: {2}".F(curCamDriver.CurrentDriver.UserName, curCamDriver.camGroupNumber, camDuration));
                     Thread.Sleep(camDuration);

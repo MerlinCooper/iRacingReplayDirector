@@ -35,7 +35,7 @@ namespace NoOverlay
                 .WithStringFormat(alignment)
                 .DrawText(text);
 
-                return rr;
+            return rr;
         }
 
         public static GraphicRect WithFontSizeOf(this GraphicRect rr, int fontSize)

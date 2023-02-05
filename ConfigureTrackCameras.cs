@@ -95,7 +95,7 @@ namespace iRacingReplayDirector
 
             var allCameras = trackCameras.Where(tc => tc.CameraName == cameraList.SelectedItems[0].Text);
 
-            foreach(var tc in allCameras)
+            foreach (var tc in allCameras)
                 tc.CameraAngle = (CameraAngle)cameraAngleSelection.SelectedIndex;
         }
 
@@ -130,7 +130,7 @@ namespace iRacingReplayDirector
                 return result;
             }
         }
-        
+
         void TrackCameraPerferences_Load(object sender, EventArgs e)
         {
             lastSample = new iRacingConnection().GetDataFeed().First();
@@ -182,7 +182,7 @@ namespace iRacingReplayDirector
                     if (similiarCamera != null)
                         trackCamera.CameraAngle = similiarCamera.CameraAngle;
                 }
-                
+
                 trackCameras.Add(trackCamera);
             }
         }

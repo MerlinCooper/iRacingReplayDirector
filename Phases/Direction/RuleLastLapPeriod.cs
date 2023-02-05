@@ -62,7 +62,7 @@ namespace iRacingReplayDirector.Phases.Direction
 
             return isInLastPeriod;
         }
-        
+
         public void Direct(DataSample data)
         {
             SwitchToFinishingDrivers(data);
@@ -86,8 +86,8 @@ namespace iRacingReplayDirector.Phases.Direction
             if (!data.Telemetry.LeaderHasFinished)
                 nextFinisher = data.Telemetry.Cars
                     .OrderBy(c => c.Position)
-                    .Where( c=> c.Details.Driver != null)
-                    .Where( c=> c.HasData)
+                    .Where(c => c.Details.Driver != null)
+                    .Where(c => c.HasData)
                     .First();
             else
                 nextFinisher = data.Telemetry.Cars

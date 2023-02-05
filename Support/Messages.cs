@@ -46,7 +46,7 @@ namespace iRacingReplayDirector.Support
         public override void WriteLine(string message, string category)
         {
             if (category == INFO || category == ERROR)
-                    WriteInfoLine(message);
+                WriteInfoLine(message);
         }
 
         public void WriteInfo(string message)
