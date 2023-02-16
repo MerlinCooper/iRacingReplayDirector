@@ -59,28 +59,31 @@ namespace iRacingReplayDirector
         {
             if (!pluginName.ToLower().EndsWith(".dll"))
                 pluginName = Path.Combine(PluginPath, pluginName, pluginName + ".dll");
-            /* previous code handling StandardOverlay different than other plugins - likely not necessary - currently in testing
-            if (pluginName == StandardOverlaysName)
-                pluginName = Path.Combine(PluginPath, StandardOverlayDirectory, StandardOverlayDirectory + ".dll");
-            else
-                pluginName = Path.Combine(PluginPath, pluginName, pluginName + ".dll");*/
-            TraceInfo.WriteLine("Trying to load overlay plugin:{0}", pluginName);
-            var an = AssemblyName.GetAssemblyName(pluginName);
-            var assembly = Assembly.Load(an);
-            TraceInfo.WriteLine("Plugin {0} successfully loaded", pluginName);
 
-            pluginType = assembly.GetTypes()
-                .Where(t => !t.IsInterface)
-                .Where(t => !t.IsAbstract)
-                .FirstOrDefault(t => t.FullName.EndsWith(".MyPlugin"));
+            try
+            {
+                TraceInfo.WriteLine("Trying to load overlay plugin:{0}", pluginName);
+                var an = AssemblyName.GetAssemblyName(pluginName);
+                var assembly = Assembly.Load(an);
+                TraceInfo.WriteLine("Plugin {0} successfully loaded", pluginName);
 
-            plugin = Activator.CreateInstance(pluginType);
+                pluginType = assembly.GetTypes()
+                    .Where(t => !t.IsInterface)
+                    .Where(t => !t.IsAbstract)
+                    .FirstOrDefault(t => t.FullName.EndsWith(".MyPlugin"));
 
-            var x = assembly.GetTypes();
+                plugin = Activator.CreateInstance(pluginType);
 
-            pluginSettingsType = assembly.GetTypes()
-                .Where(t => !t.IsInterface)
-                .FirstOrDefault(t => t.FullName.EndsWith(".Settings"));
+                var x = assembly.GetTypes();
+
+                pluginSettingsType = assembly.GetTypes()
+                    .Where(t => !t.IsInterface)
+                    .FirstOrDefault(t => t.FullName.EndsWith(".Settings"));
+            }catch (Exception ex)
+            {
+                TraceDebug.WriteLine(ex.ToString());
+            }
+            
         }
 
         public void DrawIntroFlashCard(long duration)

@@ -1,0 +1,4 @@
+﻿$(build.artifactstagingdirectory)\bin\Release\iRacingReplayDirector.exe
+$(build.artifactstagingdirectory)\bin\Release\Plugins\NoReplay\NoReplay.dll
+$(build.artifactstagingdirectory)\bin\Release\Plugins\JockeOverlays\JockeOverlays.dll
+$(build.artifactstagingdirectory)\bin\Release\Plugins\StandardOverlays\StandardOverlays.dll 
