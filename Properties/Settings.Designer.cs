@@ -118,5 +118,17 @@ namespace iRacingReplayDirector.Properties {
                 this["bHighLightVideoOnly"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bShowPreferedDriversOnly {
+            get {
+                return ((bool)(this["bShowPreferedDriversOnly"]));
+            }
+            set {
+                this["bShowPreferedDriversOnly"] = value;
+            }
+        }
     }
 }

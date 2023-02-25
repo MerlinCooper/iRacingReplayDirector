@@ -45,7 +45,9 @@ namespace iRacingReplayDirector.Phases.Direction
         {
             var isInFirstPeriod = InFirstLapPeriod(data);
 
-            if (isInFirstPeriod)
+            bool bFollowLeaderAtRaceStart = Settings.Default.FollowLeaderAtRaceStartPeriod > TimeSpan.Zero;
+
+            if (isInFirstPeriod && bFollowLeaderAtRaceStart)
                 OnlyOnce(ref startedFirstLapPeriod, () =>
                 {
                     editMarker.Start();
@@ -80,6 +82,11 @@ namespace iRacingReplayDirector.Phases.Direction
                 raceStartTime = data.Telemetry.SessionTimeSpan;
                 return true;
             }
+
+            //zeroTimeSpan = TimeSpan.Zero;
+            
+            //if (Settings.Default.FollowLeaderAtRaceStartPeriod == TimeSpan.Zero )
+            //    return false;
 
             return data.Telemetry.SessionTimeSpan < raceStartTime + Settings.Default.FollowLeaderAtRaceStartPeriod;
         }

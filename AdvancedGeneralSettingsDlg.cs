@@ -184,5 +184,10 @@ namespace iRacingReplayDirector
         {
 
         }
+
+        private void checkBox_PerferedDriversOnly_Enter(object sender, EventArgs e)
+        {
+            tbDescriptionDriversTab.Text = "When checked only specified preferred drivers will be shown in replay as long at least one driver is active in the race";
+        }
     }
 }
