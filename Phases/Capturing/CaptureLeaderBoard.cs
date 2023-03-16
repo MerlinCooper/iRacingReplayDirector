@@ -19,6 +19,7 @@
 using iRacingReplayDirector.Phases.Capturing.LeaderBoard;
 using iRacingSDK;
 using System;
+using System.Text.RegularExpressions;
 
 namespace iRacingReplayDirector.Phases.Capturing
 {
@@ -44,6 +45,14 @@ namespace iRacingReplayDirector.Phases.Capturing
         {
             if (raceStartTimeOffset == 0 && data.Telemetry.SessionState == SessionState.Racing)
                 raceStartTimeOffset = data.Telemetry.SessionTime;
+
+            if (Settings.Default.RemoveNumbersFromNames)
+            {
+                foreach (var driver in data.SessionData.DriverInfo.Drivers)
+                {
+                    driver.UserName = Regex.Replace(driver.UserName, "[0-9]*$", "");
+                }
+            }
 
             if (ProcessForStarting(data))
             {

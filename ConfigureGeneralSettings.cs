@@ -80,6 +80,9 @@ If selected, then the camera will only focus on battles of your preferred driver
 If not selected, then all battles can be selected, but your perferred drivers will be prioritised",
                "FocusOnPreferedDriver");
 
+            f.AddCheckboxField("Removed numbers from driver names",
+                @"Remove numbers from the end of driver usernames",
+                "RemoveNumbersFromNames");
             f.AddBlankRow();
             f.AddIntField("Show Results after nth position", "Show the results flash cards, after the driver in the selected position finishes.", "ResultsFlashCardPosition");
 

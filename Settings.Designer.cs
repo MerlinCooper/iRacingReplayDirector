@@ -226,6 +226,20 @@ namespace iRacingReplayDirector
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("False")]
+        public bool RemoveNumbersFromNames
+        {
+            get
+            {
+                return (bool)this["RemoveNumbersFromNames"];
+            }
+            set
+            {
+                this["RemoveNumbersFromNames"] = value;
+            }
+        }
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue("False")]
         public bool DisableIncidentsSearch
         {
             get
