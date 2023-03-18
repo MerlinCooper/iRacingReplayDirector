@@ -2,13 +2,13 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="iRacingDirector.Plugin.Tester.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="PluginAssemblyFileName" Type="System.String" Scope="Application">
+    <Setting Name="PluginAssemblyFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="BackgroundTestImageFileName" Type="System.String" Scope="Application">
+    <Setting Name="BackgroundTestImageFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SampleSessionDataFileName" Type="System.String" Scope="Application">
+    <Setting Name="SampleSessionDataFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

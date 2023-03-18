@@ -23,30 +23,39 @@ namespace iRacingDirector.Plugin.Tester.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string PluginAssemblyFileName {
             get {
                 return ((string)(this["PluginAssemblyFileName"]));
             }
+            set {
+                this["PluginAssemblyFileName"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string BackgroundTestImageFileName {
             get {
                 return ((string)(this["BackgroundTestImageFileName"]));
             }
+            set {
+                this["BackgroundTestImageFileName"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SampleSessionDataFileName {
             get {
                 return ((string)(this["SampleSessionDataFileName"]));
+            }
+            set {
+                this["SampleSessionDataFileName"] = value;
             }
         }
     }
