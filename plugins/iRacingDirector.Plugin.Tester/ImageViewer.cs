@@ -38,7 +38,7 @@ namespace iRacingDirector.Plugin.Tester
             if (PluginProxy != null)
                 throw new Exception("Attempt to load plugin twice");
 
-            PluginProxy = new PluginProxy(pluginPath);
+            PluginProxy = new PluginProxy(pluginPath,true);         //PlugInProxy already gets a fully qualified filename to the dll, therefore set second parameter to true
         }
 
         public void SetSessionDataPath(string replayConfigPath)
