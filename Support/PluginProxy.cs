@@ -55,10 +55,10 @@ namespace iRacingReplayDirector
             }
         }
 
-        public PluginProxy(string pluginName)
+        public PluginProxy(string pluginName, bool bFullQualifiedFilename = false)
         {
             if (!pluginName.ToLower().EndsWith(".dll"))
-                pluginName = Path.Combine(PluginPath, pluginName, pluginName + ".dll");
+                pluginName = bFullQualifiedFilename ? pluginName : Path.Combine(PluginPath, pluginName, pluginName + ".dll");
 
             try
             {

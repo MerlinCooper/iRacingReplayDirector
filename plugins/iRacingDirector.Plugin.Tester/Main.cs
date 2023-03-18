@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using YamlDotNet.Core.Tokens;
 
 namespace iRacingDirector.Plugin.Tester
 {
@@ -77,7 +78,22 @@ namespace iRacingDirector.Plugin.Tester
             Left = Screen.PrimaryScreen.WorkingArea.Width / 24;
             Top = Screen.PrimaryScreen.WorkingArea.Height / 16;
 
+            
+            //check if directory exists and let the user select a plugin to test if not 
+            if (!Directory.Exists(Properties.Settings.Default.PluginAssemblyFileName))
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Title = "Select iRacingReplayDirector - Plugin to be tested";
+                dialog.ShowDialog(this);
+
+                Properties.Settings.Default.PluginAssemblyFileName = dialog.FileName;       //change the settings parameter to selected plugin
+                Properties.Settings.Default.Save();                                         //and save the settings right away    
+                //string pathname = Path.GetDirectoryName(selectedfile);                    //no need to store the directory at this point of time seen. 
+            }
+
             pluginAssemblyFileName.Text = Properties.Settings.Default.PluginAssemblyFileName;
+
+
             backgroundTestImageFileName.Text = Properties.Settings.Default.BackgroundTestImageFileName;
 
             sampleSessionDataFileName.Text = Properties.Settings.Default.SampleSessionDataFileName;
