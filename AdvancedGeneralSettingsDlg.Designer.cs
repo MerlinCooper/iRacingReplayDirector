@@ -72,6 +72,7 @@
             this.listBox_PreferedDriverNames = new System.Windows.Forms.ListBox();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.checkBox_PerferedDriversOnly = new System.Windows.Forms.CheckBox();
             this.tabPageShortKeys = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tbHotKeysTab = new System.Windows.Forms.TextBox();
@@ -83,10 +84,9 @@
             this.label17 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.cbCaptureOpeningScenes = new System.Windows.Forms.CheckBox();
             this.ok_button = new System.Windows.Forms.Button();
             this.cancel_button = new System.Windows.Forms.Button();
-            this.checkBox_PerferedDriversOnly = new System.Windows.Forms.CheckBox();
-            this.cbCaptureOpeningScenes = new System.Windows.Forms.CheckBox();
             this.incidents_settings_tab.SuspendLayout();
             this.tabPageTiming.SuspendLayout();
             this.grpBox_Timing_Settings.SuspendLayout();
@@ -600,6 +600,7 @@
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(511, 92);
             this.checkedListBox1.TabIndex = 0;
+            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // groupBox6
             // 
@@ -610,6 +611,20 @@
             this.groupBox6.TabIndex = 1;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "General";
+            // 
+            // checkBox_PerferedDriversOnly
+            // 
+            this.checkBox_PerferedDriversOnly.AutoSize = true;
+            this.checkBox_PerferedDriversOnly.Checked = global::iRacingReplayDirector.Properties.Settings.Default.bShowPreferedDriversOnly;
+            this.checkBox_PerferedDriversOnly.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::iRacingReplayDirector.Properties.Settings.Default, "bShowPreferedDriversOnly", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBox_PerferedDriversOnly.Location = new System.Drawing.Point(15, 26);
+            this.checkBox_PerferedDriversOnly.Name = "checkBox_PerferedDriversOnly";
+            this.checkBox_PerferedDriversOnly.Size = new System.Drawing.Size(205, 23);
+            this.checkBox_PerferedDriversOnly.TabIndex = 0;
+            this.checkBox_PerferedDriversOnly.Text = "Show preferred drivers only";
+            this.checkBox_PerferedDriversOnly.UseVisualStyleBackColor = true;
+            this.checkBox_PerferedDriversOnly.CheckedChanged += new System.EventHandler(this.checkBox_PerferedDriversOnly_CheckedChanged);
+            this.checkBox_PerferedDriversOnly.Enter += new System.EventHandler(this.checkBox_PerferedDriversOnly_Enter);
             // 
             // tabPageShortKeys
             // 
@@ -725,6 +740,18 @@
             this.checkBox3.Text = "User to confirm start of next phaase (not implemented yet)";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
+            // cbCaptureOpeningScenes
+            // 
+            this.cbCaptureOpeningScenes.AutoSize = true;
+            this.cbCaptureOpeningScenes.Checked = global::iRacingReplayDirector.Properties.Settings.Default.bCaptureOpeningScene;
+            this.cbCaptureOpeningScenes.Location = new System.Drawing.Point(20, 22);
+            this.cbCaptureOpeningScenes.Name = "cbCaptureOpeningScenes";
+            this.cbCaptureOpeningScenes.Size = new System.Drawing.Size(187, 23);
+            this.cbCaptureOpeningScenes.TabIndex = 1;
+            this.cbCaptureOpeningScenes.Text = "Capture Opening Scenes";
+            this.cbCaptureOpeningScenes.UseVisualStyleBackColor = true;
+            this.cbCaptureOpeningScenes.CheckedChanged += new System.EventHandler(this.cbCaptureOpeningScenes_CheckedChanged);
+            // 
             // ok_button
             // 
             this.ok_button.Location = new System.Drawing.Point(626, 46);
@@ -747,32 +774,6 @@
             this.cancel_button.Text = "Cancel";
             this.cancel_button.UseVisualStyleBackColor = true;
             this.cancel_button.Click += new System.EventHandler(this.cancel_button_Click);
-            // 
-            // checkBox_PerferedDriversOnly
-            // 
-            this.checkBox_PerferedDriversOnly.AutoSize = true;
-            this.checkBox_PerferedDriversOnly.Checked = global::iRacingReplayDirector.Properties.Settings.Default.bShowPreferedDriversOnly;
-            this.checkBox_PerferedDriversOnly.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::iRacingReplayDirector.Properties.Settings.Default, "bShowPreferedDriversOnly", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBox_PerferedDriversOnly.Location = new System.Drawing.Point(15, 26);
-            this.checkBox_PerferedDriversOnly.Name = "checkBox_PerferedDriversOnly";
-            this.checkBox_PerferedDriversOnly.Size = new System.Drawing.Size(205, 23);
-            this.checkBox_PerferedDriversOnly.TabIndex = 0;
-            this.checkBox_PerferedDriversOnly.Text = "Show preferred drivers only";
-            this.checkBox_PerferedDriversOnly.UseVisualStyleBackColor = true;
-            this.checkBox_PerferedDriversOnly.CheckedChanged += new System.EventHandler(this.checkBox_PerferedDriversOnly_CheckedChanged);
-            this.checkBox_PerferedDriversOnly.Enter += new System.EventHandler(this.checkBox_PerferedDriversOnly_Enter);
-            // 
-            // cbCaptureOpeningScenes
-            // 
-            this.cbCaptureOpeningScenes.AutoSize = true;
-            this.cbCaptureOpeningScenes.Checked = global::iRacingReplayDirector.Properties.Settings.Default.bCaptureOpeningScene;
-            this.cbCaptureOpeningScenes.Location = new System.Drawing.Point(20, 22);
-            this.cbCaptureOpeningScenes.Name = "cbCaptureOpeningScenes";
-            this.cbCaptureOpeningScenes.Size = new System.Drawing.Size(187, 23);
-            this.cbCaptureOpeningScenes.TabIndex = 1;
-            this.cbCaptureOpeningScenes.Text = "Capture Opening Scenes";
-            this.cbCaptureOpeningScenes.UseVisualStyleBackColor = true;
-            this.cbCaptureOpeningScenes.CheckedChanged += new System.EventHandler(this.cbCaptureOpeningScenes_CheckedChanged);
             // 
             // AdvancedGeneralSettingsDlg
             // 

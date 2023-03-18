@@ -71,6 +71,8 @@ Larger values will cause the incident scanning phase to take longer.",
                 "IgnoreIncidentsDuringRaceStart");
 
             f.AddBlankRow();
+
+            //Preferred Drivers configuration
             f.AddStringField("Preferred driver names (comma separated):", "A comma seperated list of driver names, to preference in camera selection.", "PreferredDriverNames");
             f.AddCheckboxField("Only select battles for my perferred drivers",
                @"This option determines what drivers will be selected for battles.  
