@@ -25,9 +25,14 @@ namespace iRacingReplayDirector
 {
     public class PluginProxy
     {
+        public enum InfoToDraw { nothing = 0, intro = 1, race = 2, results = 4, everything = 15 };
+
         static readonly string PluginPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "plugins\\");
         const string StandardOverlayDirectory = "iRacingDirector.Plugin.StandardOverlays";
         const string StandardOverlaysName = "StandardOverlays";
+        InfoToDraw infoToDraw = InfoToDraw.everything;
+
+        
 
         dynamic plugin;
         Type pluginType;
@@ -55,8 +60,10 @@ namespace iRacingReplayDirector
             }
         }
 
-        public PluginProxy(string pluginName, bool bFullQualifiedFilename = false)
+        public PluginProxy(string pluginName, bool bFullQualifiedFilename = false, InfoToDraw infoToDraw = InfoToDraw.everything)
         {
+            this.infoToDraw = infoToDraw;                       //Remember what to draw
+
             if (!pluginName.ToLower().EndsWith(".dll"))
                 pluginName = bFullQualifiedFilename ? pluginName : Path.Combine(PluginPath, pluginName, pluginName + ".dll");
 
@@ -88,12 +95,14 @@ namespace iRacingReplayDirector
 
         public void DrawIntroFlashCard(long duration)
         {
-            plugin.IntroFlashCard(duration, this.timestamp);
+            if((infoToDraw & InfoToDraw.intro) == InfoToDraw.intro)
+                plugin.IntroFlashCard(duration, this.timestamp);
         }
 
         public void DrawOutroFlashCard(long duration, long period)
         {
-            plugin.OutroFlashCard(duration, period);
+            if ((infoToDraw & InfoToDraw.results) == InfoToDraw.results) 
+                plugin.OutroFlashCard(duration, period);
         }
 
         public void SetGraphics(Graphics graphics)
@@ -303,7 +312,8 @@ namespace iRacingReplayDirector
 
         public void RaceOverlay()
         {
-            plugin.RaceOverlay(timestamp);
+            if ((infoToDraw & InfoToDraw.race) == InfoToDraw.race)
+                plugin.RaceOverlay(timestamp);
         }
     }
 }
