@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Linq;
 
 //TODO: Add plugin management form to main app
 //TODO: Discover overlay plugins, and show list in form
@@ -25,21 +26,26 @@ namespace iRacingReplayDirector
 {
     public class PluginProxy
     {
-        public enum InfoToDraw { nothing = 0, intro = 1, race = 2, results = 4, everything = 15 };
+        public enum InfoToDraw_enum { nothing = 0, intro = 1, race = 2, outro = 4, everything = 7 };
 
         static readonly string PluginPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "plugins\\");
         const string StandardOverlayDirectory = "iRacingDirector.Plugin.StandardOverlays";
         const string StandardOverlaysName = "StandardOverlays";
-        InfoToDraw infoToDraw = InfoToDraw.everything;
-
         
-
         dynamic plugin;
         Type pluginType;
         OverlayData data;
         long timestamp;
         readonly Func<Type, object> CreateInstance = t => Activator.CreateInstance(t);
         readonly Type pluginSettingsType;
+
+        private InfoToDraw_enum infoToDraw;// = InfoToDraw.everything;
+
+        public InfoToDraw_enum InfoToDraw   // property
+        {
+            get { return infoToDraw; }   // get method
+            set { infoToDraw = infoToDraw | value; }  // set method - use binary or 
+        }
 
         public static string[] Names
         {
@@ -60,7 +66,7 @@ namespace iRacingReplayDirector
             }
         }
 
-        public PluginProxy(string pluginName, bool bFullQualifiedFilename = false, InfoToDraw infoToDraw = InfoToDraw.everything)
+        public PluginProxy(string pluginName, bool bFullQualifiedFilename = false, InfoToDraw_enum infoToDraw = InfoToDraw_enum.everything)
         {
             this.infoToDraw = infoToDraw;                       //Remember what to draw
 
@@ -95,13 +101,13 @@ namespace iRacingReplayDirector
 
         public void DrawIntroFlashCard(long duration)
         {
-            if((infoToDraw & InfoToDraw.intro) == InfoToDraw.intro)
+            if((infoToDraw & InfoToDraw_enum.intro) == InfoToDraw_enum.intro)
                 plugin.IntroFlashCard(duration, this.timestamp);
         }
 
         public void DrawOutroFlashCard(long duration, long period)
         {
-            if ((infoToDraw & InfoToDraw.results) == InfoToDraw.results) 
+            if ((infoToDraw & InfoToDraw_enum.outro) == InfoToDraw_enum.outro) 
                 plugin.OutroFlashCard(duration, period);
         }
 
@@ -312,7 +318,7 @@ namespace iRacingReplayDirector
 
         public void RaceOverlay()
         {
-            if ((infoToDraw & InfoToDraw.race) == InfoToDraw.race)
+            if ((infoToDraw & InfoToDraw_enum.race) == InfoToDraw_enum.race)
                 plugin.RaceOverlay(timestamp);
         }
     }
