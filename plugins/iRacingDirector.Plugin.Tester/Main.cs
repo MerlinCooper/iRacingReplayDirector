@@ -1,10 +1,12 @@
-﻿using iRacingReplayDirector.Phases;
+﻿using iRacingReplayDirector;
+using iRacingReplayDirector.Phases;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using YamlDotNet.Core.Tokens;
+using static iRacingReplayDirector.PluginProxy;
 
 namespace iRacingDirector.Plugin.Tester
 {
@@ -253,6 +255,29 @@ namespace iRacingDirector.Plugin.Tester
             var frm = new iRacingReplayDirector.PluginSettings(iRacingReplayDirector.Settings.Default, domainForm.GetSettingsList());
             frm.ShowDialog();
 
+        }
+
+        private void cb_OutroFlashCard_CheckedChanged(object sender, EventArgs e)
+        {
+            setFlashCardInfoToDraw();
+        }
+
+        private void cb_IntroFlashCard_CheckedChanged(object sender, EventArgs e)
+        {
+            setFlashCardInfoToDraw();
+        }
+
+        private void cb_RaceFlashCard_CheckedChanged(object sender, EventArgs e)
+        {
+            setFlashCardInfoToDraw();
+        }
+
+        private void setFlashCardInfoToDraw()
+        {
+            PluginProxy.InfoToDraw_enum toDraw = InfoToDraw_enum.nothing;
+            toDraw = cb_IntroFlashCard.Checked ? toDraw | InfoToDraw_enum.intro : toDraw & ~InfoToDraw_enum.intro;
+            toDraw = cb_RaceFlashCard.Checked ? toDraw | InfoToDraw_enum.race : toDraw & ~InfoToDraw_enum.race;
+            toDraw = cb_OutroFlashCard.Checked ? toDraw | InfoToDraw_enum.outro : toDraw & ~InfoToDraw_enum.outro;
         }
     }
 }

@@ -57,6 +57,9 @@
             this.playPauseButton = new System.Windows.Forms.Button();
             this.outroFlashCard = new System.Windows.Forms.Button();
             this.generalSettingsButton = new System.Windows.Forms.Button();
+            this.cb_IntroFlashCard = new System.Windows.Forms.CheckBox();
+            this.cb_RaceFlashCard = new System.Windows.Forms.CheckBox();
+            this.cb_OutroFlashCard = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.framesPerSecond)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playbackSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.replayProgress)).BeginInit();
@@ -404,11 +407,50 @@
             this.generalSettingsButton.Visible = false;
             this.generalSettingsButton.Click += new System.EventHandler(this.generalSettingsButton_Click);
             // 
+            // cb_IntroFlashCard
+            // 
+            this.cb_IntroFlashCard.AutoSize = true;
+            this.cb_IntroFlashCard.Checked = true;
+            this.cb_IntroFlashCard.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_IntroFlashCard.Location = new System.Drawing.Point(331, 168);
+            this.cb_IntroFlashCard.Name = "cb_IntroFlashCard";
+            this.cb_IntroFlashCard.Size = new System.Drawing.Size(15, 14);
+            this.cb_IntroFlashCard.TabIndex = 28;
+            this.cb_IntroFlashCard.UseVisualStyleBackColor = true;
+            this.cb_IntroFlashCard.CheckedChanged += new System.EventHandler(this.cb_IntroFlashCard_CheckedChanged);
+            // 
+            // cb_RaceFlashCard
+            // 
+            this.cb_RaceFlashCard.AutoSize = true;
+            this.cb_RaceFlashCard.Checked = true;
+            this.cb_RaceFlashCard.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_RaceFlashCard.Location = new System.Drawing.Point(331, 204);
+            this.cb_RaceFlashCard.Name = "cb_RaceFlashCard";
+            this.cb_RaceFlashCard.Size = new System.Drawing.Size(15, 14);
+            this.cb_RaceFlashCard.TabIndex = 28;
+            this.cb_RaceFlashCard.UseVisualStyleBackColor = true;
+            this.cb_RaceFlashCard.CheckedChanged += new System.EventHandler(this.cb_RaceFlashCard_CheckedChanged);
+            // 
+            // cb_OutroFlashCard
+            // 
+            this.cb_OutroFlashCard.AutoSize = true;
+            this.cb_OutroFlashCard.Checked = true;
+            this.cb_OutroFlashCard.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_OutroFlashCard.Location = new System.Drawing.Point(331, 242);
+            this.cb_OutroFlashCard.Name = "cb_OutroFlashCard";
+            this.cb_OutroFlashCard.Size = new System.Drawing.Size(15, 14);
+            this.cb_OutroFlashCard.TabIndex = 28;
+            this.cb_OutroFlashCard.UseVisualStyleBackColor = true;
+            this.cb_OutroFlashCard.CheckedChanged += new System.EventHandler(this.cb_OutroFlashCard_CheckedChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(847, 380);
+            this.Controls.Add(this.cb_OutroFlashCard);
+            this.Controls.Add(this.cb_RaceFlashCard);
+            this.Controls.Add(this.cb_IntroFlashCard);
             this.Controls.Add(this.generalSettingsButton);
             this.Controls.Add(this.outroFlashCard);
             this.Controls.Add(this.playPauseButton);
@@ -487,6 +529,9 @@
         private System.Windows.Forms.Button playPauseButton;
         private System.Windows.Forms.Button outroFlashCard;
         private System.Windows.Forms.Button generalSettingsButton;
+        private System.Windows.Forms.CheckBox cb_IntroFlashCard;
+        private System.Windows.Forms.CheckBox cb_RaceFlashCard;
+        private System.Windows.Forms.CheckBox cb_OutroFlashCard;
     }
 }
 
