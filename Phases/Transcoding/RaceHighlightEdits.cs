@@ -31,6 +31,12 @@ namespace iRacingReplayDirector.Phases.Transcoding
             get { return (Settings.Default.HighlightVideoTargetDuration.TotalMinutes * Settings.AppliedTimingFactor).Minutes(); }
         }
 
+        /// <summary>
+        /// Minimum seconds an event must contribute to be considered for gap-filling.
+        /// Events shorter than this are skipped to avoid fragmenting the highlight video.
+        /// </summary>
+        const double MinimumEventContributionSeconds = 15;
+
         public static List<VideoEdit> GetRaceEdits(this IEnumerable<OverlayData.RaceEvent> raceEvents)
         {
             var edits = raceEvents._GetRaceEdits().ToList();
@@ -43,9 +49,32 @@ namespace iRacingReplayDirector.Phases.Transcoding
             return edits;
         }
 
+        public static List<VideoEdit> GetRaceEdits(this OverlayData overlayData)
+        {
+            var edits = overlayData.RaceEvents._GetRaceEdits(overlayData.TimeForOutroOverlay).ToList();
+
+            foreach (var e in edits)
+                TraceInfo.WriteLine("Editing from {0} to {1}. Duration {2}", e.StartTimeSpan, e.EndTimeSpan, e.Duration);
+
+            TraceInfo.WriteLine("Total Edits time {0}", edits.Sum(e => e.Duration).Seconds());
+
+            return edits;
+        }
+
         static IEnumerable<VideoEdit> _GetRaceEdits(this IEnumerable<OverlayData.RaceEvent> raceEvents)
         {
-            var totalRaceEvents = GetInterestingRaceEvents(raceEvents);
+            return _GetRaceEdits(raceEvents, null);
+        }
+
+        static IEnumerable<VideoEdit> _GetRaceEdits(this IEnumerable<OverlayData.RaceEvent> raceEvents, double? timeForOutroOverlay)
+        {
+            // Get untrimmed events first to know the original video end time
+            var untrimmedEvents = GetInterestingRaceEvents(raceEvents, null);
+            var originalEndTime = untrimmedEvents.Max(e => e.EndTime);
+
+            var totalRaceEvents = timeForOutroOverlay.HasValue
+                ? GetInterestingRaceEvents(raceEvents, timeForOutroOverlay)
+                : untrimmedEvents;
 
             var previousEvent = totalRaceEvents.First();
             foreach (var re in totalRaceEvents.Skip(1))
@@ -64,14 +93,28 @@ namespace iRacingReplayDirector.Phases.Transcoding
 
                 previousEvent = re;
             }
+
+            // If we trimmed the last lap, cut everything after the trimmed end to the original end
+            var lastEvent = totalRaceEvents.Last();
+            if (timeForOutroOverlay.HasValue && lastEvent.EndTime < originalEndTime)
+            {
+                TraceInfo.WriteLine("Highlight Edits: Cutting trailing content from {0} to {1}",
+                    lastEvent.EndTime.Seconds(), originalEndTime.Seconds());
+                yield return new VideoEdit { StartTime = lastEvent.EndTime, EndTime = originalEndTime };
+            }
         }
 
         public static IOrderedEnumerable<OverlayData.RaceEvent> GetInterestingRaceEvents(IEnumerable<OverlayData.RaceEvent> raceEvents, Boolean bFastRecording = false)
         {
+            return GetInterestingRaceEvents(raceEvents, null, bFastRecording);
+        }
+
+        public static IOrderedEnumerable<OverlayData.RaceEvent> GetInterestingRaceEvents(IEnumerable<OverlayData.RaceEvent> raceEvents, double? timeForOutroOverlay, Boolean bFastRecording = false)
+        {
             TraceInfo.WriteLine("Highlight Edits: Total Duration Target: {0}", HighlightVideoDuration);
 
             double totalTime, incidentsRatio, restartsRatio, battlesRatio, timeForRaceEvents;
-            var firstAndLastLapRaceEvents = GetAllFirstAndLastLapEvents(raceEvents, out totalTime);
+            var firstAndLastLapRaceEvents = GetAllFirstAndLastLapEvents(raceEvents, timeForOutroOverlay, out totalTime);
 
             var incidentRaceEvents = GetAllRaceEvents(raceEvents, InterestState.Incident, 1.8, 0, out incidentsRatio);
             var restartRaceEvents = GetAllRaceEvents(raceEvents, InterestState.Restart, 1.0, 0, out restartsRatio);
@@ -99,11 +142,38 @@ namespace iRacingReplayDirector.Phases.Transcoding
             var restartsEdited = ExtractEditedEvents(totalTime, restartPercentage, restartRaceEvents, InterestState.Restart);
             var battlessEdited = ExtractEditedEvents(totalTime, battlePercentage, battleRaceEvents, InterestState.Battle);
 
-            var editedEvents = firstAndLastLapRaceEvents.Concat(incidentsEdited).Concat(restartsEdited).Concat(battlessEdited).OrderBy(re => re.StartTime);
+            var editedEventsList = firstAndLastLapRaceEvents
+                .Concat(incidentsEdited)
+                .Concat(restartsEdited)
+                .Concat(battlessEdited)
+                .ToList();
 
-            TraceInfo.WriteLine("Highlight Edits: Expected duration of highlight video: {0}", editedEvents.Sum(re => re.Duration).Seconds());
+            // Calculate effective duration (accounting for overlapping events)
+            var effectiveDuration = CalculateMergedDuration(editedEventsList);
+            var targetDuration = HighlightVideoDuration.TotalSeconds;
+            var gap = targetDuration - effectiveDuration;
 
-            return editedEvents;
+            TraceInfo.WriteLine("Highlight Edits: Effective duration (merged): {0}, Gap to fill: {1}",
+                effectiveDuration.Seconds(), gap.Seconds());
+
+            // If there's a significant gap, fill it with additional events
+            if (gap > MinimumEventContributionSeconds)
+            {
+                var selectedSet = new HashSet<OverlayData.RaceEvent>(editedEventsList);
+                var remainingEvents = incidentRaceEvents
+                    .Concat(battleRaceEvents)
+                    .Concat(restartRaceEvents)
+                    .Where(e => !selectedSet.Contains(e))
+                    .OrderBy(e => e.StartTime)
+                    .ToList();
+
+                editedEventsList = FillGapWithAdditionalEvents(editedEventsList, remainingEvents, gap);
+            }
+
+            TraceInfo.WriteLine("Highlight Edits: Expected duration of highlight video: {0}", editedEventsList.Sum(re => re.Duration).Seconds());
+            TraceInfo.WriteLine("Highlight Edits: Final effective duration (merged): {0}", CalculateMergedDuration(editedEventsList).Seconds());
+
+            return editedEventsList.OrderBy(re => re.StartTime);
         }
 
         private static List<OverlayData.RaceEvent> NormaliseBattleEvents(List<OverlayData.RaceEvent> raceEvents, double maxDuration)
@@ -134,9 +204,42 @@ namespace iRacingReplayDirector.Phases.Transcoding
 
         static List<OverlayData.RaceEvent> GetAllFirstAndLastLapEvents(IEnumerable<OverlayData.RaceEvent> raceEvents, out double totalTime)
         {
+            return GetAllFirstAndLastLapEvents(raceEvents, null, out totalTime);
+        }
+
+        static List<OverlayData.RaceEvent> GetAllFirstAndLastLapEvents(IEnumerable<OverlayData.RaceEvent> raceEvents, double? timeForOutroOverlay, out double totalTime)
+        {
             var firstAndLastLapRaceEvents = raceEvents
                 .Where(re => re.Interest == InterestState.FirstLap || re.Interest == InterestState.LastLap)
                 .ToList();
+
+            // Trim LastLap events to end when the outro overlay ends (30 seconds after trigger)
+            if (timeForOutroOverlay.HasValue)
+            {
+                var outroEndTime = timeForOutroOverlay.Value + 30;  // 30 seconds matches TranscodeAndOverlay.cs
+
+                for (int i = 0; i < firstAndLastLapRaceEvents.Count; i++)
+                {
+                    var re = firstAndLastLapRaceEvents[i];
+                    if (re.Interest == InterestState.LastLap && re.EndTime > outroEndTime)
+                    {
+                        var trimmedEvent = new OverlayData.RaceEvent
+                        {
+                            Interest = re.Interest,
+                            StartTime = re.StartTime,
+                            EndTime = Math.Max(re.StartTime, outroEndTime),
+                            WithOvertake = re.WithOvertake,
+                            Position = re.Position,
+                            RaceLapNumber = re.RaceLapNumber
+                        };
+                        firstAndLastLapRaceEvents[i] = trimmedEvent;
+
+                        TraceInfo.WriteLine("Highlight Edits: Trimmed LastLap event from {0} to {1}",
+                            re.EndTime.Seconds(), trimmedEvent.EndTime.Seconds());
+                    }
+                }
+            }
+
             var firstAndLastLapDuration = firstAndLastLapRaceEvents.Sum(re => re.Duration);
             totalTime = HighlightVideoDuration.TotalSeconds - firstAndLastLapDuration;
 
@@ -255,6 +358,120 @@ namespace iRacingReplayDirector.Phases.Transcoding
             TraceInfo.WriteLine("Highlight Edits: {0}.  Duration: {1}, Factor: {2}, Ratio: {3}", interest.ToString(), duration.Seconds(), factor, ratio);
 
             return result;
+        }
+
+        static List<OverlayData.RaceEvent> FillGapWithAdditionalEvents(
+            List<OverlayData.RaceEvent> selectedEvents,
+            List<OverlayData.RaceEvent> remainingEvents,
+            double gap)
+        {
+            var result = new List<OverlayData.RaceEvent>(selectedEvents);
+            var coveredRanges = GetMergedRanges(result);
+
+            // Filter to events that contribute new content (not fully overlapped)
+            var contributingEvents = remainingEvents
+                .Where(e => CalculateContribution(e, coveredRanges) > MinimumEventContributionSeconds)
+                .ToList();
+
+            if (contributingEvents.Count == 0)
+                return result;
+
+            TraceInfo.WriteLine("Highlight Edits: Filling gap with {0} candidate events", contributingEvents.Count);
+
+            // Use the same SliceEvent distribution logic to pick additional events
+            var additionalEvents = ExtractEditedEvents(gap, 1.0, contributingEvents, InterestState.Battle);
+            result.AddRange(additionalEvents);
+
+            return result;
+        }
+
+        static double CalculateMergedDuration(IEnumerable<OverlayData.RaceEvent> events)
+        {
+            var ranges = GetMergedRanges(events);
+            return ranges.Sum(r => r.Item2 - r.Item1);
+        }
+
+        static List<Tuple<double, double>> GetMergedRanges(IEnumerable<OverlayData.RaceEvent> events)
+        {
+            var sortedRanges = events
+                .Select(e => Tuple.Create(e.StartTime, e.EndTime))
+                .OrderBy(r => r.Item1)
+                .ToList();
+
+            if (sortedRanges.Count == 0)
+                return new List<Tuple<double, double>>();
+
+            var result = new List<Tuple<double, double>>();
+            var currentStart = sortedRanges[0].Item1;
+            var currentEnd = sortedRanges[0].Item2;
+
+            foreach (var range in sortedRanges.Skip(1))
+            {
+                if (range.Item1 <= currentEnd)
+                {
+                    // Overlapping or adjacent, extend current range
+                    currentEnd = Math.Max(currentEnd, range.Item2);
+                }
+                else
+                {
+                    // Gap found, save current range and start new one
+                    result.Add(Tuple.Create(currentStart, currentEnd));
+                    currentStart = range.Item1;
+                    currentEnd = range.Item2;
+                }
+            }
+            result.Add(Tuple.Create(currentStart, currentEnd));
+
+            return result;
+        }
+
+        static double CalculateContribution(OverlayData.RaceEvent re, List<Tuple<double, double>> coveredRanges)
+        {
+            // Calculate how much of this event's time range is NOT already covered
+            var uncoveredParts = new List<Tuple<double, double>> { Tuple.Create(re.StartTime, re.EndTime) };
+
+            foreach (var range in coveredRanges)
+            {
+                var newUncovered = new List<Tuple<double, double>>();
+
+                foreach (var part in uncoveredParts)
+                {
+                    var partStart = part.Item1;
+                    var partEnd = part.Item2;
+                    var rangeStart = range.Item1;
+                    var rangeEnd = range.Item2;
+
+                    if (rangeEnd <= partStart || rangeStart >= partEnd)
+                    {
+                        // No overlap with this part
+                        newUncovered.Add(part);
+                    }
+                    else if (rangeStart <= partStart && rangeEnd >= partEnd)
+                    {
+                        // Part is fully covered, remove it (don't add to newUncovered)
+                    }
+                    else if (rangeStart > partStart && rangeEnd < partEnd)
+                    {
+                        // Range is inside part, split into two uncovered segments
+                        newUncovered.Add(Tuple.Create(partStart, rangeStart));
+                        newUncovered.Add(Tuple.Create(rangeEnd, partEnd));
+                    }
+                    else if (rangeStart <= partStart)
+                    {
+                        // Range overlaps start of part
+                        newUncovered.Add(Tuple.Create(rangeEnd, partEnd));
+                    }
+                    else
+                    {
+                        // Range overlaps end of part
+                        newUncovered.Add(Tuple.Create(partStart, rangeStart));
+                    }
+                }
+
+                uncoveredParts = newUncovered;
+            }
+
+            return uncoveredParts.Sum(p => p.Item2 - p.Item1);
         }
 
         struct _RaceEvent

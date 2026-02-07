@@ -264,7 +264,7 @@ namespace iRacingReplayDirector.Phases
         {
             var cut = next;
 
-            var raceEdits = leaderBoard.OverlayData.RaceEvents.GetRaceEdits();
+            var raceEdits = leaderBoard.OverlayData.GetRaceEdits();
             if (raceEdits.Count() == 0)
                 throw new Exception("Unable to create highlight - try reducing time for highlight duration");
             var firstEdit = raceEdits.First();
