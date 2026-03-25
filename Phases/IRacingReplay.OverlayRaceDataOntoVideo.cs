@@ -41,8 +41,8 @@ namespace iRacingReplayDirector.Phases
 
         public void _WithOverlayFile(string overlayFileName)
         {
-            destinationFile = Path.ChangeExtension(overlayFileName, "wmv");
-            destinationHighlightsFile = Path.ChangeExtension(overlayFileName, ".highlights.wmv");
+            destinationFile = Path.ChangeExtension(overlayFileName, "mp4");
+            destinationHighlightsFile = Path.ChangeExtension(overlayFileName, ".highlights.mp4");
 
             gameDataFile = overlayFileName;
         }
