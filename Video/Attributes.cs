@@ -87,7 +87,7 @@ namespace iRacingReplayDirector.Video
                 var channels = audioStream.NativeMediaType.AudioNumberOfChannels;
                 var sampleRate = audioStream.NativeMediaType.AudioSamplesPerSecond;
 
-                var types = MFSystem.TranscodeGetAudioOutputAvailableTypes(MediaFoundation.MFMediaType.WMAudioV9, MediaFoundation.Transform.MFT_EnumFlag.All);
+                var types = MFSystem.TranscodeGetAudioOutputAvailableTypes(MediaFoundation.MFMediaType.AAC, MediaFoundation.Transform.MFT_EnumFlag.All);
 
                 foreach (var bitRate in types
                     .Where(t => t.AudioSamplesPerSecond == sampleRate)
@@ -110,7 +110,7 @@ namespace iRacingReplayDirector.Video
                 var transcoder = new Transcoder
                 {
                     VideoFiles = new[] { new SourceReaderExtra(videoFileName, null) },
-                    DestinationFile = Path.ChangeExtension(videoFileName, "wmv"),
+                    DestinationFile = Path.ChangeExtension(videoFileName, "mp4"),
                     VideoBitRate = 5000000
                 };
 

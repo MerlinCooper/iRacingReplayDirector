@@ -38,7 +38,7 @@ namespace iRacingDirector.Plugin.StandardOverlays
                 r = r.ToBelow();
 
                 headR.ToBelow()
-                    .DrawRedGradiantBox()
+                    .DrawBlueGradientBox()
                     .WithFont(Settings.FontName, 18, FontStyle.Bold)
                     .WithStringFormat(StringAlignment.Near)
                     .DrawText(LeaderBoard.LapCounter, topOffset: 8, leftOffset: 20);

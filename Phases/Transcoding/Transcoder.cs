@@ -68,8 +68,8 @@ namespace iRacingReplayDirector.Phases.Transcoding
         public string DestinationFile;
         public int VideoBitRate;
 
-        static Guid TARGET_AUDIO_FORMAT = MFMediaType.WMAudioV9;
-        static Guid TARGET_VIDEO_FORMAT = MFMediaType.WMV3;
+        static Guid TARGET_AUDIO_FORMAT = MFMediaType.AAC;
+        static Guid TARGET_VIDEO_FORMAT = MFMediaType.H264;
 
         internal string TestVideoConversion()
         {
@@ -78,12 +78,14 @@ namespace iRacingReplayDirector.Phases.Transcoding
             var attributes = new Attributes
             {
                 ReadWriterEnableHardwareTransforms = true,
-                SourceReaderEnableVideoProcessing = true
+                SourceReaderEnableVideoProcessing = true,
+                H264Profile = eAVEncH264VProfile.High,
+                TranscodeContainerType = MFTranscodeContainer.Mpeg4
             };
 
             var readers = VideoFiles.Select(f => f.CreateSourceReader(readWriteFactory, attributes)).ToArray();
 
-            var testOuputFile = readers.First().FileName + ".tmp.test.wmv";
+            var testOuputFile = readers.First().FileName + ".tmp.test.mp4";
             try
             {
                 using (var sinkWriter = readWriteFactory.CreateSinkWriterFromURL(testOuputFile, attributes))
@@ -114,7 +116,9 @@ namespace iRacingReplayDirector.Phases.Transcoding
             var attributes = new Attributes
             {
                 ReadWriterEnableHardwareTransforms = true,
-                SourceReaderEnableVideoProcessing = true
+                SourceReaderEnableVideoProcessing = true,
+                H264Profile = eAVEncH264VProfile.High,
+                TranscodeContainerType = MFTranscodeContainer.Mpeg4
             };
 
             var readers = VideoFiles.Select(f => f.CreateSourceReader(readWriteFactory, attributes)).ToArray();

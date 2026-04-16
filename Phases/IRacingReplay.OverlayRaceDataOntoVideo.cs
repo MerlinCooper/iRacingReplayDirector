@@ -32,6 +32,7 @@ namespace iRacingReplayDirector.Phases
         int videoBitRate;
         string destinationFile;
         string destinationHighlightsFile;
+        string destinationOverlayOnlyFile;
         string gameDataFile;
 
         public void _WithEncodingOf(int videoBitRate)
@@ -41,33 +42,43 @@ namespace iRacingReplayDirector.Phases
 
         public void _WithOverlayFile(string overlayFileName)
         {
-            destinationFile = Path.ChangeExtension(overlayFileName, "wmv");
-            destinationHighlightsFile = Path.ChangeExtension(overlayFileName, ".highlights.wmv");
+            destinationFile = Path.ChangeExtension(overlayFileName, "mp4");
+            destinationHighlightsFile = Path.ChangeExtension(overlayFileName, ".highlights.mp4");
+            destinationOverlayOnlyFile = Path.ChangeExtension(overlayFileName, ".overlayonly.mp4");
 
             gameDataFile = overlayFileName;
         }
 
-        public void _OverlayRaceDataOntoVideo(Action<long, long> progress, Action completed, bool highlightOnly, bool bShutdownAfterCompleted, CancellationToken token)
+        public void _OverlayRaceDataOntoVideo(Action<long, long> progress, Action completed, bool highlightOnly, bool bShutdownAfterCompleted, CancellationToken token, bool overlayOnly = false)
         {
-            bool TranscodeFull = !highlightOnly;
+            bool TranscodeFull = !highlightOnly && !overlayOnly;
 
             var transcodeHigh = new Task(() => TranscodeAndOverlayMarshaled.Apply("HighLights", gameDataFile, videoBitRate, destinationHighlightsFile, true, highlightOnly ? progress : null, token));
+            var transcodeOverlayOnly = new Task(() => TranscodeAndOverlayMarshaled.Apply("OverlayOnly", gameDataFile, videoBitRate, destinationOverlayOnlyFile, false, overlayOnly ? progress : null, token, overlayOnly: true));
             var transcodeFull = new Task(() => TranscodeAndOverlayMarshaled.Apply("Full", gameDataFile, videoBitRate, destinationFile, false, progress, token));
 
             using (MFSystem.Start())
             {
                 var waits = new List<Task>();
 
-                transcodeHigh.Start();
-                waits.Add(transcodeHigh);
-
-                //Seem to have some kind of bug in MediaFoundation - where if two threads attempt to open source Readers to the same file, we get exception raised.
-                //To work around issue, delay the start of the second transcoder - so we dont have two threads opening at the same time.
-                if (TranscodeFull)
+                if (overlayOnly)
                 {
-                    Thread.Sleep(10000);
-                    transcodeFull.Start();
-                    waits.Add(transcodeFull);
+                    transcodeOverlayOnly.Start();
+                    waits.Add(transcodeOverlayOnly);
+                }
+                else
+                {
+                    transcodeHigh.Start();
+                    waits.Add(transcodeHigh);
+
+                    //Seem to have some kind of bug in MediaFoundation - where if two threads attempt to open source Readers to the same file, we get exception raised.
+                    //To work around issue, delay the start of the second transcoder - so we dont have two threads opening at the same time.
+                    if (TranscodeFull)
+                    {
+                        Thread.Sleep(10000);
+                        transcodeFull.Start();
+                        waits.Add(transcodeFull);
+                    }
                 }
 
                 Task.WaitAll(waits.ToArray());

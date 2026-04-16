@@ -27,7 +27,7 @@ Requirements
 * Your video capture software must save the video as an .mp4 or .avi file.
 * Replays should capture all competitors. Before the session, under the graphics options in iRacing, set the Max Cars box to a number greater than number of competitors.
 * Only tested with the PCM audio codec
-* Only supports MPEG/H.264 video codec for capture/conversion
+* Supports H.264 video codec with AAC audio in MP4 container for capture/conversion
 
 Known Issues
 ============
@@ -49,8 +49,8 @@ HOW TO USE
 10. Press Verify Video.
 11. Browse and select the video that was recorded in step 6.
 12. Click Verify Conversion.
-13. If all this worked correctly, you’ll find 1 or 2 .wmv files in the directory. These are your encoded videos. You’ll only have 1 if you checked the Highlight Video Only checkbox before encoding.
-14. If you’d like, you can now do a test run using the “Short Test Only” checkbox to verify everything is working. This is preferable to doing a 40 minute video and finding out something wasn’t setup correctly. Just follow the instructions below with the “Short Test Only” box checked.
+13. If all this worked correctly, you'll find 1 or 2 .mp4 files in the directory. These are your encoded videos. You'll only have 1 if you checked the Highlight Video Only checkbox before encoding.
+14. If you'd like, you can now do a test run using the "Short Test Only" checkbox to verify everything is working. This is preferable to doing a 40 minute video and finding out something wasn't setup correctly. Just follow the instructions below with the "Short Test Only" box checked.
 
 Creating a Video Thereafter
 ===========================
@@ -65,8 +65,8 @@ Creating a Video Thereafter
 9. Press the Begin Capture button when ready to capture.
 10. The process will run for at least the entire length of the original replay so be patient.
 11. Once the race capture is completed, you can then Encode your full race and highlight videos.
-12. When encoding, if the highlight Video Only isn’t checked, it creates 2 videos from your replays; the full replay and a highlight video with a length defined in the Config options. If the Highlight Video Only box is checked under Video Encoding, it will only create the highlight video.
-13. The completed videos have a .wmv extension
+12. When encoding, if the highlight Video Only isn't checked, it creates 2 videos from your replays; the full replay and a highlight video with a length defined in the Config options. If the Highlight Video Only box is checked under Video Encoding, it will only create the highlight video.
+13. The completed videos have a .mp4 extension
 
 History
 ==============
