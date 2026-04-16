@@ -202,12 +202,12 @@ namespace iRacingReplayDirector.Phases.Transcoding
             return result;
         }
 
-        static List<OverlayData.RaceEvent> GetAllFirstAndLastLapEvents(IEnumerable<OverlayData.RaceEvent> raceEvents, out double totalTime)
+        public static List<OverlayData.RaceEvent> GetAllFirstAndLastLapEvents(IEnumerable<OverlayData.RaceEvent> raceEvents, out double totalTime)
         {
             return GetAllFirstAndLastLapEvents(raceEvents, null, out totalTime);
         }
 
-        static List<OverlayData.RaceEvent> GetAllFirstAndLastLapEvents(IEnumerable<OverlayData.RaceEvent> raceEvents, double? timeForOutroOverlay, out double totalTime)
+        public static List<OverlayData.RaceEvent> GetAllFirstAndLastLapEvents(IEnumerable<OverlayData.RaceEvent> raceEvents, double? timeForOutroOverlay, out double totalTime)
         {
             var firstAndLastLapRaceEvents = raceEvents
                 .Where(re => re.Interest == InterestState.FirstLap || re.Interest == InterestState.LastLap)

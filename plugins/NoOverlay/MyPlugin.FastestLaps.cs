@@ -17,7 +17,7 @@ namespace NoOverlay
             const int top = 900;
 
             Graphics.InRectangle(left, top + 34, 400, 34)
-                .DrawRedGradiantBox();
+                .DrawBlueGradientBox();
 
             Graphics.InRectangle(left, top + 34, 250, 34)
                 .WithBrush(Styles.WhiteBrush)

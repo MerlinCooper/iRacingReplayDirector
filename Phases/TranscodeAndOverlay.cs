@@ -31,7 +31,7 @@ namespace iRacingReplayDirector.Phases
 {
     public class TranscodeAndOverlayMarshaled
     {
-        public static void Apply(string name, string gameDataFile, int videoBitRate, string destFile, bool highlights, Action<long, long> progressReporter, CancellationToken token)
+        public static void Apply(string name, string gameDataFile, int videoBitRate, string destFile, bool highlights, Action<long, long> progressReporter, CancellationToken token, bool overlayOnly = false)
         {
             var domain = AppDomain.CreateDomain(name, null, new AppDomainSetup());
             try
@@ -44,7 +44,7 @@ namespace iRacingReplayDirector.Phases
                     false,
                     BindingFlags.CreateInstance,
                     null,
-                    new object[] { gameDataFile, videoBitRate, destFile, highlights, (Action<long, long>)hostArgs.ProgressReporter, (Func<bool>)hostArgs.IsAborted, hostArgs.LogRepeater, Settings.Default.PluginName },
+                    new object[] { gameDataFile, videoBitRate, destFile, highlights, (Action<long, long>)hostArgs.ProgressReporter, (Func<bool>)hostArgs.IsAborted, hostArgs.LogRepeater, Settings.Default.PluginName, overlayOnly },
                     null,
                     null);
                 arg.Apply();
@@ -104,6 +104,7 @@ namespace iRacingReplayDirector.Phases
         private string destFile;
         private string gameDataFile;
         private bool highlights;
+        private bool overlayOnly;
         private Func<bool> _isAborted;
         private Action<long, long> _progressReporter;
         private int videoBitRate;
@@ -118,7 +119,7 @@ namespace iRacingReplayDirector.Phases
             this.logRepeater = new LogRepeater();
         }
 
-        public TranscodeAndOverlayArguments(string gameDataFile, int videoBitRate, string destFile, bool highlights, Action<long, long> progressReporter, Func<bool> isAborted, LogRepeater logRepeater, string pluginName)
+        public TranscodeAndOverlayArguments(string gameDataFile, int videoBitRate, string destFile, bool highlights, Action<long, long> progressReporter, Func<bool> isAborted, LogRepeater logRepeater, string pluginName, bool overlayOnly = false)
         {
             //Constructed in subdomain
             Program.MakePortable(Settings.Default);
@@ -127,6 +128,7 @@ namespace iRacingReplayDirector.Phases
             this.videoBitRate = videoBitRate;
             this.destFile = destFile;
             this.highlights = highlights;
+            this.overlayOnly = overlayOnly;
             this._progressReporter = progressReporter;
             this._isAborted = isAborted;
             this.pluginName = pluginName;
@@ -150,13 +152,13 @@ namespace iRacingReplayDirector.Phases
 
         public void Apply()
         {
-            TranscodeAndOverlay.Apply(gameDataFile, videoBitRate, destFile, highlights, ProgressReporter, IsAborted, pluginName);
+            TranscodeAndOverlay.Apply(gameDataFile, videoBitRate, destFile, highlights, ProgressReporter, IsAborted, pluginName, overlayOnly);
         }
     }
 
     public class TranscodeAndOverlay
     {
-        public static void Apply(string gameDataFile, int videoBitRate, string destFile, bool highlights, Action<long, long> progressReporter, Func<bool> isAborted, string pluginName)
+        public static void Apply(string gameDataFile, int videoBitRate, string destFile, bool highlights, Action<long, long> progressReporter, Func<bool> isAborted, string pluginName, bool overlayOnly = false)
         {
             try
             {
@@ -169,7 +171,7 @@ namespace iRacingReplayDirector.Phases
                     VideoBitRate = videoBitRate
                 };
 
-                new TranscodeAndOverlay(leaderBoard, progressReporter).Process(transcoder, highlights, progressReporter, isAborted);
+                new TranscodeAndOverlay(leaderBoard, progressReporter).Process(transcoder, highlights, progressReporter, isAborted, overlayOnly);
             }
             catch (Exception e)
             {
@@ -189,19 +191,20 @@ namespace iRacingReplayDirector.Phases
             this.progressReporter = progressReporter;
         }
 
-        void Process(Transcoder transcoder, bool highlights, Action<long, long> monitorProgress, Func<bool> isAborted)
+        void Process(Transcoder transcoder, bool highlights, Action<long, long> monitorProgress, Func<bool> isAborted, bool overlayOnly = false)
         {
             try
             {
-                TraceInfo.WriteLineIf(highlights, "Transcoding highlights to {0}", transcoder.DestinationFile);
-                TraceInfo.WriteLineIf(!highlights, "Transcoding full replay to {0}", transcoder.DestinationFile);
+                TraceInfo.WriteLineIf(overlayOnly, "Transcoding overlay-only to {0}", transcoder.DestinationFile);
+                TraceInfo.WriteLineIf(highlights && !overlayOnly, "Transcoding highlights to {0}", transcoder.DestinationFile);
+                TraceInfo.WriteLineIf(!highlights && !overlayOnly, "Transcoding full replay to {0}", transcoder.DestinationFile);
 
                 transcoder.ProcessVideo((readers, saveToSink) =>
                 {
                     var writeToSink = monitorProgress == null ? saveToSink : MonitorProgress(saveToSink);
 
                     var fadeSegments = AVOperations.FadeIn(AVOperations.FadeOut(writeToSink));
-                    var edits = highlights ? ApplyEdits(writeToSink) : writeToSink;
+                    var edits = overlayOnly ? ApplyOverlayOnlyEdits(writeToSink) : (highlights ? ApplyEdits(writeToSink) : writeToSink);
                     var mainBodyOverlays = AVOperations.Overlay(applyRaceDataOverlay, edits);
                     var introOverlay = AVOperations.Overlay(applyIntroOverlay, fadeSegments);
 
@@ -269,6 +272,32 @@ namespace iRacingReplayDirector.Phases
                 throw new Exception("Unable to create highlight - try reducing time for highlight duration");
             var firstEdit = raceEdits.First();
             var lastEdit = raceEdits.Last();
+
+            foreach (var editCut in raceEdits)
+            {
+                cut = AVOperations.Cut(editCut.StartTime.FromSecondsToNano(), editCut.EndTime.FromSecondsToNano(), AVOperations.FadeInOut(cut));
+                totalDuration -= editCut.EndTime.FromSecondsToNano() - editCut.StartTime.FromSecondsToNano();
+            }
+
+            return cut;
+        }
+
+        ProcessSample ApplyOverlayOnlyEdits(ProcessSample next)
+        {
+            var cut = next;
+
+            double totalTime;
+            var overlayEvents = RaceEventExtension.GetAllFirstAndLastLapEvents(
+                leaderBoard.OverlayData.RaceEvents,
+                leaderBoard.OverlayData.TimeForOutroOverlay,
+                out totalTime);
+
+            if (overlayEvents.Count == 0)
+                throw new Exception("Unable to create overlay-only cut - no first/last lap events found");
+
+            var raceEdits = overlayEvents.GetRaceEdits();
+            if (raceEdits.Count == 0)
+                return cut;
 
             foreach (var editCut in raceEdits)
             {

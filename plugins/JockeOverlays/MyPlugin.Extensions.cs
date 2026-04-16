@@ -53,7 +53,7 @@ namespace JockeOverlays
                 .WithBrush(Styles.BlackBrush);
         }
 
-        public static GraphicRect DrawRedGradiantBox(this GraphicRect rr)
+        public static GraphicRect DrawBlueGradientBox(this GraphicRect rr)
         {
             return rr
                 .WithHeight(rr.Rectangle.Height + 3)

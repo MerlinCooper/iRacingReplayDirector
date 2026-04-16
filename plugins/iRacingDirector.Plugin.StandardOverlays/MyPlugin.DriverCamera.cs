@@ -15,7 +15,7 @@ namespace iRacingDirector.Plugin.StandardOverlays
             var offset = 5;
 
             Graphics.InRectangle(1920 / 2 - 440 / 2, 980, 70, 40)
-                .WithBrush(Styles.YellowBrush)
+                .WithBrush(Styles.BlueFlagYellowBrush)
                 .WithPen(Styles.BlackPen)
                 .DrawRectangleWithBorder()
                 .WithFontSizeOf(24)

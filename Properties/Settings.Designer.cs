@@ -118,5 +118,17 @@ namespace iRacingReplayDirector.Properties {
                 this["bHighLightVideoOnly"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bOverlayOnly {
+            get {
+                return ((bool)(this["bOverlayOnly"]));
+            }
+            set {
+                this["bOverlayOnly"] = value;
+            }
+        }
     }
 }

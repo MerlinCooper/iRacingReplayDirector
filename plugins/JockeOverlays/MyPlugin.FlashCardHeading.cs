@@ -13,7 +13,7 @@ namespace JockeOverlays
                 .DrawGrayBackground();
 
             Graphics.InRectangle(FlashCardLeft - 10, 311 - 2, FlashCardWidth - 100, 48)
-                .DrawRedGradiantBox()
+                .DrawBlueGradientBox()
                 .MoveDown(7)
                 .MoveRight(20)
                 .WithFontSizeOf(23)
