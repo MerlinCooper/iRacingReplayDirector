@@ -1,4 +1,5 @@
-﻿// This file is part of iRacingReplayDirector.
+﻿
+// This file is part of iRacingReplayDirector.
 //
 // Copyright 2014 Dean Netherton
 // https://github.com/vipoo/iRacingReplayDirector.net
@@ -77,7 +78,9 @@ namespace iRacingReplayDirector.Phases.Transcoding
             var attributes = new Attributes
             {
                 ReadWriterEnableHardwareTransforms = true,
-                SourceReaderEnableVideoProcessing = true
+                SourceReaderEnableVideoProcessing = true,
+                H264Profile = eAVEncH264VProfile.High,
+                TranscodeContainerType = MFTranscodeContainer.Mpeg4
             };
 
             var readers = VideoFiles.Select(f => f.CreateSourceReader(readWriteFactory, attributes)).ToArray();
@@ -113,7 +116,9 @@ namespace iRacingReplayDirector.Phases.Transcoding
             var attributes = new Attributes
             {
                 ReadWriterEnableHardwareTransforms = true,
-                SourceReaderEnableVideoProcessing = true
+                SourceReaderEnableVideoProcessing = true,
+                H264Profile = eAVEncH264VProfile.High,
+                TranscodeContainerType = MFTranscodeContainer.Mpeg4
             };
 
             var readers = VideoFiles.Select(f => f.CreateSourceReader(readWriteFactory, attributes)).ToArray();

@@ -35,12 +35,12 @@ namespace iRacingDirector.Plugin.StandardOverlays
                 .WithBrush(Styles.BlackBrush);
         }
 
-        public static GraphicRect DrawRedGradiantBox(this GraphicRect rr)
+        public static GraphicRect DrawBlueGradientBox(this GraphicRect rr)
         {
             return rr
                 .WithHeight(rr.Rectangle.Height + 3)
                 .MoveUp(3)
-                .WithLinearGradientBrush(Styles.RedBannerDark, Styles.RedBannerLight, LinearGradientMode.Vertical)
+                .WithLinearGradientBrush(Styles.BlueFlagBlueDark, Styles.BlueFlagBlue, LinearGradientMode.Vertical)
                 .DrawRoundRectangle(5)
                 .WithBrush(Styles.WhiteBrush);
         }

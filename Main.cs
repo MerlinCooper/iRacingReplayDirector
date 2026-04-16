@@ -195,6 +195,7 @@ namespace iRacingReplayDirector
             cb_FastVideoRecording.Checked = Properties.Settings.Default.bFastVideoRecording;
             cb_ShortTestOnly.Checked = Properties.Settings.Default.bShortTestOnly;
             cb_HighLightVideoOnly.Checked = Properties.Settings.Default.bHighLightVideoOnly;
+            cb_OverlayOnly.Checked = Properties.Settings.Default.bOverlayOnly;
             cb_UseNewSettingsDlg.Checked = Properties.Settings.Default.bUseNewSettingsDialog;
 
 
@@ -258,6 +259,7 @@ namespace iRacingReplayDirector
             Properties.Settings.Default.bFastVideoRecording = cb_FastVideoRecording.Checked;
             Properties.Settings.Default.bShortTestOnly = cb_ShortTestOnly.Checked;
             Properties.Settings.Default.bHighLightVideoOnly = cb_HighLightVideoOnly.Checked;
+            Properties.Settings.Default.bOverlayOnly = cb_OverlayOnly.Checked;
             //enable change of standard setting to use NewSettingsDialog only after intensive testings that all values can be reliably set using the advanced settings dialog
             //Properties.Settings.Default.bUseNewSettingsDialog = cb_UseNewSettingsDlg.Checked;
             Properties.Settings.Default.Save();
@@ -383,7 +385,7 @@ namespace iRacingReplayDirector
             iRacingProcess = new IRacingReplay()
                 .WithEncodingOf(videoBitRate: videoBitRateNumber * 1000000)
                 .WithOverlayFile(overlayFile: sourceVideoTextBox.Text)
-                .OverlayRaceDataOntoVideo(OnTranscoderProgress, OnTranscoderCompleted, cb_HighLightVideoOnly.Checked, cb_ShutdownAfterEncode.Checked)
+                .OverlayRaceDataOntoVideo(OnTranscoderProgress, OnTranscoderCompleted, cb_HighLightVideoOnly.Checked, cb_ShutdownAfterEncode.Checked, cb_OverlayOnly.Checked)
                 .InTheBackground(errorMessage =>
                 {
                     OnTranscoderCompleted();
